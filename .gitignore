@@ -1,13 +1,7 @@
-*.pydevproject
 .metadata
-.gradle
-bin/
+.loadpath
 tmp/
 *.tmp
-*.bak
-*.swp
-*~.nib
-.loadpath
 
 # External tool builders
 .externalToolBuilders/
@@ -24,6 +18,27 @@ tmp/
 # TeXlipse plugin
 .texlipse
 
+# Compiled Files #
+*.class
+doc/
+bin/
 build/
 dist/
 sysProps.xml
+
+# Text Backup Files #
+*.sw[a-z]
+*~
+\#*\#
+.\#*
+*.bak
+
+# OS X Files #
+.DS_Store
+._*
+.Spotlight*
+.Trashes
+
+# Windows Files #
+Thumbs.db
+ehthumbs.db
