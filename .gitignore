@@ -1,0 +1,29 @@
+*.pydevproject
+.metadata
+.gradle
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+.loadpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# sbteclipse plugin
+.target
+
+# TeXlipse plugin
+.texlipse
+
+build/
+dist/
+sysProps.xml
