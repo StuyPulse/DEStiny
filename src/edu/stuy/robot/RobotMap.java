@@ -5,7 +5,7 @@ package edu.stuy.robot;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
-public class RobotMap {
+public interface RobotMap {
     // For example to map the left and right motors, you could define the
     // following variables to use with your drivetrain subsystem.
     // public static int leftMotor = 1;
@@ -15,4 +15,8 @@ public class RobotMap {
     // number and the module. For example you with a rangefinder:
     // public static int rangefinderPort = 1;
     // public static int rangefinderModule = 1;
+	int FRONT_LEFT_MOTOR = 7;
+	int FRONT_RIGHT_MOTOR = 9;
+	int REAR_LEFT_MOTOR = 3;
+	int REAR_RIGHT_MOTOR = 2;
 }
