@@ -1,5 +1,5 @@
 
-package org.usfirst.frc.team694.robot.subsystems;
+package edu.stuy.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
