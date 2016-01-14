@@ -20,7 +20,9 @@ public class DrivetrainTankDriveCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Dr
+    	double left = Robot.oi.driverGamepad.getLeftY();
+    	double right = Robot.oi.driverGamepad.getRightY();
+    	Robot.drivetrain.tankDrive(-left, -right);
     }
 
     // Make this return true when this Command no longer needs to run execute()

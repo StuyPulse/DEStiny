@@ -1,7 +1,6 @@
 
 package edu.stuy.robot;
 
-import edu.stuy.robot.commands.ExampleCommand;
 import edu.stuy.robot.subsystems.Drivetrain;
 import edu.stuy.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -31,7 +30,6 @@ public class Robot extends IterativeRobot {
     	drivetrain = new Drivetrain();
 		oi = new OI();
         // instantiate the command used for the autonomous period
-        autonomousCommand = new ExampleCommand();
     }
 	
 	public void disabledPeriodic() {

@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import static edu.stuy.robot.RobotMap.*;
 
+import edu.stuy.robot.commands.DrivetrainTankDriveCommand;
+
 /**
  *
  */
@@ -28,7 +30,7 @@ public class Drivetrain extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	
+    	setDefaultCommand(new DrivetrainTankDriveCommand());
     }
     public void tankDrive(double left, double right) {
     	robotDrive.tankDrive(left, right);

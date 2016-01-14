@@ -19,4 +19,6 @@ public interface RobotMap {
 	int FRONT_RIGHT_MOTOR = 9;
 	int REAR_LEFT_MOTOR = 3;
 	int REAR_RIGHT_MOTOR = 2;
+	int DRIVER_GAMEPAD = 0;
+	int OPERATOR_GAMEPAD = 1;
 }

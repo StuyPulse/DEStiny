@@ -1,7 +1,8 @@
 package edu.stuy.robot;
 
-import edu.stuy.robot.commands.ExampleCommand;
+import edu.stuy.util.Gamepad;
 import edu.wpi.first.wpilibj.buttons.Button;
+import static edu.stuy.robot.RobotMap.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -34,6 +35,15 @@ public class OI {
     // Start the command when the button is released  and let it run the command
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
+	public Gamepad driverGamepad;
+	public Gamepad operatorGamepad;
 	
+	public OI(){
+		driverGamepad = new Gamepad(DRIVER_GAMEPAD);
+		operatorGamepad = new Gamepad(OPERATOR_GAMEPAD);
+		
+	}
 }
+
+
 
