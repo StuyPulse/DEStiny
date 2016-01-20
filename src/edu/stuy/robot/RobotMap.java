@@ -21,4 +21,5 @@ public interface RobotMap {
 	int REAR_RIGHT_MOTOR = 2;
 	int DRIVER_GAMEPAD = 0;
 	int OPERATOR_GAMEPAD = 1;
+	int SHOOTER_MOTOR_ID = 12;
 }
