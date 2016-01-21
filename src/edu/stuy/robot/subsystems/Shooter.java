@@ -14,8 +14,6 @@ public class Shooter extends Subsystem {
 		shooterMotor = new CANTalon(SHOOTER_MOTOR_ID);
 	}
 
-	// Put methods for controlling this subsystem
-	// here. Call these from Commands.
 	public void stop() {
 		shooterMotor.set(0.0);
 	}
