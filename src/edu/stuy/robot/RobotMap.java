@@ -15,11 +15,12 @@ public interface RobotMap {
     // number and the module. For example you with a rangefinder:
     // public static int rangefinderPort = 1;
     // public static int rangefinderModule = 1;
-	int FRONT_LEFT_MOTOR = 7;
-	int FRONT_RIGHT_MOTOR = 9;
-	int REAR_LEFT_MOTOR = 3;
-	int REAR_RIGHT_MOTOR = 2;
+	int FRONT_LEFT_MOTOR_CHANNEL = 7;
+	int FRONT_RIGHT_MOTOR_CHANNEL = 9;
+	int REAR_LEFT_MOTOR_CHANNEL = 3;
+	int REAR_RIGHT_MOTOR_CHANNEL = 2;
 	int DRIVER_GAMEPAD = 0;
 	int OPERATOR_GAMEPAD = 1;
-	int SHOOTER_MOTOR_ID = 12;
+	int SHOOTER_MOTOR_CHANNEL = 12;
+	int ACQUIRER_MOTOR_CHANNEL = 5;
 }

@@ -21,10 +21,10 @@ public class Drivetrain extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	public Drivetrain() {
-		leftFrontMotor = new CANTalon(FRONT_LEFT_MOTOR);
-		rightFrontMotor = new CANTalon(FRONT_RIGHT_MOTOR);
-		leftRearMotor = new CANTalon(REAR_LEFT_MOTOR);
-		rightRearMotor = new CANTalon(REAR_RIGHT_MOTOR);
+		leftFrontMotor = new CANTalon(FRONT_LEFT_MOTOR_CHANNEL);
+		rightFrontMotor = new CANTalon(FRONT_RIGHT_MOTOR_CHANNEL);
+		leftRearMotor = new CANTalon(REAR_LEFT_MOTOR_CHANNEL);
+		rightRearMotor = new CANTalon(REAR_RIGHT_MOTOR_CHANNEL);
 		robotDrive = new RobotDrive(leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor);
 	}
     public void initDefaultCommand() {
