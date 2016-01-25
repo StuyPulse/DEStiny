@@ -2,24 +2,24 @@ package edu.stuy.robot.subsystems;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import static edu.stuy.robot.RobotMap.SHOOTER_MOTOR_CHANNEL;
-
+import static edu.stuy.robot.RobotMap.*;
 /**
  *
  */
-public class Shooter extends Subsystem {
-	private CANTalon shooterMotor;
+public class Discharge extends Subsystem {
 
-	public Shooter() {
-		shooterMotor = new CANTalon(SHOOTER_MOTOR_CHANNEL);
+	private CANTalon dischargeMotor;
+
+	public Discharge() {
+		dischargeMotor = new CANTalon(DISCHARGE_MOTOR_CHANNEL);
 	}
 
 	public void stop() {
-		shooterMotor.set(0.0);
+		dischargeMotor.set(0.0);
 	}
 
 	public void setSpeed() {
-		shooterMotor.set(convertAngularSpeedtoToMotorSpeed(calculateSpeed()));
+		dischargeMotor.set(convertAngularSpeedtoToMotorSpeed(calculateSpeed()));
 	}
 
 	private double calculateSpeed() {
