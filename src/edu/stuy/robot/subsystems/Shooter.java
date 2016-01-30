@@ -6,20 +6,20 @@ import static edu.stuy.robot.RobotMap.*;
 /**
  *
  */
-public class Discharge extends Subsystem {
+public class Shooter extends Subsystem {
 
-	private CANTalon dischargeMotor;
+	private CANTalon shooterMotor;
 
-	public Discharge() {
-		dischargeMotor = new CANTalon(DISCHARGE_MOTOR_CHANNEL);
+	public Shooter() {
+		shooterMotor = new CANTalon(SHOOTER_MOTOR_CHANNEL);
 	}
 
 	public void stop() {
-		dischargeMotor.set(0.0);
+		shooterMotor.set(0.0);
 	}
 
 	public void setSpeed() {
-		dischargeMotor.set(convertAngularSpeedtoToMotorSpeed(calculateSpeed()));
+		shooterMotor.set(convertAngularSpeedtoToMotorSpeed(calculateSpeed()));
 	}
 
 	private double calculateSpeed() {
