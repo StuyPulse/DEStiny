@@ -1,8 +1,10 @@
 package edu.stuy.robot;
 
+import static edu.stuy.robot.RobotMap.DRIVER_GAMEPAD;
+import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
+
+import edu.stuy.robot.commands.FeederFeedCommand;
 import edu.stuy.util.Gamepad;
-import edu.wpi.first.wpilibj.buttons.Button;
-import static edu.stuy.robot.RobotMap.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -42,6 +44,7 @@ public class OI {
 		driverGamepad = new Gamepad(DRIVER_GAMEPAD);
 		operatorGamepad = new Gamepad(OPERATOR_GAMEPAD);
 		
+		operatorGamepad.getRightBumper().whileHeld(new FeederFeedCommand());
 	}
 }
 

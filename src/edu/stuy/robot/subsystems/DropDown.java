@@ -1,6 +1,8 @@
 package edu.stuy.robot.subsystems;
 
 import static edu.stuy.robot.RobotMap.DROPDOWN_MOTOR_CHANNEL;
+
+import edu.stuy.robot.commands.DropDownGoCommand;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -19,7 +21,7 @@ public class DropDown extends Subsystem {
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new DropDownGoCommand());
     }
 
     public void go(double liftvalue) {
