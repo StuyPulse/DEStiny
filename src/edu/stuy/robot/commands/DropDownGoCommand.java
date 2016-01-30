@@ -5,7 +5,9 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class DropDownGoCommand extends Command {
+
 	private double liftamount;
+
     public DropDownGoCommand() {
         // Use requires() here to declare subsystem dependencies
     	requires(Robot.dropdown);
@@ -13,11 +15,11 @@ public class DropDownGoCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        liftamount = Robot.oi.operatorGamepad.getLeftY();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        liftamount = Robot.oi.operatorGamepad.getLeftY();
     	Robot.dropdown.go(liftamount);
     }
 
