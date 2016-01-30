@@ -3,7 +3,10 @@ package edu.stuy.robot;
 
 import edu.stuy.robot.subsystems.Acquirer;
 import edu.stuy.robot.subsystems.Drivetrain;
+import edu.stuy.robot.subsystems.DropDown;
 import edu.stuy.robot.subsystems.Feeder;
+import edu.stuy.robot.subsystems.Hood;
+import edu.stuy.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -20,9 +23,12 @@ public class Robot extends IterativeRobot {
 	
 	public static Feeder feeder;
 	public static Drivetrain drivetrain;
-	public static Acquirer acquirer; 
+	public static Acquirer acquirer;
+	public static Hood hood;
+	public static DropDown dropdown;
+	public static Shooter shooter;
 	public static OI oi;
-
+	
     Command autonomousCommand;
 
     /**
@@ -32,8 +38,12 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	drivetrain = new Drivetrain();
     	acquirer = new Acquirer();
+    	dropdown = new DropDown();
     	feeder = new Feeder();
+    	hood = new Hood();
+    	shooter = new Shooter();
 		oi = new OI();
+		
         // instantiate the command used for the autonomous period
     }
 	
