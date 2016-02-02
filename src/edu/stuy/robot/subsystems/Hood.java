@@ -1,18 +1,22 @@
 package edu.stuy.robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import static edu.stuy.robot.RobotMap.HOOD_SOLENOID_CHANNEL;
+import static edu.stuy.robot.RobotMap.EXTRA_HOOD_SOLENOID_CHANNEL;
+
 import edu.wpi.first.wpilibj.Solenoid;
-import static edu.stuy.robot.RobotMap.PISTON_CHANNEL;
+import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  *
  */
 public class Hood extends Subsystem {
     private Solenoid hoodSolenoid;
+    private Solenoid extraHoodSolenoid;
     private boolean up;
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     public Hood() {
-    	hoodSolenoid = new Solenoid(PISTON_CHANNEL);
+    	hoodSolenoid = new Solenoid(HOOD_SOLENOID_CHANNEL);
+    	extraHoodSolenoid = new Solenoid(EXTRA_HOOD_SOLENOID_CHANNEL);
     	up = false;
     }
 
@@ -32,6 +36,7 @@ public class Hood extends Subsystem {
     
     public void changePosition(boolean x) {
     	hoodSolenoid.set(x);
+    	extraHoodSolenoid.set(x);
     	up = x;
     }
 }
