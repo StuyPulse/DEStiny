@@ -44,7 +44,6 @@ public class Robot extends IterativeRobot {
     	hood = new Hood();
     	shooter = new Shooter();
 		oi = new OI();
-		
 		Robot.drivetrain.resetGyro();
         // instantiate the command used for the autonomous period
     }
@@ -78,7 +77,6 @@ public class Robot extends IterativeRobot {
      * You can use it to reset subsystems before shutting down.
      */
     public void disabledInit(){
-
     }
 
     /**
@@ -87,6 +85,8 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
         SmartDashboard.putNumber("gyro", Robot.drivetrain.getGyro());
+        SmartDashboard.putNumber("potentiometer", Robot.acquirer.getVoltage());
+        SmartDashboard.putNumber("angle", Robot.acquirer.convertVoltage());
     }
     
     /**

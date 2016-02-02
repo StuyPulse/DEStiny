@@ -43,8 +43,6 @@ public class OI {
 	public OI(){
 		driverGamepad = new Gamepad(DRIVER_GAMEPAD);
 		operatorGamepad = new Gamepad(OPERATOR_GAMEPAD);
-		
-		operatorGamepad.getRightBumper().whileHeld(new FeederFeedCommand());
 	}
 }
 
