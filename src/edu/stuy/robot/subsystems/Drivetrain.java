@@ -1,13 +1,12 @@
 package edu.stuy.robot.subsystems;
 
-import static edu.stuy.robot.RobotMap.DRIVETRAIN_GYRO_CHANNEL;
 import static edu.stuy.robot.RobotMap.FRONT_LEFT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.FRONT_RIGHT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.REAR_LEFT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.REAR_RIGHT_MOTOR_CHANNEL;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.stuy.robot.commands.DrivetrainTankDriveCommand;
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -22,8 +21,7 @@ public class Drivetrain extends Subsystem {
 	private CANTalon leftRearMotor;
 	private CANTalon rightRearMotor;
 	private RobotDrive robotDrive;
-	private AnalogGyro gyro;
-	
+	private ADXRS450_Gyro gyro;
 	
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -33,7 +31,9 @@ public class Drivetrain extends Subsystem {
 		leftRearMotor = new CANTalon(REAR_LEFT_MOTOR_CHANNEL);
 		rightRearMotor = new CANTalon(REAR_RIGHT_MOTOR_CHANNEL);
 		robotDrive = new RobotDrive(leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor);
-		gyro = new AnalogGyro(DRIVETRAIN_GYRO_CHANNEL);
+		gyro = new ADXRS450_Gyro();
+		gyro.reset();
+		gyro.calibrate();
 	}
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -44,13 +44,9 @@ public class Drivetrain extends Subsystem {
     public void tankDrive(double left, double right) {
     	robotDrive.tankDrive(left, right);
     }
-
-    public double getGyro() {
+    
+    public double getAngle() {
     	return gyro.getAngle();
     }
-
-    public void resetGyro() {
-    	gyro.reset();
-    }
-    }
+}
 
