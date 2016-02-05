@@ -33,4 +33,5 @@ public interface RobotMap {
 	int ACQUIRER_POTENTIOMETER_CHANNEL = 2;
 	int ENCODER_CHANNEL = 68;
 	double ERROR_MARGIN_SONAR = 5;
+	double DISTANCE_BETWEEN_SONAR = 1;
 }
