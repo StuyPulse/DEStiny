@@ -48,5 +48,14 @@ public class Drivetrain extends Subsystem {
     public double getAngle() {
     	return gyro.getAngle();
     }
+    
+    public double getDistance() {
+    	//TODO Write the code for Encoder
+    	return -1;
+    }
+    
+    public void stop() {
+    	robotDrive.tankDrive(0, 0);
+    }
 }
 
