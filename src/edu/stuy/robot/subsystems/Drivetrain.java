@@ -51,17 +51,26 @@ public class Drivetrain extends Subsystem {
 		gyro.calibrate();
 	}
 
-	public void initDefaultCommand() {
-		// Set the default command for a subsystem here.
-		// setDefaultCommand(new MySpecialCommand());
-		setDefaultCommand(new DrivetrainTankDriveCommand());
-	}
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        //setDefaultCommand(new MySpecialCommand());
+    	setDefaultCommand(new DrivetrainTankDriveCommand());
+    }
 
-	public void tankDrive(double left, double right) {
-		robotDrive.tankDrive(left, right);
-	}
-
-	public double getGyroAngle() {
-		return gyro.getAngle() % 360;
-	}
+    public void tankDrive(double left, double right) {
+    	robotDrive.tankDrive(left, right);
+    }
+    
+    public double getGyroAngle() {
+    	return gyro.getAngle();
+    }
+    
+    public double getDistance() {
+    	//TODO Write the code for Encoder
+    	return -1;
+    }
+    
+    public void stop() {
+    	robotDrive.tankDrive(0, 0);
+    }
 }
