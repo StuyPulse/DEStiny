@@ -27,6 +27,10 @@ public class Shooter extends Subsystem {
 	public void stop() {
 		shooterMotor.set(0.0);
 	}
+	
+	public int getEncoder() {
+		return enc.get();
+	}
 
 	public void setSpeed() {
 	    encoderBefore = enc.get();

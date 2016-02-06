@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	
+
 	public static Feeder feeder;
 	public static Drivetrain drivetrain;
 	public static Acquirer acquirer;
@@ -29,7 +29,7 @@ public class Robot extends IterativeRobot {
 	public static DropDown dropdown;
 	public static Shooter shooter;
 	public static OI oi;
-	
+
     Command autonomousCommand;
 
     /**
@@ -46,7 +46,7 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
         // instantiate the command used for the autonomous period
     }
-	
+
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 	}
@@ -83,11 +83,12 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("gyro", Robot.drivetrain.getAngle());
+        SmartDashboard.putNumber("gyro", Robot.drivetrain.getGyroAngle());
         SmartDashboard.putNumber("potentiometer", Robot.acquirer.getVoltage());
         SmartDashboard.putNumber("angle", Robot.acquirer.convertVoltage());
+        SmartDashboard.putNumber("encoder", Robot.shooter.getEncoder());
     }
-    
+
     /**
      * This function is called periodically during test mode
      */
