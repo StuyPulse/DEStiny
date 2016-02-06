@@ -1,37 +1,40 @@
 package edu.stuy.robot.commands.auton;
 
+import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class GoOverRockWallCommand extends Command{
+public class GoOverRockWallCommand extends DriveForwardCommand {
 
+	private static final int MAX_DISTANCE_IN_INCHES = 48;
+	private static final int MAX_TIME_IN_SECONDS = 10;
+	
+	public GoOverRockWallCommand() {
+		super(MAX_DISTANCE_IN_INCHES, MAX_TIME_IN_SECONDS);
+	}
+	
 	@Override
 	protected void initialize() {
-		// TODO Auto-generated method stub
-		
+		super.initialize();
+		Robot.acquirer.lowerAcquirerToDrivingPosition();
 	}
 
 	@Override
 	protected void execute() {
-		// TODO Auto-generated method stub
-		
+		Robot.drivetrain.tankDrive(1 , 1);
 	}
 
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
-		return false;
+		return super.isFinished();
 	}
 
 	@Override
 	protected void end() {
-		// TODO Auto-generated method stub
-		
+		super.end();
 	}
 
 	@Override
-	protected void interrupted() {
-		// TODO Auto-generated method stub
-		
+	protected void interrupted() {	
 	}
 
 }

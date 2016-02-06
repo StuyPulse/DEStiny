@@ -1,37 +1,39 @@
 package edu.stuy.robot.commands.auton;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.stuy.robot.Robot;
 
-public class GoOverRoughTerrainCommand extends Command{
+public class GoOverRoughTerrainCommand extends DriveForwardCommand {
 
+	private static final int MAX_DISTANCE_IN_INCHES = 48;
+	private static final int MAX_TIME_IN_SECONDS = 15;
+	
+	public GoOverRoughTerrainCommand() {
+		super(MAX_DISTANCE_IN_INCHES, MAX_TIME_IN_SECONDS);
+	}
+	
 	@Override
 	protected void initialize() {
-		// TODO Auto-generated method stub
-		
+		super.initialize();
+		Robot.acquirer.lowerAcquirerToDrivingPosition();
 	}
 
 	@Override
 	protected void execute() {
-		// TODO Auto-generated method stub
-		
+		Robot.drivetrain.tankDrive(1 , 1);
 	}
 
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
-		return false;
+		return super.isFinished();
 	}
 
 	@Override
 	protected void end() {
-		// TODO Auto-generated method stub
-		
+		super.end();
 	}
 
 	@Override
-	protected void interrupted() {
-		// TODO Auto-generated method stub
-		
+	protected void interrupted() {	
 	}
 
 }

@@ -24,6 +24,21 @@ public class Acquirer extends Subsystem {
 		acquirerMotor = new CANTalon(ACQUIRER_MOTOR_CHANNEL);
 		potentiometer = new AnalogPotentiometer(ACQUIRER_POTENTIOMETER_CHANNEL, 300, 0);
 	}
+	
+	//Used for auton
+	public void lowerAcquirerToDrivingPosition() {
+		//TODO Write later
+	}
+	
+	//Used for auton
+	public void lowerAcquirerToGround() {
+		//TODO Write later
+	}
+	
+	//Used for auton
+	public void lowerAcquirerForDrawbridge() {
+		//TODO Write later
+	}
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
