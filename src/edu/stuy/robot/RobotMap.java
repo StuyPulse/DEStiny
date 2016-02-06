@@ -40,4 +40,8 @@ public interface RobotMap {
 	double GYRO_P = 1.0;
 	double GYRO_I = 1.0;
 	double GYRO_D = 1.0;
+
+	int ENCODER_CHANNEL = 68;
+	double ERROR_MARGIN_SONAR = 5;
+	double DISTANCE_BETWEEN_SONAR = 1.0;
 }

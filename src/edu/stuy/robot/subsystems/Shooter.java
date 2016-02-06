@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Shooter extends Subsystem {
 
-	private CANTalon shooterMotor;
+    private CANTalon shooterMotor;
     private Encoder enc;
     private double timeBefore;
     private int encoderBefore;
