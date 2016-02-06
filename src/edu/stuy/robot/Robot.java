@@ -1,16 +1,27 @@
 
 package edu.stuy.robot;
 
+import edu.stuy.robot.commands.auton.GoOverMoatCommand;
+import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
+import edu.stuy.robot.commands.auton.GoOverRockWallCommand;
+import edu.stuy.robot.commands.auton.GoOverRoughTerrainCommand;
+import edu.stuy.robot.commands.auton.PassChevalCommand;
+import edu.stuy.robot.commands.auton.PassDrawbridgeCommand;
+import edu.stuy.robot.commands.auton.PassPortcullisCommand;
+import edu.stuy.robot.commands.auton.ReachObstacleCommand;
 import edu.stuy.robot.subsystems.Acquirer;
 import edu.stuy.robot.subsystems.Drivetrain;
 import edu.stuy.robot.subsystems.DropDown;
 import edu.stuy.robot.subsystems.Feeder;
 import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Shooter;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -31,6 +42,7 @@ public class Robot extends IterativeRobot {
     public static OI oi;
     public static Encoder encoder;
     Command autonomousCommand;
+    SendableChooser autonChooser;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -53,7 +65,23 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
         // schedule the autonomous command (example)
-        if (autonomousCommand != null) autonomousCommand.start();
+        autonomousCommand = (Command) autonChooser.getSelected();
+    	if (autonomousCommand != null) autonomousCommand.start();
+    }
+    
+    private void setupAutonChooser() {
+    	autonChooser = new SendableChooser();
+    	autonChooser.addDefault("0. Do nothing", new CommandGroup());
+    	autonChooser.addObject("1. Reach edge of obstacle but refrain from going over", new ReachObstacleCommand());
+    	autonChooser.addObject("2. Rock Wall", new GoOverRockWallCommand());
+    	autonChooser.addObject("3. Moat", new GoOverMoatCommand());
+    	autonChooser.addObject("4. Rough Terrain", new GoOverRoughTerrainCommand());
+    	autonChooser.addObject("5. Ramparts", new GoOverRampartsCommand());
+    	autonChooser.addObject("6. Drawbridge", new PassDrawbridgeCommand());
+    	autonChooser.addObject("7. Cheval", new PassChevalCommand());
+    	autonChooser.addObject("8. Portcullis", new PassPortcullisCommand());
+    	SmartDashboard.putData("Auton setting", autonChooser);
+    	
     }
 
     /**
