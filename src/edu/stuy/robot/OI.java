@@ -3,6 +3,7 @@ package edu.stuy.robot;
 import static edu.stuy.robot.RobotMap.DRIVER_GAMEPAD;
 import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
 
+import edu.stuy.robot.commands.FeederFeedCommand;
 import edu.stuy.util.Gamepad;
 
 /**
