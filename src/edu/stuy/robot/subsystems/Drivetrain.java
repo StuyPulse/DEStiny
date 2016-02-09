@@ -4,24 +4,35 @@ import static edu.stuy.robot.RobotMap.FRONT_LEFT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.FRONT_RIGHT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.REAR_LEFT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.REAR_RIGHT_MOTOR_CHANNEL;
+import static edu.stuy.robot.RobotMap.WHEEL_DIAMETER;
 import static edu.stuy.robot.RobotMap.GYRO_P;
 import static edu.stuy.robot.RobotMap.GYRO_I;
 import static edu.stuy.robot.RobotMap.GYRO_D;
-
+import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_ON;
+import static edu.stuy.robot.RobotMap.LEFT_ENCODER_CHANNEL_ON;
+import static edu.stuy.robot.RobotMap.LEFT_ENCODER_CHANNEL_OFF;
+import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_OFF;
+import static edu.stuy.robot.RobotMap.WHEEL_DIAMETER_DRIVETRAIN;
 import edu.stuy.util.TankDriveOutput;
 import edu.stuy.robot.commands.DrivetrainTankDriveCommand;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  *
  */
 public class Drivetrain extends Subsystem {
-
+	private Encoder encR;
+	private Encoder encL;
+	private double timeBefore;
+	private int encoderBeforeR;
+	private int encoderBeforeL;
 	private CANTalon leftFrontMotor;
 	private CANTalon rightFrontMotor;
 	private CANTalon leftRearMotor;
@@ -39,6 +50,10 @@ public class Drivetrain extends Subsystem {
 		leftRearMotor = new CANTalon(REAR_LEFT_MOTOR_CHANNEL);
 		rightRearMotor = new CANTalon(REAR_RIGHT_MOTOR_CHANNEL);
 		robotDrive = new RobotDrive(leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor);
+		
+		encR = new Encoder(RIGHT_ENCODER_CHANNEL_ON, RIGHT_ENCODER_CHANNEL_OFF);
+		encL = new Encoder(LEFT_ENCODER_CHANNEL_ON, LEFT_ENCODER_CHANNEL_OFF);
+		timeBefore = Timer.getFPGATimestamp();
 
 		out = new TankDriveOutput(robotDrive);
 		gyro = new ADXRS450_Gyro();
@@ -64,11 +79,22 @@ public class Drivetrain extends Subsystem {
     public double getGyroAngle() {
     	return gyro.getAngle();
     }
-    
+    //side = the side it's on
+    //Should work. Test it.
     public double getDistance() {
     	//TODO Write the code for Encoder
-    	return -1;
-    }
+    	int differencel = encL.get() - encoderBeforeL;
+		double timeDifl = Timer.getFPGATimestamp() - timeBefore;
+		encoderBeforeL = encL.get();
+		timeBefore = Timer.getFPGATimestamp();
+		double leftspeed = WHEEL_DIAMETER_DRIVETRAIN * Math.PI * differencel / timeDifl;
+    	int differencer = encR.get() - encoderBeforeR;
+    	double timeDifr = Timer.getFPGATimestamp() - timeBefore;
+   		encoderBeforeR = encR.get();
+   		timeBefore = Timer.getFPGATimestamp();
+   		double rightspeed = WHEEL_DIAMETER_DRIVETRAIN * Math.PI * differencer / timeDifr;
+   		return rightspeed + leftspeed / 2;
+    	}
     
     public void stop() {
     	robotDrive.tankDrive(0, 0);
