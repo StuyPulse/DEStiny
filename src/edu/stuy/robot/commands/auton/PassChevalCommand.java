@@ -7,7 +7,7 @@ public class PassChevalCommand extends CommandGroup {
 	private static final double MAX_TIME_FORWARD_IN_SECONDS = 10;
 	
 	public PassChevalCommand() {
-		addSequential(new LowerArmToGroundCommand());
+		addSequential(new AcquirerMoveToAngleCommand(90));
 		addSequential(new DriveForwardCommand(MAX_DISTANCE_FORWARD_IN_INCHES, MAX_TIME_FORWARD_IN_SECONDS));
 	}
 }

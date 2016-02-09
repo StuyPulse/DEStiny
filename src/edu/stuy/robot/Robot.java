@@ -107,7 +107,7 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("gyro", Robot.drivetrain.getGyroAngle());
 		SmartDashboard.putNumber("potentiometer", Robot.acquirer.getVoltage());
-		SmartDashboard.putNumber("angle", Robot.acquirer.convertVoltage());
+		SmartDashboard.putNumber("angle", Robot.acquirer.getAngle());
 		SmartDashboard.putNumber("encoder", Robot.shooter.getEncoder());
 	}
 
