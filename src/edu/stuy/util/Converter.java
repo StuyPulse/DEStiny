@@ -1,5 +1,7 @@
 package edu.stuy.util;
 
+import java.util.Arrays;
+
 public class Converter {
 
 	public static byte[] doubleToBytes(double number) {
@@ -23,4 +25,26 @@ public class Converter {
 		}
 		return Double.longBitsToDouble(longBits);
 	}
+
+	public static byte[] doublesToBytes(double[] doubles) {
+		byte[] byteArray = new byte[doubles.length * 8];// 8 bytes per double
+        for (int i = 0; i < doubles.length; i++) {
+			byte[] convertedDouble = doubleToBytes(doubles[i]);
+			for(int j = 0; j < convertedDouble.length; j++) {
+				byteArray[(i * 8) + j] = convertedDouble[j];
+			}
+		}
+        return byteArray;
+	}
+
+	public static double[] bytesToDoubles(byte[] bytes) {
+		double[] doubleArray = new double[bytes.length / 8];
+		for(int i = 0; i < doubleArray.length; i++) {
+			doubleArray[i] = bytesToDouble(
+					Arrays.copyOfRange(bytes, i * 8, (i + 1) * 8)
+					);
+		}
+		return doubleArray;
+	}
+
 }

@@ -1,7 +1,5 @@
 package edu.stuy.util;
 
-import java.util.Arrays;
-
 import jssc.SerialPort;
 import jssc.SerialPortException;
 import jssc.SerialPortList;
@@ -41,14 +39,8 @@ public class Receiver {
 	}
 
 	public double[] readDoubles(int numberOfDoubles) {
-		double[] doubleArray = new double[numberOfDoubles];
 		byte[] bytes = readData(numberOfDoubles * 8);
-		for(int i = 0; i < numberOfDoubles; i++) {
-			doubleArray[i] = Converter.bytesToDouble(
-					Arrays.copyOfRange(bytes, i * 8, (i + 1) * 8)
-					);
-		}
-		return doubleArray;
+		return Converter.bytesToDoubles(bytes);
  	}
 
 	public double[] readVector() {
