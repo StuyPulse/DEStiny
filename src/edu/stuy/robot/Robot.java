@@ -15,6 +15,7 @@ import edu.stuy.robot.subsystems.DropDown;
 import edu.stuy.robot.subsystems.Feeder;
 import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Shooter;
+import edu.stuy.util.TegraDataReader;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -90,6 +91,14 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
+
+        cvSpawnThread();
+	}
+
+	private void cvSpawnThread() {
+        // Call start on the thread, not run,
+        // to run it in a separate thread
+        new Thread(new TegraDataReader()).start();
 	}
 
 	/**
