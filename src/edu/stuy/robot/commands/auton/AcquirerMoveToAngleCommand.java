@@ -26,7 +26,7 @@ public class AcquirerMoveToAngleCommand extends Command{
 		}
 	}
 
-	@Override:
+	@Override
 	protected boolean isFinished() {
 		return Math.abs(Robot.acquirer.getAngle() - desiredAngle) < 2;
 	}

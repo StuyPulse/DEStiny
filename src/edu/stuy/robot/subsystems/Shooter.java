@@ -1,10 +1,11 @@
 package edu.stuy.robot.subsystems;
 
-import static edu.stuy.robot.RobotMap.ENCODER_ON_CHANNEL;
 import static edu.stuy.robot.RobotMap.ENCODER_OFF_CHANNEL;
+import static edu.stuy.robot.RobotMap.ENCODER_ON_CHANNEL;
 import static edu.stuy.robot.RobotMap.SHOOTER_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.WHEEL_DIAMETER;
 
+import edu.stuy.robot.commands.TempShooterStop;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
@@ -51,8 +52,13 @@ public class Shooter extends Subsystem {
 		// BECAUSE THERE IS CODE HERE
 	}
 
+	//For testing the encoder -- delete afterwards
+	//public void setSpeedTesting(double speed) {
+	//	shooterMotor.set(speed);
+	//}
+	
+
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
-		// setDefaultCommand(new MySpecialCommand());
 	}
 }

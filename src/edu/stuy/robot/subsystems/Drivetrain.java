@@ -31,6 +31,10 @@ public class Drivetrain extends Subsystem {
 	private PIDController pid;
 	private TankDriveOutput out;
 
+	private double[] drifts = new double[8];
+	private int counter = 0;
+	private double currentAngle = 0.0;
+
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 	public Drivetrain() {
@@ -42,7 +46,8 @@ public class Drivetrain extends Subsystem {
 
 		out = new TankDriveOutput(robotDrive);
 		gyro = new ADXRS450_Gyro();
-		pid = new PIDController(GYRO_P, GYRO_I, GYRO_D, gyro, out);
+		pid = new PIDController(0.030, 0.010, 0.05, gyro, out);
+		drifts[0] = 0.0;
 
 		// pid.setInputRange(0, 360);
 		// pid.setContinuous();
@@ -55,6 +60,7 @@ public class Drivetrain extends Subsystem {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     	setDefaultCommand(new DrivetrainTankDriveCommand());
+    	pid.enable();
     }
 
     public void tankDrive(double left, double right) {
@@ -62,6 +68,16 @@ public class Drivetrain extends Subsystem {
     }
     
     public double getGyroAngle() {
+    	drifts[counter % 8] = currentAngle - gyro.getAngle();
+    	currentAngle = gyro.getAngle();
+    	if (counter > 9) {
+    		double avg = 0.0;
+    		for (double d : drifts) {
+    			avg += d;
+    		}
+    		System.out.println("Average of 8: " + (avg / 8));
+    	}
+    	counter++;
     	return gyro.getAngle();
     }
     

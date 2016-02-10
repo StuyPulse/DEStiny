@@ -32,7 +32,7 @@ public interface RobotMap {
 	int EXTRA_HOOD_SOLENOID_CHANNEL = 1;
 	int DROPDOWN_MOTOR_CHANNEL = 2;
 	int WHEEL_DIAMETER = 4;
-	int ENCODER_ON_CHANNEL = 2;
+	int ENCODER_ON_CHANNEL = 0;
 	int ENCODER_OFF_CHANNEL = 1;
 	int ACQUIRER_POTENTIOMETER_CHANNEL = 2;
 
@@ -41,7 +41,7 @@ public interface RobotMap {
 	double GYRO_I = 1.0;
 	double GYRO_D = 1.0;
 
-	int ENCODER_CHANNEL = 68;
+	int ENCODER_CHANNEL = 0;
 	double ERROR_MARGIN_SONAR = 5;
 	double DISTANCE_BETWEEN_SONAR = 1.0;
 }

@@ -57,4 +57,9 @@ public class Acquirer extends Subsystem {
 		double x = getVoltage();
 		return (x - 18) * 15;
 	}
+
+	public void lowerAcquirerToDrivingPosition() {
+		// TODO Auto-generated method stub
+		acquirerMotor.set(0.25);
+	}
 }

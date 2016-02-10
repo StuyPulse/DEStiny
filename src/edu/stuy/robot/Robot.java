@@ -1,6 +1,8 @@
 
 package edu.stuy.robot;
 
+import java.util.Arrays;
+
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
 import edu.stuy.robot.commands.auton.GoOverRockWallCommand;
@@ -15,7 +17,7 @@ import edu.stuy.robot.subsystems.DropDown;
 import edu.stuy.robot.subsystems.Feeder;
 import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Shooter;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.stuy.robot.subsystems.Sonar;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -39,6 +41,7 @@ public class Robot extends IterativeRobot {
 	public static Hood hood;
 	public static DropDown dropdown;
 	public static Shooter shooter;
+	public static Sonar sonar;
 	public static OI oi;
 	Command autonomousCommand;
 	SendableChooser autonChooser;
@@ -54,7 +57,9 @@ public class Robot extends IterativeRobot {
 		feeder = new Feeder();
 		hood = new Hood();
 		shooter = new Shooter();
+		sonar = new Sonar();
 		oi = new OI();
+		setupAutonChooser();
 	}
 
 	public void disabledPeriodic() {
@@ -109,6 +114,10 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("potentiometer", Robot.acquirer.getVoltage());
 		SmartDashboard.putNumber("angle", Robot.acquirer.getAngle());
 		SmartDashboard.putNumber("encoder", Robot.shooter.getEncoder());
+		double[] sonarData = sonar.getData();
+		System.out.println(Arrays.toString(sonarData));
+		SmartDashboard.putNumber("Sonar L", sonarData[0]);
+		SmartDashboard.putNumber("Sonar R", sonarData[1]);
 	}
 
 	/**
