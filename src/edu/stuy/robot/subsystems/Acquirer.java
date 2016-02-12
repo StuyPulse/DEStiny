@@ -16,7 +16,7 @@ public class Acquirer extends Subsystem {
 
 	private CANTalon acquirerMotor;
 	private Potentiometer potentiometer;
-	public String outString = "";
+	private String outString = "";
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
