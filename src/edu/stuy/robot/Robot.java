@@ -91,14 +91,6 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-
-        cvSpawnThread();
-	}
-
-	private void cvSpawnThread() {
-        // Call start on the thread, not run,
-        // to run it in a separate thread
-        new Thread(new TegraDataReader()).start();
 	}
 
 	/**
