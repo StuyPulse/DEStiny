@@ -2,9 +2,8 @@ package edu.stuy.robot;
 
 import static edu.stuy.robot.RobotMap.DRIVER_GAMEPAD;
 import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
-
+import edu.stuy.robot.commands.ChangeGearCommand;
 import edu.stuy.robot.commands.FeederFeedCommand;
-import edu.stuy.robot.commands.SetupforShotCommand;
 import edu.stuy.util.Gamepad;
 
 /**
@@ -47,5 +46,7 @@ public class OI {
 		operatorGamepad = new Gamepad(OPERATOR_GAMEPAD);
 
 		operatorGamepad.getRightBumper().whileHeld(new FeederFeedCommand());
+		operatorGamepad.getBottomButton().whenPressed(new ChangeGearCommand(true));
+		operatorGamepad.getTopButton().whenPressed(new ChangeGearCommand(false));
 	}
 }

@@ -8,34 +8,35 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DrivetrainTankDriveCommand extends Command {
 
-    public DrivetrainTankDriveCommand() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.drivetrain);
-    }
+	public DrivetrainTankDriveCommand() {
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+		requires(Robot.drivetrain);
+	}
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    }
+	// Called just before this Command runs the first time
+	protected void initialize() {
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	double left = Robot.oi.driverGamepad.getLeftY();
-    	double right = Robot.oi.driverGamepad.getRightY();
-    	Robot.drivetrain.tankDrive(-left, -right);
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+		double left = Robot.oi.driverGamepad.getLeftY();
+		double right = Robot.oi.driverGamepad.getRightY();
+		Robot.drivetrain.tankDrive(-left, -right);
+		Robot.drivetrain.autoGearShift();S
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		return false;
+	}
 
-    // Called once after isFinished returns true
-    protected void end() {
-    }
+	// Called once after isFinished returns true
+	protected void end() {
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+	}
 }

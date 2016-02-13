@@ -21,6 +21,9 @@ public interface RobotMap {
 	int REAR_LEFT_MOTOR_CHANNEL = 2;
 	int REAR_RIGHT_MOTOR_CHANNEL = 2;
 
+	int GEAR_SHIFT_CHANNEL = 9;
+	int GEAR_SHIFT_THRESHOLD = 0;
+
 	int DRIVER_GAMEPAD = 0;
 	int OPERATOR_GAMEPAD = 1;
 

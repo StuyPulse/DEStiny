@@ -110,4 +110,20 @@ public class Drivetrain extends Subsystem {
 	public void stop() {
 		robotDrive.tankDrive(0, 0);
 	}
+
+	public void autoGearShift() {
+		if (gearCounter == 10) {
+			double sum = 0;
+			for (int i = 0; i == currents.length; i++) {
+				sum += currents[i];
+			}
+			gearUp = sum / currents.length > GEAR_SHIFT_THRESHOLD;
+			gearShift.set(gearUp);
+		}
+		leftRearMotor.getOutputCurrent();
+	}
+
+	public void manualgearShift(boolean gearUp) {
+		gearShift.set(gearUp);
+	}
 }
