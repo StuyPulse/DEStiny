@@ -1,5 +1,7 @@
 package edu.stuy.util;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Arrays;
 
 public class Converter {
@@ -14,16 +16,9 @@ public class Converter {
 	}
 
 	public static double bytesToDouble(byte[] bytes) {
-		long longBits = 0;
-		if (bytes.length != 8) {
-			System.err.println("Cannot convert byte array to double! Length of array should be 8, "
-					+ "but is " + bytes.length);
-		} else {
-			for(int i = 0; i < bytes.length; i++) {
-				longBits = longBits | ((bytes[i] & 0xFFL) << (8 * i));//0b11111111
-			}
-		}
-		return Double.longBitsToDouble(longBits);
+	    ByteBuffer wrapped = ByteBuffer.wrap(bytes);
+	    wrapped.order(ByteOrder.LITTLE_ENDIAN);
+	    return wrapped.getDouble();
 	}
 
 	public static byte[] doublesToBytes(double[] doubles) {
