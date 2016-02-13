@@ -105,7 +105,7 @@ public class Drivetrain extends Subsystem {
 	public double getDistance() {
 		double left = leftEncoder.getDistance();
 		double right = rightEncoder.getDistance();
-		return (left + right) / 2;
+		return Math.max(left, right);
 	}
 
 	public void resetEncoders() {
