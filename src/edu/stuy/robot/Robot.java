@@ -1,4 +1,3 @@
-
 package edu.stuy.robot;
 
 import java.util.Arrays;
@@ -15,7 +14,6 @@ import edu.stuy.robot.subsystems.Acquirer;
 import edu.stuy.robot.subsystems.Drivetrain;
 import edu.stuy.robot.subsystems.DropDown;
 import edu.stuy.robot.subsystems.Feeder;
-import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.stuy.robot.subsystems.Sonar;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -38,7 +36,6 @@ public class Robot extends IterativeRobot {
 	public static Feeder feeder;
 	public static Drivetrain drivetrain;
 	public static Acquirer acquirer;
-	public static Hood hood;
 	public static DropDown dropdown;
 	public static Shooter shooter;
 	public static Sonar sonar;
@@ -55,7 +52,6 @@ public class Robot extends IterativeRobot {
 		acquirer = new Acquirer();
 		dropdown = new DropDown();
 		feeder = new Feeder();
-		hood = new Hood();
 		shooter = new Shooter();
 		sonar = new Sonar();
 		oi = new OI();
