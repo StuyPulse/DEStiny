@@ -36,7 +36,6 @@ public class DropDown extends Subsystem {
     }
 
 	public void stop() {
-		// TODO: Add deceleration
 		dropDownMotor.set(0.0);
 	}
 }
