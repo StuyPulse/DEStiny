@@ -5,7 +5,6 @@ import static edu.stuy.robot.RobotMap.ENCODER_ON_CHANNEL;
 import static edu.stuy.robot.RobotMap.SHOOTER_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.WHEEL_DIAMETER;
 
-import edu.stuy.robot.commands.TempShooterStop;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
