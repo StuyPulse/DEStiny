@@ -23,7 +23,7 @@ public class DrivetrainTankDriveCommand extends Command {
 		double left = Robot.oi.driverGamepad.getLeftY();
 		double right = Robot.oi.driverGamepad.getRightY();
 		Robot.drivetrain.tankDrive(-left, -right);
-		Robot.drivetrain.autoGearShift();S
+		Robot.drivetrain.autoGearShift();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

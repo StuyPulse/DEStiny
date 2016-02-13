@@ -38,6 +38,7 @@ public interface RobotMap {
 	int ENCODER_ON_CHANNEL = 0;
 	int ENCODER_OFF_CHANNEL = 1;
 	int ACQUIRER_POTENTIOMETER_CHANNEL = 2;
+	int DIGITAL_INPUT_CHANNEL = 1;
 
 	double PID_MAX_ROBOT_SPEED = 0.75;
 	double GYRO_P = 1.0;
