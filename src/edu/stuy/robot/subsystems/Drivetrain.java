@@ -49,10 +49,13 @@ public class Drivetrain extends Subsystem {
 		rightFrontMotor = new CANTalon(FRONT_RIGHT_MOTOR_CHANNEL);
 		leftRearMotor = new CANTalon(REAR_LEFT_MOTOR_CHANNEL);
 		rightRearMotor = new CANTalon(REAR_RIGHT_MOTOR_CHANNEL);
-		robotDrive = new RobotDrive(leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor);
+		robotDrive = new RobotDrive(leftFrontMotor, leftRearMotor,
+				rightFrontMotor, rightRearMotor);
 
-		rightEncoder = new Encoder(RIGHT_ENCODER_CHANNEL_ON, RIGHT_ENCODER_CHANNEL_OFF);
-		leftEncoder = new Encoder(LEFT_ENCODER_CHANNEL_ON, LEFT_ENCODER_CHANNEL_OFF);
+		rightEncoder = new Encoder(RIGHT_ENCODER_CHANNEL_ON,
+				RIGHT_ENCODER_CHANNEL_OFF);
+		leftEncoder = new Encoder(LEFT_ENCODER_CHANNEL_ON,
+				LEFT_ENCODER_CHANNEL_OFF);
 
 		out = new TankDriveOutput(robotDrive);
 		gyro = new ADXRS450_Gyro();
@@ -78,6 +81,16 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getGyroAngle() {
+		drifts[counter % 8] = currentAngle - gyro.getAngle();
+		currentAngle = gyro.getAngle();
+		if (counter > 9) {
+			double avg = 0.0;
+			for (double d : drifts) {
+				avg += d;
+			}
+			System.out.println("Average of 8: " + (avg / 8));
+		}
+		counter++;
 		return gyro.getAngle();
 	}
 
