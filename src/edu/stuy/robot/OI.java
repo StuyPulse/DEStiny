@@ -5,6 +5,7 @@ import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
 import edu.stuy.robot.commands.ChangeGearCommand;
 import edu.stuy.robot.commands.FeederFeedCommand;
 import edu.stuy.robot.commands.OverrideGearShifting;
+import edu.stuy.robot.commands.OverrideShooterCommand;
 import edu.stuy.util.Gamepad;
 
 /**
@@ -50,5 +51,7 @@ public class OI {
 		operatorGamepad.getBottomButton().whenPressed(new ChangeGearCommand(true));
 		operatorGamepad.getTopButton().whenPressed(new ChangeGearCommand(false));
 		operatorGamepad.getStartButton().whenPressed(new OverrideGearShifting());
+		operatorGamepad.getSelectButton().whenPressed(new OverrideShooterCommand());
+
 	}
 }

@@ -18,11 +18,14 @@ public class Shooter extends Subsystem {
 	private CANTalon shooterMotor;
 	private Encoder enc;
 	private double timeBefore;
-	private int encoderBefore;
-
+	private int encoderBefore;	
+	
+	public boolean shooterOverridden;
+	
 	public Shooter() {
 		shooterMotor = new CANTalon(SHOOTER_MOTOR_CHANNEL);
 		enc = new Encoder(ENCODER_ON_CHANNEL, ENCODER_OFF_CHANNEL);
+		shooterOverridden = false;
 	}
 
 	public void stop() {
