@@ -1,11 +1,8 @@
-package edu.stuy.robot.commands;
+/**package edu.stuy.robot.commands;
 
 import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
 public class AcquirerAcquireCommand extends Command {
 
 	public AcquirerAcquireCommand() {
@@ -36,4 +33,4 @@ public class AcquirerAcquireCommand extends Command {
 	// subsystems is scheduled to run
 	protected void interrupted() {
 	}
-}
+}*/

@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class FeederFeedCommand extends Command {
+public class FeederSetLowCommand extends Command {
 
-    public FeederFeedCommand() {
+    public FeederSetLowCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.feeder);
@@ -16,7 +16,7 @@ public class FeederFeedCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.feeder.feed();
+    	Robot.feeder.setLow();
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -1,28 +1,33 @@
-/**package edu.stuy.robot.commands;
+package edu.stuy.robot.commands;
 
 import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class AcquirerStopCommand extends Command {
+/**
+ *
+ */
+public class ShooterTestSpeed extends Command {
 
-    public AcquirerStopCommand() {
+	private double _speed;
+
+    public ShooterTestSpeed(double speed) {
         // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.acquirer);
+        requires(Robot.shooter);
+        _speed = speed;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.acquirer.stop();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.shooter.setSpeed(_speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true
@@ -33,4 +38,4 @@ public class AcquirerStopCommand extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     }
-}*/
+}

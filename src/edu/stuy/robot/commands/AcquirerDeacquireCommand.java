@@ -1,11 +1,9 @@
-package edu.stuy.robot.commands;
+/**package edu.stuy.robot.commands;
 
 import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
+
 public class AcquirerDeacquireCommand extends Command {
 
     public AcquirerDeacquireCommand() {
@@ -36,3 +34,4 @@ public class AcquirerDeacquireCommand extends Command {
     protected void interrupted() {
     }
 }
+*/

@@ -5,11 +5,12 @@ import static edu.stuy.robot.RobotMap.ENCODER_ON_CHANNEL;
 import static edu.stuy.robot.RobotMap.SHOOTER_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.WHEEL_DIAMETER;
 
-import edu.stuy.robot.commands.TempShooterStop;
+import edu.stuy.robot.commands.ShooterTestSpeed;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -32,6 +33,10 @@ public class Shooter extends Subsystem {
 
 	public int getEncoder() {
 		return enc.get();
+	}
+
+	public void setSpeed(double speed) {
+		shooterMotor.set(speed);
 	}
 
 	public void setSpeed() {
@@ -60,5 +65,6 @@ public class Shooter extends Subsystem {
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
+		setDefaultCommand(new ShooterTestSpeed(SmartDashboard.getNumber("Shooter Speed")));
 	}
 }

@@ -1,4 +1,4 @@
-package edu.stuy.robot.commands.auton;
+/**package edu.stuy.robot.commands.auton;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -11,5 +11,4 @@ public class PassChevalCommand extends CommandGroup {
 		addSequential(new DriveForwardCommand(MAX_DISTANCE_FORWARD_IN_INCHES, MAX_TIME_FORWARD_IN_SECONDS));
 	}
 }
-
-	
+*/

@@ -1,4 +1,4 @@
-package edu.stuy.robot.commands.auton;
+/**package edu.stuy.robot.commands.auton;
 
 import edu.stuy.robot.Robot;
 
@@ -36,4 +36,4 @@ public class GoOverRampartsCommand extends DriveForwardCommand {
 	protected void interrupted() {	
 	}
 
-}
+} */

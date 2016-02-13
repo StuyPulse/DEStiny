@@ -1,23 +1,17 @@
 
 package edu.stuy.robot;
 
-import java.util.Arrays;
-
-import edu.stuy.robot.commands.auton.GoOverMoatCommand;
+/**import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
 import edu.stuy.robot.commands.auton.GoOverRockWallCommand;
 import edu.stuy.robot.commands.auton.GoOverRoughTerrainCommand;
 import edu.stuy.robot.commands.auton.PassChevalCommand;
 import edu.stuy.robot.commands.auton.PassDrawbridgeCommand;
-import edu.stuy.robot.commands.auton.PassPortcullisCommand;
+import edu.stuy.robot.commands.auton.PassPortcullisCommand;*/
 import edu.stuy.robot.commands.auton.ReachObstacleCommand;
-import edu.stuy.robot.subsystems.Acquirer;
 import edu.stuy.robot.subsystems.Drivetrain;
-import edu.stuy.robot.subsystems.DropDown;
 import edu.stuy.robot.subsystems.Feeder;
-import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Shooter;
-import edu.stuy.robot.subsystems.Sonar;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -37,14 +31,14 @@ public class Robot extends IterativeRobot {
 
 	public static Feeder feeder;
 	public static Drivetrain drivetrain;
-	public static Acquirer acquirer;
-	public static Hood hood;
-	public static DropDown dropdown;
+	//public static Acquirer acquirer;
+	//public static Hood hood;
+	//public static DropDown dropdown;
 	public static Shooter shooter;
-	public static Sonar sonar;
+	//public static Sonar sonar;
 	public static OI oi;
 	Command autonomousCommand;
-	SendableChooser autonChooser;
+	//SendableChooser autonChooser;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -52,14 +46,14 @@ public class Robot extends IterativeRobot {
 	 */
 	public void robotInit() {
 		drivetrain = new Drivetrain();
-		acquirer = new Acquirer();
-		dropdown = new DropDown();
+		//acquirer = new Acquirer();
+		//dropdown = new DropDown();
 		feeder = new Feeder();
-		hood = new Hood();
+		//hood = new Hood();
 		shooter = new Shooter();
-		sonar = new Sonar();
+		//sonar = new Sonar();
 		oi = new OI();
-		setupAutonChooser();
+		//setupAutonChooser();
 	}
 
 	public void disabledPeriodic() {
@@ -68,12 +62,12 @@ public class Robot extends IterativeRobot {
 
 	public void autonomousInit() {
 		// schedule the autonomous command (example)
-		autonomousCommand = (Command) autonChooser.getSelected();
+		//autonomousCommand = (Command) autonChooser.getSelected();
 		if (autonomousCommand != null)
 			autonomousCommand.start();
 	}
 
-	private void setupAutonChooser() {
+	/**private void setupAutonChooser() {
 		autonChooser = new SendableChooser();
 		autonChooser.addDefault("0. Do nothing", new CommandGroup());
 		autonChooser.addObject("1. Reach edge of obstacle but refrain from going over", new ReachObstacleCommand());
@@ -86,7 +80,7 @@ public class Robot extends IterativeRobot {
 		autonChooser.addObject("8. Portcullis", new PassPortcullisCommand());
 		SmartDashboard.putData("Auton setting", autonChooser);
 
-	}
+	}*/
 
 	public void teleopInit() {
 		// This makes sure that the autonomous stops running when
@@ -111,13 +105,13 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("gyro", Robot.drivetrain.getGyroAngle());
-		SmartDashboard.putNumber("potentiometer", Robot.acquirer.getVoltage());
-		SmartDashboard.putNumber("angle", Robot.acquirer.getAngle());
+		//SmartDashboard.putNumber("potentiometer", Robot.acquirer.getVoltage());
+		//SmartDashboard.putNumber("angle", Robot.acquirer.getAngle());
 		SmartDashboard.putNumber("encoder", Robot.shooter.getEncoder());
-		double[] sonarData = sonar.getData();
-		System.out.println(Arrays.toString(sonarData));
-		SmartDashboard.putNumber("Sonar L", sonarData[0]);
-		SmartDashboard.putNumber("Sonar R", sonarData[1]);
+		//double[] sonarData = sonar.getData();
+		//System.out.println(Arrays.toString(sonarData));
+		//SmartDashboard.putNumber("Sonar L", sonarData[0]);
+		//SmartDashboard.putNumber("Sonar R", sonarData[1]);
 	}
 
 	/**

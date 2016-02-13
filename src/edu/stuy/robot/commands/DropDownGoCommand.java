@@ -1,4 +1,4 @@
-package edu.stuy.robot.commands;
+/**package edu.stuy.robot.commands;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.sin;
@@ -7,9 +7,6 @@ import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
 public class DropDownGoCommand extends Command {
 
 	private double liftamount;
@@ -76,4 +73,4 @@ public class DropDownGoCommand extends Command {
 			speedFactor = .25 * sin(y) + .75;
 		}
 	}
-}
+}*/

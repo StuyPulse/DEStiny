@@ -1,19 +1,22 @@
-/**package edu.stuy.robot.commands;
+package edu.stuy.robot.commands;
 
-import edu.stuy.robot.Robot;
+import edu.stuy.robot.*;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class AcquirerStopCommand extends Command {
+/**
+ *
+ */
+public class FeederSetMediumCommand extends Command {
 
-    public AcquirerStopCommand() {
+    public FeederSetMediumCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.acquirer);
+    	requires(Robot.feeder);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.acquirer.stop();
+    	Robot.feeder.setMedium();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -33,4 +36,4 @@ public class AcquirerStopCommand extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     }
-}*/
+}
