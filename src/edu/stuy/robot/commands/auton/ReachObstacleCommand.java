@@ -11,9 +11,10 @@ public class ReachObstacleCommand extends DriveForwardCommand {
 
 	private static final int MAX_DISTANCE_IN_INCHES = 2;
 	private static final int MAX_TIME_IN_SECONDS = 2;
+	private static final double SPEED = 0.5;
 	
 	public ReachObstacleCommand() {
-		super(MAX_DISTANCE_IN_INCHES, MAX_TIME_IN_SECONDS);
+		super(MAX_DISTANCE_IN_INCHES, MAX_TIME_IN_SECONDS, SPEED);
 	}
 	
 	@Override

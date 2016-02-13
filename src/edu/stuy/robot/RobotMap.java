@@ -59,6 +59,9 @@ public interface RobotMap {
 	int RIGHT_ENCODER_CHANNEL_OFF = 10;
 	double WHEEL_DIAMETER_DRIVETRAIN = 4;
 
+	// Auton
+	double ROCK_WALL_CURRENT_THRESHOLD = 0.0;
+
 	// CV
 	double MAX_DEGREES_OFF_AUTO_AIMING = 5;
 	int CAMERA_FRAME_PX_WIDTH = 1280;

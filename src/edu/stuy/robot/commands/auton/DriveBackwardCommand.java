@@ -9,10 +9,12 @@ public class DriveBackwardCommand extends Command {
 	public double maxDistanceInInches;
     public double maxTimeInSeconds;
 	public double startTime;
+	public double motorSpeed;
 	
-	public DriveBackwardCommand(double distance, double time) {
+	public DriveBackwardCommand(double distance, double time, double speed) {
 		maxDistanceInInches = distance;
 		maxTimeInSeconds = time;
+		motorSpeed = speed;
 	}
 	
 	@Override
@@ -39,7 +41,7 @@ public class DriveBackwardCommand extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.drivetrain.tankDrive(-1, -1);
+		Robot.drivetrain.tankDrive(motorSpeed, motorSpeed);
 	}
 
 	@Override

@@ -9,10 +9,13 @@ public class DriveForwardCommand extends Command {
 	public double maxDistanceInInches;
 	public double maxTimeInSeconds;
 	public double startTime;
+	public double motorSpeed;
 
-	public DriveForwardCommand(double distance, double time) {
+	public DriveForwardCommand(double distance, double time, double speed) {
+		requires(Robot.drivetrain);
 		maxDistanceInInches = distance;
 		maxTimeInSeconds = time;
+		motorSpeed = speed;
 	}
 
 	@Override
@@ -40,7 +43,7 @@ public class DriveForwardCommand extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.drivetrain.tankDrive(1, 1);
+		Robot.drivetrain.tankDrive(motorSpeed, motorSpeed);
 	}
 
 	@Override

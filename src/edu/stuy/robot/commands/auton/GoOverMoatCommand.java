@@ -6,11 +6,12 @@ public class GoOverMoatCommand extends DriveForwardCommand {
 
 	private static final int MAX_DISTANCE_IN_INCHES = 48;
 	private static final int MAX_TIME_IN_SECONDS = 12;
+	private static final double SPEED = 1.0;
 	
 	public GoOverMoatCommand() {
-		super(MAX_DISTANCE_IN_INCHES, MAX_TIME_IN_SECONDS);
+		super(MAX_DISTANCE_IN_INCHES, MAX_TIME_IN_SECONDS, SPEED);
 	}
-	
+
 	@Override
 	protected void initialize() {
 		super.initialize();
@@ -19,7 +20,7 @@ public class GoOverMoatCommand extends DriveForwardCommand {
 
 	@Override
 	protected void execute() {
-		Robot.drivetrain.tankDrive(1 , 1);
+		Robot.drivetrain.tankDrive(1.0, 1.0);
 	}
 
 	@Override
