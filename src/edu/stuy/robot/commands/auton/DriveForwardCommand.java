@@ -21,7 +21,7 @@ public class DriveForwardCommand extends Command {
 	@Override
 	protected void initialize() {
 		startTime = Timer.getFPGATimestamp();
-
+		Robot.drivetrain.resetEncoders();
 	}
 
 	@Override

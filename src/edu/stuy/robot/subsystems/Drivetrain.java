@@ -70,6 +70,7 @@ public class Drivetrain extends Subsystem {
 		// pid.setInputRange(0, 360);
 		// pid.setContinuous();
 		leftEncoder.setDistancePerPulse(DRIVETRAIN_ENCODER_INCHES_PER_PULSE);
+		rightEncoder.setDistancePerPulse(DRIVETRAIN_ENCODER_INCHES_PER_PULSE);
 		gyro.reset();
 		gyro.setPIDSourceType(PIDSourceType.kDisplacement);
 		gyro.calibrate();

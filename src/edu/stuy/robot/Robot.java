@@ -69,8 +69,13 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		// schedule the autonomous command (example)
 		autonomousCommand = (Command) autonChooser.getSelected();
-		if (autonomousCommand != null)
+		if (autonomousCommand != null) {
 			autonomousCommand.start();
+		}
+	}
+
+	public void autonomousPeriodic() {
+		Scheduler.getInstance().run();
 	}
 
 	private void setupAutonChooser() {
@@ -85,7 +90,6 @@ public class Robot extends IterativeRobot {
 		autonChooser.addObject("7. Cheval", new PassChevalCommand());
 		autonChooser.addObject("8. Portcullis", new PassPortcullisCommand());
 		SmartDashboard.putData("Auton setting", autonChooser);
-
 	}
 
 	public void teleopInit() {
