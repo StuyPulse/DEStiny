@@ -39,8 +39,16 @@ public class TegraDataReader {
             vector[i] = Converter.bytesToDouble(data);
         }
         if (verbose) {
-            writer.println("Double whose bytes are to be printed is: " + Arrays.toString(vector));
+            writer.println("double[3] received: " + Arrays.toString(vector));
             writer.flush();
+        }
+        if (vector[0] == Double.POSITIVE_INFINITY
+                && vector[1] == Double.POSITIVE_INFINITY
+                && vector[2] == Double.POSITIVE_INFINITY) {
+            // Three +Infinitys is the flag for no goal found
+            // There is only one double representation of
+            // positive infinity
+            return null;
         }
         return vector;
     }
