@@ -54,4 +54,10 @@ public interface RobotMap {
 	int LEFT_ENCODER_CHANNEL_OFF = 10;
 	int RIGHT_ENCODER_CHANNEL_OFF = 10;
 	double WHEEL_DIAMETER_DRIVETRAIN = 4;
+
+	// CV
+	double MAX_DEGREES_OFF_AUTO_AIMING = 5;
+	int CAMERA_FRAME_PX_WIDTH = 1280;
+	int CAMERA_FRAME_PX_HEIGHT = 720;
+	int CAMERA_VIEWING_ANGLE_X = 180; // This is most likely wrong
 }
