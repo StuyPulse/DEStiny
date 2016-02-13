@@ -124,11 +124,21 @@ public class Drivetrain extends Subsystem {
 			}
 			gearUp = sum / currents.length > GEAR_SHIFT_THRESHOLD;
 			gearShift.set(gearUp);
+			gearCounter = 0;
+		} else {
+			currents[gearCounter] = getAverageCurrent();
+			gearCounter++;
 		}
-		leftRearMotor.getOutputCurrent();
 	}
 
 	public void manualgearShift(boolean gearUp) {
 		gearShift.set(gearUp);
+	}
+
+	public double getAverageCurrent() {
+		return leftRearMotor.getOutputCurrent() +
+				rightRearMotor.getOutputCurrent() +
+				leftFrontMotor.getOutputCurrent() +
+				rightFrontMotor.getOutputCurrent();
 	}
 }
