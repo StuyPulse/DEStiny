@@ -40,6 +40,8 @@ public class Drivetrain extends Subsystem {
 	private boolean gearUp;
 	private double[] currents;
 
+	public boolean gearShiftOverriden;
+
 	private int gearCounter = 0;
 	private double[] drifts = new double[8];
 	private int counter = 0;
@@ -66,6 +68,7 @@ public class Drivetrain extends Subsystem {
 		gyro = new ADXRS450_Gyro();
 		pid = new PIDController(0.030, 0.010, 0.05, gyro, out);
 		drifts[0] = 0.0;
+		gearShiftOverriden = false;
 
 		// pid.setInputRange(0, 360);
 		// pid.setContinuous();
