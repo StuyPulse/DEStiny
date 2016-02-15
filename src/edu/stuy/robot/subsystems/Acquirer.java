@@ -2,8 +2,7 @@ package edu.stuy.robot.subsystems;
 
 import static edu.stuy.robot.RobotMap.ACQUIRER_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.ACQUIRER_POTENTIOMETER_CHANNEL;
-
-//import edu.stuy.robot.commands.AcquirerStopCommand;
+import edu.stuy.robot.commands.AcquirerStopCommand;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -34,7 +33,7 @@ public class Acquirer extends Subsystem {
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
-		//setDefaultCommand(new AcquirerStopCommand());
+		setDefaultCommand(new AcquirerStopCommand());
 	}
 
 	public void acquire() {
