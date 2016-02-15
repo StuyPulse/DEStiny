@@ -1,10 +1,9 @@
 package edu.stuy.robot.subsystems;
 
-import static edu.stuy.robot.RobotMap.ENCODER_OFF_CHANNEL;
-import static edu.stuy.robot.RobotMap.ENCODER_ON_CHANNEL;
+import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_A_CHANNEL;
+import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_B_CHANNEL;
 import static edu.stuy.robot.RobotMap.SHOOTER_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.WHEEL_DIAMETER;
-
 import edu.stuy.robot.commands.ShooterTestSpeed;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
@@ -24,7 +23,7 @@ public class Shooter extends Subsystem {
 
 	public Shooter() {
 		shooterMotor = new CANTalon(SHOOTER_MOTOR_CHANNEL);
-		enc = new Encoder(ENCODER_ON_CHANNEL, ENCODER_OFF_CHANNEL);
+		enc = new Encoder(SHOOTER_ENCODER_A_CHANNEL, SHOOTER_ENCODER_B_CHANNEL);
 	}
 
 	public void stop() {
