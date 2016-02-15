@@ -2,10 +2,10 @@ package edu.stuy.robot;
 
 import static edu.stuy.robot.RobotMap.DRIVER_GAMEPAD;
 import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
-
-import edu.stuy.robot.commands.FeederSetHighCommand;
-import edu.stuy.robot.commands.FeederSetLowCommand;
-import edu.stuy.robot.commands.FeederSetMediumCommand;
+import edu.stuy.robot.commands.FeederFeedCommand;
+import edu.stuy.robot.commands.ShooterSetHighCommand;
+import edu.stuy.robot.commands.ShooterSetLowCommand;
+import edu.stuy.robot.commands.ShooterSetMediumCommand;
 import edu.stuy.util.Gamepad;
 
 /**
@@ -47,8 +47,9 @@ public class OI {
 		driverGamepad = new Gamepad(DRIVER_GAMEPAD);
 		operatorGamepad = new Gamepad(OPERATOR_GAMEPAD);
 
-		operatorGamepad.getTopButton().whileHeld(new FeederSetHighCommand());
-		operatorGamepad.getLeftButton().whileHeld(new FeederSetLowCommand());
-		operatorGamepad.getRightButton().whileHeld(new FeederSetMediumCommand());
+		operatorGamepad.getRightButton().whileHeld(new FeederFeedCommand());
+		operatorGamepad.getDPadLeft().whileHeld(new ShooterSetLowCommand());
+		operatorGamepad.getDPadUp().whileHeld(new ShooterSetMediumCommand());
+		operatorGamepad.getDPadRight().whileHeld(new ShooterSetHighCommand());
 	}
 }

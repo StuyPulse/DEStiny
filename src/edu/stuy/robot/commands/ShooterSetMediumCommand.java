@@ -1,22 +1,21 @@
 package edu.stuy.robot.commands;
 
-import edu.stuy.robot.*;
+import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class FeederSetLowCommand extends Command {
+public class ShooterSetMediumCommand extends Command {
 
-    public FeederSetLowCommand() {
+    public ShooterSetMediumCommand() {
         // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.feeder);
+        requires(Robot.shooter);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.feeder.setLow();
+    	Robot.shooter.setSpeedMedium();
     }
 
     // Called repeatedly when this Command is scheduled to run

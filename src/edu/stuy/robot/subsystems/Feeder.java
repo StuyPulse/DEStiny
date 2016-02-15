@@ -26,15 +26,7 @@ public class Feeder extends Subsystem {
     	feederMotor.set(0.0);
     }
     
-    public void setHigh() {
+    public void feed() {
 		feederMotor.set(0.75);
 	}
-
-    public void setMedium() {
-    	feederMotor.set(0.5);
-    }
-
-    public void setLow() {
-    	feederMotor.set(0.25);
-    }
 }

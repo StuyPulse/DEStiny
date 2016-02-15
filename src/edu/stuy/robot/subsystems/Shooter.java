@@ -39,6 +39,18 @@ public class Shooter extends Subsystem {
 		shooterMotor.set(speed);
 	}
 
+	public void setSpeedHigh() {
+		shooterMotor.set(1.0);
+	}
+
+	public void setSpeedMedium() {
+		shooterMotor.set(0.5);
+	}
+
+	public void setSpeedLow() {
+		shooterMotor.set(0.25);
+	}
+
 	public void setSpeed() {
 		encoderBefore = enc.get();
 		timeBefore = Timer.getFPGATimestamp();
@@ -57,14 +69,14 @@ public class Shooter extends Subsystem {
 		// BECAUSE THERE IS CODE HERE
 	}
 
-	//For testing the encoder -- delete afterwards
-	//public void setSpeedTesting(double speed) {
-	//	shooterMotor.set(speed);
-	//}
-	
+	// For testing the encoder -- delete afterwards
+	// public void setSpeedTesting(double speed) {
+	// shooterMotor.set(speed);
+	// }
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
-		setDefaultCommand(new ShooterTestSpeed(SmartDashboard.getNumber("Shooter Speed")));
+		setDefaultCommand(new ShooterTestSpeed(
+				SmartDashboard.getNumber("Shooter Speed")));
 	}
 }
