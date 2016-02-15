@@ -3,12 +3,12 @@ package edu.stuy.robot.subsystems;
 import static edu.stuy.robot.RobotMap.DRIVETRAIN_ENCODER_INCHES_PER_PULSE;
 import static edu.stuy.robot.RobotMap.FRONT_LEFT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.FRONT_RIGHT_MOTOR_CHANNEL;
-import static edu.stuy.robot.RobotMap.LEFT_ENCODER_CHANNEL_OFF;
-import static edu.stuy.robot.RobotMap.LEFT_ENCODER_CHANNEL_ON;
+import static edu.stuy.robot.RobotMap.LEFT_ENCODER_CHANNEL_B;
+import static edu.stuy.robot.RobotMap.LEFT_ENCODER_CHANNEL_A;
 import static edu.stuy.robot.RobotMap.REAR_LEFT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.REAR_RIGHT_MOTOR_CHANNEL;
-import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_OFF;
-import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_ON;
+import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_B;
+import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_A;
 import static edu.stuy.robot.RobotMap.GEAR_SHIFT_CHANNEL;
 import static edu.stuy.robot.RobotMap.GEAR_SHIFT_THRESHOLD;
 import edu.stuy.robot.commands.DrivetrainTankDriveCommand;
@@ -57,10 +57,10 @@ public class Drivetrain extends Subsystem {
 		robotDrive = new RobotDrive(leftFrontMotor, leftRearMotor,
 				rightFrontMotor, rightRearMotor);
 
-		rightEncoder = new Encoder(RIGHT_ENCODER_CHANNEL_ON,
-				RIGHT_ENCODER_CHANNEL_OFF);
-		leftEncoder = new Encoder(LEFT_ENCODER_CHANNEL_ON,
-				LEFT_ENCODER_CHANNEL_OFF);
+		rightEncoder = new Encoder(RIGHT_ENCODER_CHANNEL_A,
+				RIGHT_ENCODER_CHANNEL_B);
+		leftEncoder = new Encoder(LEFT_ENCODER_CHANNEL_A,
+				LEFT_ENCODER_CHANNEL_B);
 
 		out = new TankDriveOutput(robotDrive);
 		gyro = new ADXRS450_Gyro();
