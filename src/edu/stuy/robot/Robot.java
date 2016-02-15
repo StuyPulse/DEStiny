@@ -10,7 +10,7 @@ import edu.stuy.robot.commands.auton.PassDrawbridgeCommand;
 import edu.stuy.robot.commands.auton.PassPortcullisCommand;*/
 import edu.stuy.robot.commands.auton.ReachObstacleCommand;
 import edu.stuy.robot.subsystems.Drivetrain;
-import edu.stuy.robot.subsystems.Feeder;
+import edu.stuy.robot.subsystems.Hopper;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	public static Feeder feeder;
+	public static Hopper hopper;
 	public static Drivetrain drivetrain;
 	//public static Acquirer acquirer;
 	//public static Hood hood;
@@ -48,7 +48,7 @@ public class Robot extends IterativeRobot {
 		drivetrain = new Drivetrain();
 		//acquirer = new Acquirer();
 		//dropdown = new DropDown();
-		feeder = new Feeder();
+		hopper = new Hopper();
 		//hood = new Hood();
 		shooter = new Shooter();
 		//sonar = new Sonar();

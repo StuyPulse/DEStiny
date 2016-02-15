@@ -6,17 +6,17 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class FeederStopCommand extends Command {
+public class HopperStopCommand extends Command {
 
-    public FeederStopCommand() {
+    public HopperStopCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.feeder);
+    	requires(Robot.hopper);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.feeder.stop();
+    	Robot.hopper.stop();
     }
 
     // Called repeatedly when this Command is scheduled to run

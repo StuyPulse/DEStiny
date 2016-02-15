@@ -1,8 +1,6 @@
 package edu.stuy.robot.subsystems;
 
-import static edu.stuy.robot.RobotMap.EXTRA_HOOD_SOLENOID_CHANNEL;
 import static edu.stuy.robot.RobotMap.HOOD_SOLENOID_CHANNEL;
-
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 /**
@@ -17,7 +15,6 @@ public class Hood extends Subsystem {
     // here. Call these from Commands.
     public Hood() {
     	hoodSolenoid = new Solenoid(HOOD_SOLENOID_CHANNEL);
-    	extraHoodSolenoid = new Solenoid(EXTRA_HOOD_SOLENOID_CHANNEL);
     	up = false;
     }
 

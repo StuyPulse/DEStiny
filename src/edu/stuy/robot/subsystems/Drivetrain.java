@@ -94,8 +94,6 @@ public class Drivetrain extends Subsystem {
 		return gyro.getAngle();
 	}
 
-	// side = the side it's on
-	// Should work. Test it.
 	public double getLeftEncoder() {
 		return leftEncoder.getDistance();
 	}
@@ -116,6 +114,6 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void stop() {
-		robotDrive.tankDrive(0, 0);
+		robotDrive.tankDrive(0.0, 0.0);
 	}
 }
