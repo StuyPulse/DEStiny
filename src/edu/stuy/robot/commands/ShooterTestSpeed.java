@@ -2,6 +2,7 @@ package edu.stuy.robot.commands;
 
 import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -10,10 +11,10 @@ public class ShooterTestSpeed extends Command {
 
 	private double _speed;
 
-    public ShooterTestSpeed(double speed) {
+    public ShooterTestSpeed() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.shooter);
-        _speed = speed;
+        _speed = SmartDashboard.getNumber("Shooter Speed");
     }
 
     // Called just before this Command runs the first time
