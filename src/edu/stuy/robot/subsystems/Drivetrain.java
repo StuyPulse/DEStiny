@@ -148,4 +148,11 @@ public class Drivetrain extends Subsystem {
 				+ leftFrontMotor.getOutputCurrent()
 				+ rightFrontMotor.getOutputCurrent();
 	}
+
+	public void setDrivetrainBrakeMode(boolean on) {
+		leftFrontMotor.enableBrakeMode(on);
+		leftRearMotor.enableBrakeMode(on);
+		rightFrontMotor.enableBrakeMode(on);
+		rightRearMotor.enableBrakeMode(on);
+	}
 }

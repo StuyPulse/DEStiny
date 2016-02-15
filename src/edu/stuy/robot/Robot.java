@@ -58,11 +58,9 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void autonomousInit() {
-		// schedule the autonomous command (example)
-		// autonomousCommand = (Command) autonChooser.getSelected();
-		if (autonomousCommand != null) {
-			autonomousCommand.start();
-		}
+		drivetrain.setDrivetrainBrakeMode(true);
+		shooter.setShooterBrakeMode(false);
+		hopper.setHopperBrakeMode(true);
 	}
 
 	public void autonomousPeriodic() {

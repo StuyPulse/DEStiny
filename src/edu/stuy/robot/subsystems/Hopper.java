@@ -34,4 +34,8 @@ public class Hopper extends Subsystem {
 	public void reverseFeed() {
 		hopperMotor.set(-1.0);
 	}
+
+	public void setHopperBrakeMode(boolean on) {
+		hopperMotor.enableBrakeMode(on);
+	}
 }

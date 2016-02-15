@@ -63,9 +63,13 @@ public class Shooter extends Subsystem {
 	}
 
 	// For testing the encoder -- delete afterwards
-	// public void setSpeedTesting(double speed) {
-	// shooterMotor.set(speed);
-	// }
+	public void setSpeedTesting(double speed) {
+		shooterMotor.set(speed);
+	}
+
+	public void setShooterBrakeMode(boolean on) {
+		shooterMotor.enableBrakeMode(on);
+	}
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
