@@ -3,9 +3,6 @@ package edu.stuy.robot.commands;
 import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
 public class AcquirerStopCommand extends Command {
 
     public AcquirerStopCommand() {

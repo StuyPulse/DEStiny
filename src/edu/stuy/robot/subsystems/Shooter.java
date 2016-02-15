@@ -1,10 +1,11 @@
 package edu.stuy.robot.subsystems;
 
-import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_B_CHANNEL;
-import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_A_CHANNEL;
-import static edu.stuy.robot.RobotMap.SHOOTER_MOTOR_CHANNEL;
-import static edu.stuy.robot.RobotMap.WHEEL_DIAMETER;
 
+import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_A_CHANNEL;
+import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_B_CHANNEL;
+import static edu.stuy.robot.RobotMap.SHOOTER_MOTOR_CHANNEL;
+import static edu.stuy.robot.RobotMap.SHOOTER_WHEEL_DIAMETER;
+import edu.stuy.robot.commands.ShooterTestSpeed;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
@@ -16,13 +17,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Shooter extends Subsystem {
 
 	private CANTalon shooterMotor;
-	private Encoder enc;
+	private Encoder shooterEncoder;
 	private double timeBefore;
 	private int encoderBefore;
 
 	public Shooter() {
 		shooterMotor = new CANTalon(SHOOTER_MOTOR_CHANNEL);
-		enc = new Encoder(SHOOTER_ENCODER_A_CHANNEL, SHOOTER_ENCODER_B_CHANNEL);
+		shooterEncoder = new Encoder(SHOOTER_ENCODER_A_CHANNEL, SHOOTER_ENCODER_B_CHANNEL);
 	}
 
 	public void stop() {
@@ -30,19 +31,29 @@ public class Shooter extends Subsystem {
 	}
 
 	public int getEncoder() {
-		return enc.get();
+		return shooterEncoder.get();
 	}
 
-	public void setSpeed() {
-		encoderBefore = enc.get();
-		timeBefore = Timer.getFPGATimestamp();
-		shooterMotor.set(convertAngularSpeedtoToMotorSpeed(calculateSpeed()));
+	public void setSpeed(double speed) {
+		shooterMotor.set(speed);
+	}
+
+	public void setSpeedHigh() {
+		shooterMotor.set(1.0);
+	}
+
+	public void setSpeedMedium() {
+		shooterMotor.set(0.5);
+	}
+
+	public void setSpeedLow() {
+		shooterMotor.set(0.25);
 	}
 
 	private double calculateSpeed() {
-		int difference = enc.get() - encoderBefore;
+		int difference = shooterEncoder.get() - encoderBefore;
 		double timeDif = Timer.getFPGATimestamp() - timeBefore;
-		return WHEEL_DIAMETER * Math.PI * difference / timeDif;
+		return SHOOTER_WHEEL_DIAMETER * Math.PI * difference / timeDif;
 	}
 
 	private double convertAngularSpeedtoToMotorSpeed(double angularSpeed) {
@@ -51,13 +62,13 @@ public class Shooter extends Subsystem {
 		// BECAUSE THERE IS CODE HERE
 	}
 
-	//For testing the encoder -- delete afterwards
-	//public void setSpeedTesting(double speed) {
-	//	shooterMotor.set(speed);
-	//}
-	
+	// For testing the encoder -- delete afterwards
+	// public void setSpeedTesting(double speed) {
+	// shooterMotor.set(speed);
+	// }
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
+		setDefaultCommand(new ShooterTestSpeed());
 	}
 }

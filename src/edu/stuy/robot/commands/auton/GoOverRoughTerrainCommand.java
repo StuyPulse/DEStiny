@@ -36,5 +36,4 @@ public class GoOverRoughTerrainCommand extends DriveForwardCommand {
 	@Override
 	protected void interrupted() {	
 	}
-
 }

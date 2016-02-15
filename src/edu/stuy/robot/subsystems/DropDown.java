@@ -1,9 +1,9 @@
 package edu.stuy.robot.subsystems;
 
 import static edu.stuy.robot.RobotMap.DROPDOWN_MOTOR_CHANNEL;
-import static edu.stuy.robot.RobotMap.DIGITAL_INPUT_CHANNEL;
-
+import static edu.stuy.robot.RobotMap.LIMIT_SWITCH_CHANNEL;
 import edu.stuy.robot.commands.DropDownGoCommand;
+//import edu.stuy.robot.commands.DropDownGoCommand;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class DropDown extends Subsystem {
+
 	private CANTalon dropDownMotor;
 	private DigitalInput limitSwitch;
 	// Put methods for controlling this subsystem
@@ -19,7 +20,7 @@ public class DropDown extends Subsystem {
 
 	public DropDown() {
 		dropDownMotor = new CANTalon(DROPDOWN_MOTOR_CHANNEL);
-		limitSwitch = new DigitalInput(DIGITAL_INPUT_CHANNEL);
+		limitSwitch = new DigitalInput(LIMIT_SWITCH_CHANNEL);
 	}
 
 	public void initDefaultCommand() {

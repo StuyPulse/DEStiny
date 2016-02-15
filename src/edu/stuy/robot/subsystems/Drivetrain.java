@@ -3,12 +3,12 @@ package edu.stuy.robot.subsystems;
 import static edu.stuy.robot.RobotMap.DRIVETRAIN_ENCODER_INCHES_PER_PULSE;
 import static edu.stuy.robot.RobotMap.FRONT_LEFT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.FRONT_RIGHT_MOTOR_CHANNEL;
-import static edu.stuy.robot.RobotMap.LEFT_ENCODER_CHANNEL_B;
 import static edu.stuy.robot.RobotMap.LEFT_ENCODER_CHANNEL_A;
+import static edu.stuy.robot.RobotMap.LEFT_ENCODER_CHANNEL_B;
 import static edu.stuy.robot.RobotMap.REAR_LEFT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.REAR_RIGHT_MOTOR_CHANNEL;
-import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_B;
 import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_A;
+import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_B;
 import static edu.stuy.robot.RobotMap.GEAR_SHIFT_CHANNEL;
 import static edu.stuy.robot.RobotMap.GEAR_SHIFT_THRESHOLD;
 import edu.stuy.robot.commands.DrivetrainTankDriveCommand;
@@ -100,8 +100,14 @@ public class Drivetrain extends Subsystem {
 		return gyro.getAngle();
 	}
 
-	// side = the side it's on
-	// Should work. Test it.
+	public double getLeftEncoder() {
+		return leftEncoder.getDistance();
+	}
+
+	public double getRightEncoder() {
+		return rightEncoder.getDistance();
+	}
+
 	public double getDistance() {
 		double left = leftEncoder.getDistance();
 		double right = rightEncoder.getDistance();
@@ -114,7 +120,7 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void stop() {
-		robotDrive.tankDrive(0, 0);
+		robotDrive.tankDrive(0.0, 0.0);
 	}
 
 	public void autoGearShift() {
@@ -137,9 +143,9 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getAverageCurrent() {
-		return leftRearMotor.getOutputCurrent() +
-				rightRearMotor.getOutputCurrent() +
-				leftFrontMotor.getOutputCurrent() +
-				rightFrontMotor.getOutputCurrent();
+		return leftRearMotor.getOutputCurrent()
+				+ rightRearMotor.getOutputCurrent()
+				+ leftFrontMotor.getOutputCurrent()
+				+ rightFrontMotor.getOutputCurrent();
 	}
 }

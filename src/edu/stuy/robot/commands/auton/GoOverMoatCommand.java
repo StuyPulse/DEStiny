@@ -36,5 +36,4 @@ public class GoOverMoatCommand extends DriveForwardCommand {
 	@Override
 	protected void interrupted() {	
 	}
-
 }

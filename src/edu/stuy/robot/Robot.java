@@ -1,7 +1,5 @@
 package edu.stuy.robot;
 
-import java.util.Arrays;
-
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
 import edu.stuy.robot.commands.auton.GoOverRockWallCommand;
@@ -13,9 +11,8 @@ import edu.stuy.robot.commands.auton.ReachObstacleCommand;
 import edu.stuy.robot.subsystems.Acquirer;
 import edu.stuy.robot.subsystems.Drivetrain;
 import edu.stuy.robot.subsystems.DropDown;
-import edu.stuy.robot.subsystems.Feeder;
+import edu.stuy.robot.subsystems.Hopper;
 import edu.stuy.robot.subsystems.Shooter;
-import edu.stuy.robot.subsystems.Sonar;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -33,12 +30,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	public static Feeder feeder;
+	public static Hopper hopper;
 	public static Drivetrain drivetrain;
 	public static Acquirer acquirer;
 	public static DropDown dropdown;
 	public static Shooter shooter;
-	public static Sonar sonar;
+	// public static Sonar sonar;
 	public static OI oi;
 	Command autonomousCommand;
 	SendableChooser autonChooser;
@@ -51,11 +48,9 @@ public class Robot extends IterativeRobot {
 		drivetrain = new Drivetrain();
 		acquirer = new Acquirer();
 		dropdown = new DropDown();
-		feeder = new Feeder();
+		hopper = new Hopper();
 		shooter = new Shooter();
-		sonar = new Sonar();
 		oi = new OI();
-		setupAutonChooser();
 	}
 
 	public void disabledPeriodic() {
@@ -64,7 +59,7 @@ public class Robot extends IterativeRobot {
 
 	public void autonomousInit() {
 		// schedule the autonomous command (example)
-		autonomousCommand = (Command) autonChooser.getSelected();
+		// autonomousCommand = (Command) autonChooser.getSelected();
 		if (autonomousCommand != null) {
 			autonomousCommand.start();
 		}
@@ -111,13 +106,18 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("gyro", Robot.drivetrain.getGyroAngle());
-		SmartDashboard.putNumber("potentiometer", Robot.acquirer.getVoltage());
-		SmartDashboard.putNumber("angle", Robot.acquirer.getAngle());
-		SmartDashboard.putNumber("encoder", Robot.shooter.getEncoder());
-		double[] sonarData = sonar.getData();
-		System.out.println(Arrays.toString(sonarData));
-		SmartDashboard.putNumber("Sonar L", sonarData[0]);
-		SmartDashboard.putNumber("Sonar R", sonarData[1]);
+		// SmartDashboard.putNumber("potentiometer",
+		// Robot.acquirer.getVoltage());
+		// SmartDashboard.putNumber("angle", Robot.acquirer.getAngle());
+		SmartDashboard.putNumber("shooter encoder", Robot.shooter.getEncoder());
+		SmartDashboard.putNumber("drivetrain left encoder",
+				Robot.drivetrain.getLeftEncoder());
+		SmartDashboard.putNumber("drivetrain right encoder",
+				Robot.drivetrain.getRightEncoder());
+		// double[] sonarData = sonar.getData();
+		// System.out.println(Arrays.toString(sonarData));
+		// SmartDashboard.putNumber("Sonar L", sonarData[0]);
+		// SmartDashboard.putNumber("Sonar R", sonarData[1]);
 	}
 
 	/**

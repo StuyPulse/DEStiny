@@ -36,5 +36,4 @@ public class GoOverRampartsCommand extends DriveForwardCommand {
 	@Override
 	protected void interrupted() {	
 	}
-
 }

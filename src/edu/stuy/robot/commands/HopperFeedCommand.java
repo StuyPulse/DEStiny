@@ -1,21 +1,22 @@
 package edu.stuy.robot.commands;
 
-import edu.stuy.robot.Robot;
+import edu.stuy.robot.*;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class FeederReverseFeedCommand extends Command {
+public class HopperFeedCommand extends Command {
 
-	public FeederReverseFeedCommand() {
+	public HopperFeedCommand() {
 		// Use requires() here to declare subsystem dependencies
-		requires(Robot.feeder);
+		// eg. requires(chassis);
+		requires(Robot.hopper);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.feeder.reverseFeed();
+		Robot.hopper.feed();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
