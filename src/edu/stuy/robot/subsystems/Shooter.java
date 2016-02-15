@@ -3,7 +3,7 @@ package edu.stuy.robot.subsystems;
 import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_A_CHANNEL;
 import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_B_CHANNEL;
 import static edu.stuy.robot.RobotMap.SHOOTER_MOTOR_CHANNEL;
-import static edu.stuy.robot.RobotMap.WHEEL_DIAMETER;
+import static edu.stuy.robot.RobotMap.SHOOTER_WHEEL_DIAMETER;
 import edu.stuy.robot.commands.ShooterTestSpeed;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
@@ -59,7 +59,7 @@ public class Shooter extends Subsystem {
 	private double calculateSpeed() {
 		int difference = enc.get() - encoderBefore;
 		double timeDif = Timer.getFPGATimestamp() - timeBefore;
-		return WHEEL_DIAMETER * Math.PI * difference / timeDif;
+		return SHOOTER_WHEEL_DIAMETER * Math.PI * difference / timeDif;
 	}
 
 	private double convertAngularSpeedtoToMotorSpeed(double angularSpeed) {

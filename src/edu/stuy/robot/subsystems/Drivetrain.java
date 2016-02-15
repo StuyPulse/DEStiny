@@ -96,6 +96,14 @@ public class Drivetrain extends Subsystem {
 
 	// side = the side it's on
 	// Should work. Test it.
+	public double getLeftEncoder() {
+		return leftEncoder.getDistance();
+	}
+
+	public double getRightEncoder() {
+		return rightEncoder.getDistance();
+	}
+
 	public double getDistance() {
 		double left = leftEncoder.getDistance();
 		double right = rightEncoder.getDistance();
