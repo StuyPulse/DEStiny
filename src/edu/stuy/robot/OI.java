@@ -2,8 +2,10 @@ package edu.stuy.robot;
 
 import static edu.stuy.robot.RobotMap.DRIVER_GAMEPAD;
 import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
-import edu.stuy.robot.commands.ChangeGearCommand;
+import edu.stuy.robot.commands.AcquirerAcquireCommand;
+import edu.stuy.robot.commands.AcquirerDeacquireCommand;
 import edu.stuy.robot.commands.FeederFeedCommand;
+import edu.stuy.robot.commands.SetupforShotCommand;
 import edu.stuy.util.Gamepad;
 
 /**
@@ -45,8 +47,12 @@ public class OI {
 		driverGamepad = new Gamepad(DRIVER_GAMEPAD);
 		operatorGamepad = new Gamepad(OPERATOR_GAMEPAD);
 
-		operatorGamepad.getRightBumper().whileHeld(new FeederFeedCommand());
-		operatorGamepad.getBottomButton().whenPressed(new ChangeGearCommand(true));
-		operatorGamepad.getTopButton().whenPressed(new ChangeGearCommand(false));
+		operatorGamepad.getBottomButton().whileHeld(new SetupforShotCommand());
+        operatorGamepad.getLeftTrigger().whenPressed(new AcquirerAcquireCommand());
+        operatorGamepad.getRightTrigger().whenPressed(new AcquirerAcquireCommand());
+        operatorGamepad.getLeftBumper().whileHeld(new AcquirerDeacquireCommand());
+        operatorGamepad.getRightBumper().whileHeld(new AcquirerDeacquireCommand());
+        operatorGamepad.getRightButton().whileHeld(new FeederFeedCommand());
+        //TODO: Add manual Shooter commands
 	}
 }
