@@ -123,7 +123,7 @@ public class Drivetrain extends Subsystem {
 	public void autoGearShift() {
 		if (gearCounter == 10) {
 			double sum = 0;
-			for (int i = 0; i == currents.length; i++) {
+			for (int i = 0; i < currents.length; i++) {
 				sum += currents[i];
 			}
 			gearUp = sum / currents.length > GEAR_SHIFT_THRESHOLD;
@@ -140,9 +140,9 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getAverageCurrent() {
-		return leftRearMotor.getOutputCurrent() +
+		return (leftRearMotor.getOutputCurrent() +
 				rightRearMotor.getOutputCurrent() +
 				leftFrontMotor.getOutputCurrent() +
-				rightFrontMotor.getOutputCurrent();
+				rightFrontMotor.getOutputCurrent()) / 4;
 	}
 }
