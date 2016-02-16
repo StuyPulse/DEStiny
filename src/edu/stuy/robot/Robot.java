@@ -54,6 +54,7 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 
 		SmartDashboard.putNumber(SHOOTER_SPEED_LABEL, 0.0);
+		setupAutonChooser();
 	}
 
 	public void disabledPeriodic() {
@@ -61,9 +62,8 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void autonomousInit() {
-		drivetrain.setDrivetrainBrakeMode(true);
-		shooter.setShooterBrakeMode(false);
-		hopper.setHopperBrakeMode(true);
+		autonomousCommand = (Command) autonChooser.getSelected();
+		autonomousCommand.start();
 	}
 
 	public void autonomousPeriodic() {
@@ -73,10 +73,13 @@ public class Robot extends IterativeRobot {
 	private void setupAutonChooser() {
 		autonChooser = new SendableChooser();
 		autonChooser.addDefault("0. Do nothing", new CommandGroup());
-		autonChooser.addObject("1. Reach edge of obstacle but refrain from going over", new ReachObstacleCommand());
+		autonChooser.addObject(
+				"1. Reach edge of obstacle but refrain from going over",
+				new ReachObstacleCommand());
 		autonChooser.addObject("2. Rock Wall", new GoOverRockWallCommand());
 		autonChooser.addObject("3. Moat", new GoOverMoatCommand());
-		autonChooser.addObject("4. Rough Terrain", new GoOverRoughTerrainCommand());
+		autonChooser.addObject("4. Rough Terrain",
+				new GoOverRoughTerrainCommand());
 		autonChooser.addObject("5. Ramparts", new GoOverRampartsCommand());
 		autonChooser.addObject("6. Drawbridge", new PassDrawbridgeCommand());
 		autonChooser.addObject("7. Cheval", new PassChevalCommand());
