@@ -40,7 +40,7 @@ public class Drivetrain extends Subsystem {
 	private boolean gearUp;
 	private double[] currents;
 
-	public boolean gearShiftOverriden;
+	public boolean gearShiftOverridden;
 
 	private int gearCounter = 0;
 	private double[] drifts = new double[8];
@@ -68,7 +68,7 @@ public class Drivetrain extends Subsystem {
 		gyro = new ADXRS450_Gyro();
 		pid = new PIDController(0.030, 0.010, 0.05, gyro, out);
 		drifts[0] = 0.0;
-		gearShiftOverriden = false;
+		gearShiftOverridden = false;
 
 		// pid.setInputRange(0, 360);
 		// pid.setContinuous();
@@ -121,17 +121,21 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void autoGearShift() {
-		if (gearCounter == 10) {
-			double sum = 0;
-			for (int i = 0; i < currents.length; i++) {
-				sum += currents[i];
+		if (!gearShiftOverridden) {
+			if (gearCounter == 10) {
+				double sum = 0;
+				for (int i = 0; i < currents.length; i++) {
+					sum += currents[i];
+				}
+				gearUp = sum / currents.length > GEAR_SHIFT_THRESHOLD;
+				gearShift.set(gearUp);
+				gearCounter = 0;
+			} else {
+				currents[gearCounter] = getAverageCurrent();
+				gearCounter++;
 			}
-			gearUp = sum / currents.length > GEAR_SHIFT_THRESHOLD;
-			gearShift.set(gearUp);
-			gearCounter = 0;
 		} else {
-			currents[gearCounter] = getAverageCurrent();
-			gearCounter++;
+			gearCounter = 0;
 		}
 	}
 
@@ -140,9 +144,9 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getAverageCurrent() {
-		return (leftRearMotor.getOutputCurrent() +
-				rightRearMotor.getOutputCurrent() +
-				leftFrontMotor.getOutputCurrent() +
-				rightFrontMotor.getOutputCurrent()) / 4;
+		return (leftRearMotor.getOutputCurrent()
+				+ rightRearMotor.getOutputCurrent()
+				+ leftFrontMotor.getOutputCurrent() + rightFrontMotor
+					.getOutputCurrent()) / 4;
 	}
 }

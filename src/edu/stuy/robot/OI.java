@@ -3,6 +3,7 @@ package edu.stuy.robot;
 import static edu.stuy.robot.RobotMap.DRIVER_GAMEPAD;
 import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
 import edu.stuy.robot.commands.ChangeGearCommand;
+import edu.stuy.robot.commands.EnableGearShifting;
 import edu.stuy.robot.commands.FeederFeedCommand;
 import edu.stuy.robot.commands.OverrideGearShifting;
 import edu.stuy.robot.commands.OverrideShooterCommand;
@@ -46,6 +47,10 @@ public class OI {
 	public OI() {
 		driverGamepad = new Gamepad(DRIVER_GAMEPAD);
 		operatorGamepad = new Gamepad(OPERATOR_GAMEPAD);
+
+		driverGamepad.getRightTrigger().whenPressed(new OverrideGearShifting());
+		driverGamepad.getLeftTrigger().whenPressed(new OverrideGearShifting());
+		driverGamepad.getStartButton(). whenPressed(new EnableGearShifting());
 
 		operatorGamepad.getRightBumper().whileHeld(new FeederFeedCommand());
 		operatorGamepad.getBottomButton().whenPressed(new ChangeGearCommand(true));
