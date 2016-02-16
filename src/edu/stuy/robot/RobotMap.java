@@ -61,6 +61,7 @@ public interface RobotMap {
 	int RIGHT_ENCODER_CHANNEL_A = 2;
 	int RIGHT_ENCODER_CHANNEL_B = 3;
 
+	String SHOOTER_SPEED_LABEL = "Shooter Speed";
 	// Auton
 	double ROCK_WALL_CURRENT_THRESHOLD = 0.0;
 

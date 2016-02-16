@@ -1,5 +1,6 @@
 package edu.stuy.robot;
 
+import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
 import edu.stuy.robot.commands.auton.GoOverRockWallCommand;
@@ -51,6 +52,8 @@ public class Robot extends IterativeRobot {
 		hopper = new Hopper();
 		shooter = new Shooter();
 		oi = new OI();
+
+		SmartDashboard.putNumber(SHOOTER_SPEED_LABEL, 0.0);
 	}
 
 	public void disabledPeriodic() {

@@ -1,5 +1,6 @@
 package edu.stuy.robot.commands;
 
+import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
 import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,7 +23,7 @@ public class ShooterTestSpeed extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		speed = SmartDashboard.getNumber("Shooter Speed");
+		speed = SmartDashboard.getNumber(SHOOTER_SPEED_LABEL);
 		Robot.shooter.setSpeed(speed);
 	}
 
