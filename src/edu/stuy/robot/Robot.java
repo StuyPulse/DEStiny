@@ -53,6 +53,10 @@ public class Robot extends IterativeRobot {
 		shooter = new Shooter();
 		oi = new OI();
 
+		drivetrain.setDrivetrainBrakeMode(true);
+		shooter.setShooterBrakeMode(false);
+		hopper.setHopperBrakeMode(true);
+
 		SmartDashboard.putNumber(SHOOTER_SPEED_LABEL, 0.0);
 		setupAutonChooser();
 	}
