@@ -33,14 +33,12 @@ public class Drivetrain extends Subsystem {
 	private CANTalon leftRearMotor;
 	private CANTalon rightRearMotor;
 	private RobotDrive robotDrive;
-	private ADXRS450_Gyro gyro;
-	private PIDController pid;
+	//private ADXRS450_Gyro gyro;
+	//private PIDController pid;
 	private TankDriveOutput out;
 	private Solenoid gearShift;
 	private boolean gearUp;
 	private double[] currents;
-
-	public boolean gearShiftOverridden;
 
 	private int gearCounter = 0;
 	private double[] drifts = new double[8];
@@ -64,19 +62,18 @@ public class Drivetrain extends Subsystem {
 		leftEncoder = new Encoder(LEFT_ENCODER_CHANNEL_ON,
 				LEFT_ENCODER_CHANNEL_OFF);
 
-		out = new TankDriveOutput(robotDrive);
-		gyro = new ADXRS450_Gyro();
-		pid = new PIDController(0.030, 0.010, 0.05, gyro, out);
+		//out = new TankDriveOutput(robotDrive);
+		//gyro = new ADXRS450_Gyro();
+		//pid = new PIDController(0.030, 0.010, 0.05, gyro, out);
 		drifts[0] = 0.0;
-		gearShiftOverridden = false;
 
 		// pid.setInputRange(0, 360);
 		// pid.setContinuous();
 		leftEncoder.setDistancePerPulse(DRIVETRAIN_ENCODER_INCHES_PER_PULSE);
 		rightEncoder.setDistancePerPulse(DRIVETRAIN_ENCODER_INCHES_PER_PULSE);
-		gyro.reset();
-		gyro.setPIDSourceType(PIDSourceType.kDisplacement);
-		gyro.calibrate();
+		//gyro.reset();
+		//gyro.setPIDSourceType(PIDSourceType.kDisplacement);
+		//gyro.calibrate();
 	}
 
 	public void initDefaultCommand() {
@@ -89,7 +86,7 @@ public class Drivetrain extends Subsystem {
 		robotDrive.tankDrive(left, right);
 	}
 
-	public double getGyroAngle() {
+	/**public double getGyroAngle() {
 		drifts[counter % 8] = currentAngle - gyro.getAngle();
 		currentAngle = gyro.getAngle();
 		if (counter > 9) {
@@ -101,7 +98,7 @@ public class Drivetrain extends Subsystem {
 		}
 		counter++;
 		return gyro.getAngle();
-	}
+	}*/
 
 	// side = the side it's on
 	// Should work. Test it.
@@ -120,8 +117,8 @@ public class Drivetrain extends Subsystem {
 		robotDrive.tankDrive(0, 0);
 	}
 
-	public void autoGearShift() {
-		if (!gearShiftOverridden) {
+	public void autoGearShift(boolean override) {
+		if (override) {
 			if (gearCounter == 10) {
 				double sum = 0;
 				for (int i = 0; i < currents.length; i++) {

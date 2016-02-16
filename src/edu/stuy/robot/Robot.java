@@ -110,14 +110,11 @@ public class Robot extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		SmartDashboard.putNumber("gyro", Robot.drivetrain.getGyroAngle());
+		//SmartDashboard.putNumber("gyro", Robot.drivetrain.getGyroAngle());
 		SmartDashboard.putNumber("potentiometer", Robot.acquirer.getVoltage());
 		SmartDashboard.putNumber("angle", Robot.acquirer.getAngle());
 		SmartDashboard.putNumber("encoder", Robot.shooter.getEncoder());
-		double[] sonarData = sonar.getData();
-		System.out.println(Arrays.toString(sonarData));
-		SmartDashboard.putNumber("Sonar L", sonarData[0]);
-		SmartDashboard.putNumber("Sonar R", sonarData[1]);
+		SmartDashboard.putBoolean("Shooter override", Robot.shooter.shooterOverridden);
 	}
 
 	/**
