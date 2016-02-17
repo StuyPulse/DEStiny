@@ -36,6 +36,7 @@ public interface RobotMap {
 	int LIMIT_SWITCH_CHANNEL = 6;
 
 	int SHOOTER_WHEEL_DIAMETER = 4;
+	double SHOOTER_ENCODER_MAXSPEED = 6600.0;
 
 	int LEFT_ENCODER_CHANNEL_A = 0;
 	int LEFT_ENCODER_CHANNEL_B = 1;
@@ -59,6 +60,7 @@ public interface RobotMap {
 	double DISTANCE_BETWEEN_SONAR = 1.0;
 
 	String SHOOTER_SPEED_LABEL = "Shooter Speed";
+
 	// Auton
 	double ROCK_WALL_CURRENT_THRESHOLD = 0.0;
 
@@ -71,4 +73,6 @@ public interface RobotMap {
 	// Potentiometer
 	double INITIAL_VOLTAGE = 287.5; // Equal to 0 degrees
 	double CONVERSION_FACTOR = 11.25;
+
+	double EPSILON = 0.0005;
 }

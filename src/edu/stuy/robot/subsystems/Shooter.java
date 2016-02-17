@@ -2,9 +2,12 @@ package edu.stuy.robot.subsystems;
 
 import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_A_CHANNEL;
 import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_B_CHANNEL;
+import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_MAXSPEED;
 import static edu.stuy.robot.RobotMap.SHOOTER_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.SHOOTER_WHEEL_DIAMETER;
-import edu.stuy.robot.commands.ShooterTestSpeed;
+import static edu.stuy.robot.RobotMap.EPSILON;
+import static java.lang.Math.PI;
+
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
@@ -17,8 +20,6 @@ public class Shooter extends Subsystem {
 
 	private CANTalon shooterMotor;
 	private Encoder shooterEncoder;
-	private double timeBefore;
-	private int encoderBefore;
 
 	public Shooter() {
 		shooterMotor = new CANTalon(SHOOTER_MOTOR_CHANNEL);
@@ -49,21 +50,38 @@ public class Shooter extends Subsystem {
 		shooterMotor.set(0.25);
 	}
 
-	private double calculateSpeed() {
-		int difference = shooterEncoder.get() - encoderBefore;
-		double timeDif = Timer.getFPGATimestamp() - timeBefore;
-		return SHOOTER_WHEEL_DIAMETER * Math.PI * difference / timeDif;
+	private double convertToLinearSpeed(double RPM) {
+		return RPM / 60 * PI * SHOOTER_WHEEL_DIAMETER;
 	}
 
-	private double convertAngularSpeedtoToMotorSpeed(double angularSpeed) {
-		return angularSpeed;
-		// Need To Do This. This is not done. DONT THINK THAT THIS IS DONE JUST
-		// BECAUSE THERE IS CODE HERE
+	private double convertToAngularSpeed(double linearSpeed) {
+		return linearSpeed / (SHOOTER_WHEEL_DIAMETER / 2);
 	}
 
-	// For testing the encoder -- delete afterwards
-	public void setSpeedTesting(double speed) {
-		shooterMotor.set(speed);
+	private double convertAngularSpeedToMotorSpeed(double angularSpeed) {
+		return angularSpeed / SHOOTER_ENCODER_MAXSPEED;
+	}
+
+	private double getCurrentMotorSpeed() {
+		return convertAngularSpeedToMotorSpeed(convertToAngularSpeed(convertToLinearSpeed(shooterMotor.getSpeed())));
+	}
+
+	// Use the encoders to verify the speed
+	public void setSpeedReliably(double speed) {
+		double currentSpeed = speed;
+		double startTime = Timer.getFPGATimestamp();
+		shooterMotor.set(currentSpeed);
+		while (Math.abs(getCurrentMotorSpeed() - speed) < EPSILON) {
+			if (getCurrentMotorSpeed() - speed > 0.0) {
+				currentSpeed -= 0.01;
+			} else {
+				currentSpeed += 0.01;
+			}
+			shooterMotor.set(currentSpeed);
+			if (Timer.getFPGATimestamp() - startTime > 2000) {
+				return;
+			}
+		}
 	}
 
 	public void setShooterBrakeMode(boolean on) {
