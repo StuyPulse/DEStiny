@@ -5,36 +5,37 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GoOverRockWallCommand extends DriveForwardCommand {
 
-	//private static final int MAX_DISTANCE_IN_INCHES = 180;
-	private static final int MAX_TIME_IN_SECONDS = 15;
-	private static final double SPEED = 1.0;
+    // private static final int MAX_DISTANCE_IN_INCHES = 180;
+    private static final int MAX_TIME_IN_SECONDS = 15;
+    private static final double SPEED = 1.0;
 
-	public GoOverRockWallCommand() {
-		super(SmartDashboard.getNumber("Rock wall"), MAX_TIME_IN_SECONDS, SPEED);
-	}
-	
-	@Override
-	protected void initialize() {
-		super.initialize();
-		Robot.acquirer.lowerAcquirerToDrivingPosition();
-	}
+    public GoOverRockWallCommand() {
+        super(SmartDashboard.getNumber("Rock wall"), MAX_TIME_IN_SECONDS, SPEED);
+    }
 
-	@Override
-	protected void execute() {
-		Robot.drivetrain.tankDrive(1.0 , 1.0);
-	}
+    @Override
+    protected void initialize() {
+        super.initialize();
+        Robot.acquirer.lowerAcquirerToDrivingPosition();
+    }
 
-	@Override
-	protected boolean isFinished() {
-		return super.isFinished();
-	}
+    @Override
+    protected void execute() {
+        super.setMaxDistanceInInches(SmartDashboard.getNumber("Rock wall"));
+        Robot.drivetrain.tankDrive(1.0, 1.0);
+    }
 
-	@Override
-	protected void end() {
-		super.end();
-	}
+    @Override
+    protected boolean isFinished() {
+        return super.isFinished();
+    }
 
-	@Override
-	protected void interrupted() {	
-	}
+    @Override
+    protected void end() {
+        super.end();
+    }
+
+    @Override
+    protected void interrupted() {
+    }
 }
