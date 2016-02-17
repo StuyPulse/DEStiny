@@ -24,7 +24,7 @@ public class DropDownGoCommand extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		liftamount = Robot.oi.operatorGamepad.getLeftY() * speedFactor;
+		liftamount = Robot.oi.operatorGamepad.getRightY() * speedFactor;
 		if (liftamount < 0) {
 			Robot.dropdown.go(liftamount * 0.5);
 		} else {

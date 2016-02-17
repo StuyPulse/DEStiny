@@ -7,7 +7,7 @@ import edu.stuy.robot.commands.AcquirerDeacquireCommand;
 import edu.stuy.robot.commands.LowGearCommand;
 import edu.stuy.robot.commands.HighGearCommand;
 import edu.stuy.robot.commands.HoodToggleCommand;
-import edu.stuy.robot.commands.HopperFeedCommand;
+import edu.stuy.robot.commands.HopperGoCommand;
 import edu.stuy.robot.commands.HopperReverseFeedCommand;
 import edu.stuy.robot.commands.SetupforShotCommand;
 import edu.stuy.robot.commands.ShooterSetHighCommand;
@@ -60,8 +60,6 @@ public class OI {
 		operatorGamepad.getRightTrigger().whileHeld(new AcquirerAcquireCommand());
 		operatorGamepad.getLeftBumper().whileHeld(new AcquirerDeacquireCommand());
 		operatorGamepad.getRightBumper().whileHeld(new AcquirerDeacquireCommand());
-		operatorGamepad.getRightButton().whileHeld(new HopperFeedCommand());
-		operatorGamepad.getLeftButton().whileHeld(new HopperReverseFeedCommand());
 		operatorGamepad.getDPadLeft().whenPressed(new ShooterSetLowCommand());
 		operatorGamepad.getDPadUp().whenPressed(new ShooterSetMediumCommand());
 		operatorGamepad.getDPadRight().whenPressed(new ShooterSetHighCommand());
