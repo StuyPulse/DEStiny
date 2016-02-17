@@ -16,11 +16,12 @@ public class Acquirer extends Subsystem {
 	private CANTalon acquirerMotor;
 	private Potentiometer potentiometer;
 	private String outString = "";
+	private final static double factor = 1.0;
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
-	public Acquirer() {
+ 	public Acquirer() {
 		acquirerMotor = new CANTalon(ACQUIRER_MOTOR_CHANNEL);
 		potentiometer = new AnalogPotentiometer(ACQUIRER_POTENTIOMETER_CHANNEL,
 				300, 0);

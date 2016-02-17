@@ -3,16 +3,20 @@ package edu.stuy.robot.subsystems;
 import static edu.stuy.robot.RobotMap.DRIVETRAIN_ENCODER_INCHES_PER_PULSE;
 import static edu.stuy.robot.RobotMap.FRONT_LEFT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.FRONT_RIGHT_MOTOR_CHANNEL;
+import static edu.stuy.robot.RobotMap.GEAR_SHIFT_CHANNEL;
+import static edu.stuy.robot.RobotMap.GEAR_SHIFT_THRESHOLD;
 import static edu.stuy.robot.RobotMap.LEFT_ENCODER_CHANNEL_A;
 import static edu.stuy.robot.RobotMap.LEFT_ENCODER_CHANNEL_B;
 import static edu.stuy.robot.RobotMap.REAR_LEFT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.REAR_RIGHT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_A;
 import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_B;
-import static edu.stuy.robot.RobotMap.GEAR_SHIFT_CHANNEL;
-import static edu.stuy.robot.RobotMap.GEAR_SHIFT_THRESHOLD;
+
 import edu.stuy.robot.commands.DrivetrainTankDriveCommand;
+import edu.stuy.util.Ramper;
+import edu.stuy.util.RamperTimeLoop;
 import edu.stuy.util.TankDriveOutput;
+import edu.stuy.util.TemporaryRampingHandler;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
@@ -45,6 +49,18 @@ public class Drivetrain extends Subsystem {
 	private int counter = 0;
 	private double currentAngle = 0.0;
 
+	private boolean useRamping = true;
+	private boolean oldRamping = false;
+
+	private TemporaryRampingHandler rampLeftOld;
+	private TemporaryRampingHandler rampRightOld;
+
+	private Ramper rampLeft;
+	private Ramper rampRight;
+	private RamperTimeLoop rampTimeLoop;
+
+	private double rampSpeed = 0.1;
+
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 	public Drivetrain() {
@@ -67,6 +83,20 @@ public class Drivetrain extends Subsystem {
 		pid = new PIDController(0.030, 0.010, 0.05, gyro, out);
 		drifts[0] = 0.0;
 
+		if (oldRamping) {
+			rampLeftOld = new TemporaryRampingHandler(0, 0, rampSpeed);
+			rampRightOld = new TemporaryRampingHandler(0, 0, rampSpeed);
+		} else {
+			rampLeft = new Ramper();
+			rampRight = new Ramper();
+			rampTimeLoop = new RamperTimeLoop();
+			rampTimeLoop.addRamper(rampLeft);
+			rampTimeLoop.addRamper(rampRight);
+			rampTimeLoop.start();
+		}
+
+		
+
 		// pid.setInputRange(0, 360);
 		// pid.setContinuous();
 		leftEncoder.setDistancePerPulse(DRIVETRAIN_ENCODER_INCHES_PER_PULSE);
@@ -83,7 +113,21 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void tankDrive(double left, double right) {
-		robotDrive.tankDrive(left, right);
+		if (useRamping) {
+			if (oldRamping) {
+				// updateRamping() COULD be moved into DrivetrainTankDriveCommand
+				updateOldRamping();	
+				rampLeftOld.setTarget(left);
+				rampRightOld.setTarget(right);
+				robotDrive.tankDrive(rampLeftOld.getValue(), rampRightOld.getValue());
+			} else {
+				rampLeft.setTarget(left);
+				rampRight.setTarget(right);
+				robotDrive.tankDrive(rampLeft.getValue(), rampRight.getValue());
+			}
+		} else {
+			robotDrive.tankDrive(left, right);
+		}
 	}
 
 	public double getGyroAngle() {
@@ -154,5 +198,14 @@ public class Drivetrain extends Subsystem {
 		leftRearMotor.enableBrakeMode(on);
 		rightFrontMotor.enableBrakeMode(on);
 		rightRearMotor.enableBrakeMode(on);
+	}
+
+	public void updateOldRamping() {
+		rampLeftOld.update();
+		rampRightOld.update();
+	}
+
+	public void setRamping(boolean bool) {
+		useRamping = bool;
 	}
 }

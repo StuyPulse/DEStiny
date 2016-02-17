@@ -24,6 +24,11 @@ public class DrivetrainTankDriveCommand extends Command {
 		double right = Robot.oi.driverGamepad.getRightY();
 		Robot.drivetrain.tankDrive(-left, -right);
 		Robot.drivetrain.autoGearShift();
+		if (Robot.oi.driverGamepad.getRightButton().get()) {
+			Robot.drivetrain.setRamping(true);
+		} else if (Robot.oi.driverGamepad.getLeftButton().get()){
+			Robot.drivetrain.setRamping(false);
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
