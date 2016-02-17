@@ -34,7 +34,7 @@ public interface RobotMap {
 
 	int GEAR_SHIFT_THRESHOLD = 0;
 
-	int LIMIT_SWITCH_CHANNEL = 0;
+	int LIMIT_SWITCH_CHANNEL = 6;
 
 	int SHOOTER_WHEEL_DIAMETER = 4;
 
@@ -71,4 +71,8 @@ public interface RobotMap {
 	int CAMERA_FRAME_PX_WIDTH = 1280;
 	int CAMERA_FRAME_PX_HEIGHT = 720;
 	int CAMERA_VIEWING_ANGLE_X = 180; // This is most likely wrong
+
+	// Potentiometer
+	double INITIAL_VOLTAGE = 287.5; // Equal to 0 degrees
+	double CONVERSION_FACTOR = 11.25;
 }

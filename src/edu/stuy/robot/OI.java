@@ -4,11 +4,16 @@ import static edu.stuy.robot.RobotMap.DRIVER_GAMEPAD;
 import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
 import edu.stuy.robot.commands.AcquirerAcquireCommand;
 import edu.stuy.robot.commands.AcquirerDeacquireCommand;
+import edu.stuy.robot.commands.LowGearCommand;
+import edu.stuy.robot.commands.HighGearCommand;
+import edu.stuy.robot.commands.HoodToggleCommand;
 import edu.stuy.robot.commands.HopperFeedCommand;
+import edu.stuy.robot.commands.HopperReverseFeedCommand;
 import edu.stuy.robot.commands.SetupforShotCommand;
 import edu.stuy.robot.commands.ShooterSetHighCommand;
 import edu.stuy.robot.commands.ShooterSetLowCommand;
 import edu.stuy.robot.commands.ShooterSetMediumCommand;
+import edu.stuy.robot.commands.ShooterStopCommand;
 import edu.stuy.util.Gamepad;
 
 /**
@@ -51,13 +56,19 @@ public class OI {
 		operatorGamepad = new Gamepad(OPERATOR_GAMEPAD);
 
 		operatorGamepad.getBottomButton().whileHeld(new SetupforShotCommand());
-        operatorGamepad.getLeftTrigger().whenPressed(new AcquirerAcquireCommand());
-        operatorGamepad.getRightTrigger().whenPressed(new AcquirerAcquireCommand());
-        operatorGamepad.getLeftBumper().whileHeld(new AcquirerDeacquireCommand());
-        operatorGamepad.getRightBumper().whileHeld(new AcquirerDeacquireCommand());
+		operatorGamepad.getLeftTrigger().whileHeld(new AcquirerAcquireCommand());
+		operatorGamepad.getRightTrigger().whileHeld(new AcquirerAcquireCommand());
+		operatorGamepad.getLeftBumper().whileHeld(new AcquirerDeacquireCommand());
+		operatorGamepad.getRightBumper().whileHeld(new AcquirerDeacquireCommand());
 		operatorGamepad.getRightButton().whileHeld(new HopperFeedCommand());
-		operatorGamepad.getDPadLeft().whileHeld(new ShooterSetLowCommand());
-		operatorGamepad.getDPadUp().whileHeld(new ShooterSetMediumCommand());
-		operatorGamepad.getDPadRight().whileHeld(new ShooterSetHighCommand());
+		operatorGamepad.getLeftButton().whileHeld(new HopperReverseFeedCommand());
+		operatorGamepad.getDPadLeft().whenPressed(new ShooterSetLowCommand());
+		operatorGamepad.getDPadUp().whenPressed(new ShooterSetMediumCommand());
+		operatorGamepad.getDPadRight().whenPressed(new ShooterSetHighCommand());
+		operatorGamepad.getDPadDown().whenPressed(new ShooterStopCommand());
+		operatorGamepad.getTopButton().whenPressed(new HoodToggleCommand());
+
+		driverGamepad.getRightTrigger().whenPressed(new LowGearCommand());
+		driverGamepad.getLeftTrigger().whenPressed(new HighGearCommand());
 	}
 }
