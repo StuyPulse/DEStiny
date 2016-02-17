@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 public class Acquirer extends Subsystem {
 
 	private CANTalon acquirerMotor;
-	private Potentiometer potentiometer;
 	private String outString = "";
 	private final static double factor = 1.0;
 
@@ -23,14 +22,9 @@ public class Acquirer extends Subsystem {
 
  	public Acquirer() {
 		acquirerMotor = new CANTalon(ACQUIRER_MOTOR_CHANNEL);
-		potentiometer = new AnalogPotentiometer(ACQUIRER_POTENTIOMETER_CHANNEL,
-				300, 0);
 	}
 
 	// Used for auton
-	public void move(double speed) {
-		acquirerMotor.set(speed);
-	}
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
@@ -47,15 +41,6 @@ public class Acquirer extends Subsystem {
 
 	public void deacquire() {
 		acquirerMotor.set(-1.0);
-	}
-
-	public double getVoltage() {
-		return potentiometer.get();
-	}
-
-	public double getAngle() {
-		double x = getVoltage();
-		return (x - 18) * 15;
 	}
 
 	public void lowerAcquirerToDrivingPosition() {

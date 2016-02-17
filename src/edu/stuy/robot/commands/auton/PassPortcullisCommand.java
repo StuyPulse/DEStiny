@@ -10,9 +10,9 @@ public class PassPortcullisCommand extends CommandGroup {
 	
 	
 	public PassPortcullisCommand() {
-		addSequential(new AcquirerMoveToAngleCommand(90));
+		addSequential(new DropDownMoveToAngleCommand(90));
 		addSequential(new DriveForwardCommand(MAX_DISTANCE_FORWARD_IN_INCHES, MAX_TIME_FORWARD_IN_SECONDS, SPEED));
-		addParallel(new AcquirerMoveToAngleCommand(45));
+		addParallel(new DropDownMoveToAngleCommand(45));
 		addSequential(new DriveForwardCommand(MAX_DISTANCE_FORWARD_IN_INCHES, MAX_TIME_FORWARD_IN_SECONDS, SPEED));
 	}
 }

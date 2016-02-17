@@ -11,9 +11,9 @@ public class PassDrawbridgeCommand extends CommandGroup {
 	
 	public PassDrawbridgeCommand() {
 		
-		addSequential(new AcquirerMoveToAngleCommand(90));
+		addSequential(new DropDownMoveToAngleCommand(90));
 		addSequential(new DriveBackwardCommand(MAX_DISTANCE_BACKWARD_IN_INCHES, MAX_TIME_BACKWARD_IN_SECONDS, SPEED));
-		addSequential(new AcquirerMoveToAngleCommand(90));
+		addSequential(new DropDownMoveToAngleCommand(90));
 		addSequential(new DriveForwardCommand(MAX_DISTANCE_FORWARD_IN_INCHES, MAX_TIME_FORWARD_IN_SECONDS, SPEED));
 	}
 }

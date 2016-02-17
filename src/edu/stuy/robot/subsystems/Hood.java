@@ -3,39 +3,37 @@ package edu.stuy.robot.subsystems;
 import static edu.stuy.robot.RobotMap.HOOD_SOLENOID_CHANNEL;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+
 /**
  *
  */
 public class Hood extends Subsystem {
 
-    private Solenoid hoodSolenoid;
-    private Solenoid extraHoodSolenoid;
-    private boolean up;
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-    public Hood() {
-    	hoodSolenoid = new Solenoid(HOOD_SOLENOID_CHANNEL);
-    	up = false;
-    }
+	private Solenoid hoodSolenoid;
+	private boolean up;
 
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
-    }
+	// Put methods for controlling this subsystem
+	// here. Call these from Commands.
+	public Hood() {
+		hoodSolenoid = new Solenoid(0, HOOD_SOLENOID_CHANNEL);
+		up = false;
+	}
 
-    public void toggle() {
-    	if (up) {
-    		changePosition(false);
-    	}
-    	else {
-    		changePosition(true);
-    	}
-    }
-    
-    public void changePosition(boolean x) {
-    	hoodSolenoid.set(x);
-    	extraHoodSolenoid.set(x);
-    	up = x;
-    }
+	public void initDefaultCommand() {
+		// Set the default command for a subsystem here.
+		// setDefaultCommand(new MySpecialCommand());
+	}
+
+	public void toggle() {
+		changePosition(up);
+		up = !up;
+	}
+
+	public void changePosition(boolean x) {
+		hoodSolenoid.set(x);
+	}
+
+	public boolean getState() {
+		return up;
+	}
 }
-
