@@ -1,28 +1,39 @@
 package edu.stuy.robot.commands.auton;
 
-import static edu.stuy.robot.RobotMap.ROCK_WALL_CURRENT_THRESHOLD;
-
 import edu.stuy.robot.Robot;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 
-/**
- *
- */
-public class GoOverRockWallCommand extends CommandGroup {
+public class GoOverRockWallCommand extends DriveForwardCommand {
 
-	// Tune after testing
-	private static final int INITIAL_DISTANCE_IN_INCHES = 48;
-	private static final int INITIAL_TIME_IN_SECONDS = 10;
-	private static final double INITIAL_SPEED = 0.5;
-	private static final int FINAL_DISTANCE_IN_INCHES = 48;
-	private static final int FINAL_TIME_IN_SECONDS = 10;
-	private static final double FINAL_SPEED = 1.0;
+	private static final int MAX_DISTANCE_IN_INCHES = 180;
+	private static final int MAX_TIME_IN_SECONDS = 15;
+	private static final double SPEED = 1.0;
 
 	public GoOverRockWallCommand() {
-		while (Robot.drivetrain.getAverageCurrent() < ROCK_WALL_CURRENT_THRESHOLD) {
-			Robot.drivetrain.tankDrive(0.5, 0.5);
-		}
-		addSequential(new DriveBackwardCommand(INITIAL_DISTANCE_IN_INCHES, INITIAL_TIME_IN_SECONDS, INITIAL_SPEED));
-		addSequential(new DriveForwardCommand(FINAL_DISTANCE_IN_INCHES, FINAL_TIME_IN_SECONDS, FINAL_SPEED));
+		super(MAX_DISTANCE_IN_INCHES, MAX_TIME_IN_SECONDS, SPEED);
+	}
+	
+	@Override
+	protected void initialize() {
+		super.initialize();
+		Robot.acquirer.lowerAcquirerToDrivingPosition();
+	}
+
+	@Override
+	protected void execute() {
+		Robot.drivetrain.tankDrive(1.0 , 1.0);
+	}
+
+	@Override
+	protected boolean isFinished() {
+		return super.isFinished();
+	}
+
+	@Override
+	protected void end() {
+		super.end();
+	}
+
+	@Override
+	protected void interrupted() {	
 	}
 }
