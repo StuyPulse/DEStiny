@@ -54,6 +54,10 @@ public class Drivetrain extends Subsystem {
 		rightFrontMotor = new CANTalon(FRONT_RIGHT_MOTOR_CHANNEL);
 		leftRearMotor = new CANTalon(REAR_LEFT_MOTOR_CHANNEL);
 		rightRearMotor = new CANTalon(REAR_RIGHT_MOTOR_CHANNEL);
+		leftFrontMotor.setInverted(true);
+		rightFrontMotor.setInverted(true);
+		leftRearMotor.setInverted(true);
+		rightRearMotor.setInverted(true);
 		robotDrive = new RobotDrive(leftFrontMotor, leftRearMotor,
 				rightFrontMotor, rightRearMotor);
 
@@ -101,16 +105,16 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getLeftEncoder() {
-		return leftEncoder.getDistance();
+		return Math.abs(leftEncoder.getDistance());
 	}
 
 	public double getRightEncoder() {
-		return rightEncoder.getDistance();
+		return Math.abs(rightEncoder.getDistance());
 	}
 
 	public double getDistance() {
-		double left = leftEncoder.getDistance();
-		double right = rightEncoder.getDistance();
+		double left = getLeftEncoder();
+		double right = getRightEncoder();
 		return Math.max(left, right);
 	}
 
@@ -126,7 +130,7 @@ public class Drivetrain extends Subsystem {
 	public void autoGearShift() {
 		if (gearCounter == 10) {
 			double sum = 0;
-			for (int i = 0; i == currents.length; i++) {
+			for (int i = 0; i < currents.length; i++) {
 				sum += currents[i];
 			}
 			gearUp = sum / currents.length > GEAR_SHIFT_THRESHOLD;
@@ -143,10 +147,10 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getAverageCurrent() {
-		return leftRearMotor.getOutputCurrent()
+		return (leftRearMotor.getOutputCurrent()
 				+ rightRearMotor.getOutputCurrent()
 				+ leftFrontMotor.getOutputCurrent()
-				+ rightFrontMotor.getOutputCurrent();
+				+ rightFrontMotor.getOutputCurrent()) / 4;
 	}
 
 	public void setDrivetrainBrakeMode(boolean on) {
