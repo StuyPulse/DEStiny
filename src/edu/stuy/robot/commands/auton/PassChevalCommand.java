@@ -12,6 +12,6 @@ public class PassChevalCommand extends CommandGroup {
 		// Tune later
 		addSequential(new DriveForwardCommand(12, 3, 0.5));
 		addSequential(new DropDownMoveToAngleCommand(90));
-		addSequential(new DriveForwardCommand(SmartDashboard.getNumber("Cheval"), MAX_TIME_FORWARD_IN_SECONDS, SPEED));
+		addSequential(new ChevalDriveForwardCommand(12.0, MAX_TIME_FORWARD_IN_SECONDS, SPEED));
 	}
 }

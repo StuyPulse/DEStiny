@@ -22,7 +22,7 @@ public class GoOverMoatCommand extends DriveForwardCommand {
     @Override
     protected void execute() {
         super.setMaxDistanceInInches(SmartDashboard.getNumber("Moat"));
-        Robot.drivetrain.tankDrive(1.0, 1.0);
+        super.execute();
     }
 
     @Override

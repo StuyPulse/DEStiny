@@ -22,7 +22,7 @@ public class GoOverRampartsCommand extends DriveForwardCommand {
     @Override
     protected void execute() {
         super.setMaxDistanceInInches(SmartDashboard.getNumber("Ramparts"));
-        Robot.drivetrain.tankDrive(1.0, 1.0);
+        super.execute();
     }
 
     @Override

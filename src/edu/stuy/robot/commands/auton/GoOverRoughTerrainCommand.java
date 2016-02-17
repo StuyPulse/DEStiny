@@ -22,7 +22,7 @@ public class GoOverRoughTerrainCommand extends DriveForwardCommand {
     @Override
     protected void execute() {
         super.setMaxDistanceInInches(SmartDashboard.getNumber("Rough"));
-        Robot.drivetrain.tankDrive(1.0, 1.0);
+        super.execute();
     }
 
     @Override
