@@ -15,8 +15,9 @@ public class ShooterSetHighCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shooter.setSpeedHigh();
-    }
+    	if (Robot.oi.driverGamepad.getStartButton().get())
+    		Robot.shooter.setSpeedHigh();
+    	}
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {

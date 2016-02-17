@@ -12,6 +12,7 @@ public class SetupforShotCommand extends Command {
 	private TegraDataReader reader;
 	private double[] currentReading;
 	private boolean goalInFrame;
+	private boolean stopAiming = false;
 
 	private static double pxOffsetToDegrees(double px) {
 		return CAMERA_VIEWING_ANGLE_X * px / CAMERA_FRAME_PX_WIDTH;
@@ -33,15 +34,20 @@ public class SetupforShotCommand extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		currentReading = reader.readVector();
-		if (currentReading == null) {
-		    goalInFrame = false;
-		    return;
+		if (!stopAiming) {
+			if (currentReading == null) {
+			    goalInFrame = false;
+			    return;
+			}
+			currentReading = reader.readVector();
+			double degsOff = pxOffsetToDegrees(currentReading[0]);
+			// TODO: Do real math, write non-wack calculation of rightWheelSpeed
+			double rightWheelSpeed = -degsOff / (CAMERA_FRAME_PX_WIDTH / 2);
+			Robot.drivetrain.tankDrive(-rightWheelSpeed, rightWheelSpeed);
 		}
-		double degsOff = pxOffsetToDegrees(currentReading[0]);
-		// TODO: Do real math, write non-wack calculation of rightWheelSpeed
-		double rightWheelSpeed = -degsOff / (CAMERA_FRAME_PX_WIDTH / 2);
-		Robot.drivetrain.tankDrive(-rightWheelSpeed, rightWheelSpeed);
+		if (Robot.oi.operatorGamepad.getStartButton().get()) {
+			stopAiming = true;
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

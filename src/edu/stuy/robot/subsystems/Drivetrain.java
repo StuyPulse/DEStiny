@@ -58,13 +58,10 @@ public class Drivetrain extends Subsystem {
 		rightFrontMotor.setInverted(true);
 		leftRearMotor.setInverted(true);
 		rightRearMotor.setInverted(true);
-		robotDrive = new RobotDrive(leftFrontMotor, leftRearMotor,
-				rightFrontMotor, rightRearMotor);
+		robotDrive = new RobotDrive(leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor);
 
-		rightEncoder = new Encoder(RIGHT_ENCODER_CHANNEL_A,
-				RIGHT_ENCODER_CHANNEL_B);
-		leftEncoder = new Encoder(LEFT_ENCODER_CHANNEL_A,
-				LEFT_ENCODER_CHANNEL_B);
+		rightEncoder = new Encoder(RIGHT_ENCODER_CHANNEL_A, RIGHT_ENCODER_CHANNEL_B);
+		leftEncoder = new Encoder(LEFT_ENCODER_CHANNEL_A, LEFT_ENCODER_CHANNEL_B);
 
 		out = new TankDriveOutput(robotDrive);
 		gyro = new ADXRS450_Gyro();
@@ -127,7 +124,12 @@ public class Drivetrain extends Subsystem {
 		robotDrive.tankDrive(0.0, 0.0);
 	}
 
-	public void autoGearShift() {
+	public void autoGearShift(boolean override) {
+		if (override) {
+			gearCounter = 0;
+			return;
+		}
+
 		if (gearCounter == 10) {
 			double sum = 0;
 			for (int i = 0; i < currents.length; i++) {
@@ -147,9 +149,7 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getAverageCurrent() {
-		return (leftRearMotor.getOutputCurrent()
-				+ rightRearMotor.getOutputCurrent()
-				+ leftFrontMotor.getOutputCurrent()
+		return (leftRearMotor.getOutputCurrent() + rightRearMotor.getOutputCurrent() + leftFrontMotor.getOutputCurrent()
 				+ rightFrontMotor.getOutputCurrent()) / 4;
 	}
 

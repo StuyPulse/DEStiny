@@ -1,6 +1,5 @@
 package edu.stuy.robot.subsystems;
 
-
 import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_A_CHANNEL;
 import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_B_CHANNEL;
 import static edu.stuy.robot.RobotMap.SHOOTER_MOTOR_CHANNEL;
