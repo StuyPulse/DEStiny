@@ -8,7 +8,7 @@ public class PassChevalCommand extends CommandGroup {
 	private static final double SPEED = 1.0; 
 	
 	public PassChevalCommand() {
-		addSequential(new AcquirerMoveToAngleCommand(90));
+		addSequential(new DropDownMoveToAngleCommand(90));
 		addSequential(new DriveForwardCommand(MAX_DISTANCE_FORWARD_IN_INCHES, MAX_TIME_FORWARD_IN_SECONDS, SPEED));
 	}
 }
