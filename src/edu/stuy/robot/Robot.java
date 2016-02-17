@@ -127,18 +127,33 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("gyro", Robot.drivetrain.getGyroAngle());
 		SmartDashboard.putNumber("potentiometer", Robot.dropdown.getAngle());
-		SmartDashboard.putNumber("Voltage", Robot.dropdown.getVoltage());
-		// Robot.acquirer.getVoltage());
-		// SmartDashboard.putNumber("angle", Robot.acquirer.getAngle());
+		SmartDashboard.putNumber("Potentiometer voltage", Robot.dropdown.getVoltage());
 		SmartDashboard.putNumber("shooter encoder", Robot.shooter.getEncoder());
 		SmartDashboard.putNumber("drivetrain left encoder",
 				Robot.drivetrain.getLeftEncoder());
 		SmartDashboard.putNumber("drivetrain right encoder",
 				Robot.drivetrain.getRightEncoder());
+		// Sonar:
 		// double[] sonarData = sonar.getData();
 		// System.out.println(Arrays.toString(sonarData));
 		// SmartDashboard.putNumber("Sonar L", sonarData[0]);
 		// SmartDashboard.putNumber("Sonar R", sonarData[1]);
+
+		// Solenoids:
+		SmartDashboard.putBoolean("Hood piston", Robot.hood.getState());
+		SmartDashboard.putBoolean("Gear shift solenoid", Robot.drivetrain.getGearShiftState());
+
+		// Auton Distances:
+		SmartDashboard.putNumber("Rock wall", 0);
+		SmartDashboard.putNumber("Moat", 0);
+		SmartDashboard.putNumber("Rough", 0);
+		SmartDashboard.putNumber("Ramparts", 0);
+		SmartDashboard.putNumber("Draw", 0); // complex
+		SmartDashboard.putNumber("Cheval", 0);
+		SmartDashboard.putNumber("Portcullis", 0); // complex
+
+		// Thresholds:
+		SmartDashboard.putNumber("Gear Shifting Threshold", 40);
 	}
 
 	/**

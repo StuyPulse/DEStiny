@@ -32,4 +32,8 @@ public class Hood extends Subsystem {
 	public void changePosition(boolean x) {
 		hoodSolenoid.set(x);
 	}
+
+	public boolean getState() {
+		return up;
+	}
 }

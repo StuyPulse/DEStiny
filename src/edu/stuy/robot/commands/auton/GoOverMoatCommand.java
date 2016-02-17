@@ -1,15 +1,16 @@
 package edu.stuy.robot.commands.auton;
 
 import edu.stuy.robot.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GoOverMoatCommand extends DriveForwardCommand {
 
-	private static final int MAX_DISTANCE_IN_INCHES = 48;
+	//private static final int MAX_DISTANCE_IN_INCHES = 48;
 	private static final int MAX_TIME_IN_SECONDS = 12;
 	private static final double SPEED = 1.0;
 	
 	public GoOverMoatCommand() {
-		super(MAX_DISTANCE_IN_INCHES, MAX_TIME_IN_SECONDS, SPEED);
+		super(SmartDashboard.getNumber("Moat"), MAX_TIME_IN_SECONDS, SPEED);
 	}
 
 	@Override

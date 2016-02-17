@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -135,7 +136,7 @@ public class Drivetrain extends Subsystem {
 			for (int i = 0; i < currents.length; i++) {
 				sum += currents[i];
 			}
-			gearUp = sum / currents.length > GEAR_SHIFT_THRESHOLD;
+			gearUp = sum / currents.length > SmartDashboard.getNumber("Gear Shifting Threshold");
 			gearShift.set(gearUp);
 			gearCounter = 0;
 		} else {
@@ -144,8 +145,9 @@ public class Drivetrain extends Subsystem {
 		}
 	}
 
-	public void manualgearShift(boolean gearUp) {
-		gearShift.set(gearUp);
+	public void manualgearShift(boolean on) {
+		gearShift.set(on);
+		gearUp = on;
 	}
 
 	public double getAverageCurrent() {
@@ -158,5 +160,9 @@ public class Drivetrain extends Subsystem {
 		leftRearMotor.enableBrakeMode(on);
 		rightFrontMotor.enableBrakeMode(on);
 		rightRearMotor.enableBrakeMode(on);
+	}
+
+	public boolean getGearShiftState() {
+		return gearUp;
 	}
 }

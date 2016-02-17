@@ -1,15 +1,16 @@
 package edu.stuy.robot.commands.auton;
 
 import edu.stuy.robot.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GoOverRockWallCommand extends DriveForwardCommand {
 
-	private static final int MAX_DISTANCE_IN_INCHES = 180;
+	//private static final int MAX_DISTANCE_IN_INCHES = 180;
 	private static final int MAX_TIME_IN_SECONDS = 15;
 	private static final double SPEED = 1.0;
 
 	public GoOverRockWallCommand() {
-		super(MAX_DISTANCE_IN_INCHES, MAX_TIME_IN_SECONDS, SPEED);
+		super(SmartDashboard.getNumber("Rock wall"), MAX_TIME_IN_SECONDS, SPEED);
 	}
 	
 	@Override
