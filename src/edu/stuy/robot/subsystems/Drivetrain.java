@@ -4,7 +4,6 @@ import static edu.stuy.robot.RobotMap.DRIVETRAIN_ENCODER_INCHES_PER_PULSE;
 import static edu.stuy.robot.RobotMap.FRONT_LEFT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.FRONT_RIGHT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.GEAR_SHIFT_CHANNEL;
-import static edu.stuy.robot.RobotMap.GEAR_SHIFT_THRESHOLD;
 import static edu.stuy.robot.RobotMap.LEFT_ENCODER_CHANNEL_A;
 import static edu.stuy.robot.RobotMap.LEFT_ENCODER_CHANNEL_B;
 import static edu.stuy.robot.RobotMap.REAR_LEFT_MOTOR_CHANNEL;
@@ -13,6 +12,7 @@ import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_A;
 import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_B;
 
 import edu.stuy.robot.commands.DrivetrainTankDriveCommand;
+import edu.stuy.util.EfficientRamper;
 import edu.stuy.util.Ramper;
 import edu.stuy.util.RamperTimeLoop;
 import edu.stuy.util.TankDriveOutput;
@@ -51,16 +51,23 @@ public class Drivetrain extends Subsystem {
 	private double currentAngle = 0.0;
 
 	private boolean useRamping = true;
-	private boolean oldRamping = false;
+	private final short RAMP_TYPE = 0;
+	/*
+	 * RAMP_TYPE:
+	 * 0: Ramper:                   (Complicated Graph Ramping)
+	 * 1: EfficientRamping:         (Way simpler ramping)
+	 * 2: TemporaryRampingHandler:  (Semi-simple, probably doesn't work)
+	 */
 
 	private TemporaryRampingHandler rampLeftOld;
 	private TemporaryRampingHandler rampRightOld;
+	private double rampSpeed = 0.1;
 
 	private Ramper rampLeft;
 	private Ramper rampRight;
+	private EfficientRamper rampLeftEfficient;
+	private EfficientRamper rampRightEfficient;
 	private RamperTimeLoop rampTimeLoop;
-
-	private double rampSpeed = 0.1;
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
@@ -85,15 +92,22 @@ public class Drivetrain extends Subsystem {
 		pid = new PIDController(0.030, 0.010, 0.05, gyro, out);
 		drifts[0] = 0.0;
 
-		if (oldRamping) {
+		if (RAMP_TYPE == 2) {
 			rampLeftOld = new TemporaryRampingHandler(0, 0, rampSpeed);
 			rampRightOld = new TemporaryRampingHandler(0, 0, rampSpeed);
-		} else {
+		} else if (RAMP_TYPE == 0) {
 			rampLeft = new Ramper();
 			rampRight = new Ramper();
 			rampTimeLoop = new RamperTimeLoop();
 			rampTimeLoop.addRamper(rampLeft);
 			rampTimeLoop.addRamper(rampRight);
+			rampTimeLoop.start();
+		} else if (RAMP_TYPE == 1) {
+			rampLeftEfficient = new EfficientRamper();
+			rampRightEfficient = new EfficientRamper();
+			rampTimeLoop = new RamperTimeLoop();
+			rampTimeLoop.addRamper(rampLeftEfficient);
+			rampTimeLoop.addRamper(rampRightEfficient);
 			rampTimeLoop.start();
 		}
 
@@ -116,16 +130,20 @@ public class Drivetrain extends Subsystem {
 
 	public void tankDrive(double left, double right) {
 		if (useRamping) {
-			if (oldRamping) {
+			if (RAMP_TYPE == 2) {
 				// updateRamping() COULD be moved into DrivetrainTankDriveCommand
 				updateOldRamping();	
 				rampLeftOld.setTarget(left);
 				rampRightOld.setTarget(right);
 				robotDrive.tankDrive(rampLeftOld.getValue(), rampRightOld.getValue());
-			} else {
+			} else if (RAMP_TYPE == 0) {
 				rampLeft.setTarget(left);
 				rampRight.setTarget(right);
 				robotDrive.tankDrive(rampLeft.getValue(), rampRight.getValue());
+			} else if (RAMP_TYPE == 1) {
+				rampLeftEfficient.setTarget(left);
+				rampRightEfficient.setTarget(right);
+				robotDrive.tankDrive(rampLeftEfficient.getValue(), rampRightEfficient.getValue());
 			}
 		} else {
 			robotDrive.tankDrive(left, right);

@@ -17,7 +17,6 @@ public class Ramper {
 	/// SHOULD BE EVEN OR THERE MIGHT BE PROBLEMS (test that actually!)
 	private int circleTimer;// If > 0, don't make another circle.
 	
-	int testCounter = 0;//DELETE ME
 	public Ramper() {
 		graph = new double[graphDivisions];
 		currentSlope = 0;// Optional
@@ -78,7 +77,6 @@ public class Ramper {
 		if (circleTimer < 0) {
 			circleTimer = 0;
 		}
-		testCounter++;
 		currentSlope = getCurrentSlope();
 		for(int i = 1; i < graph.length; i++) {
 			graph[i - 1] = graph[i];
