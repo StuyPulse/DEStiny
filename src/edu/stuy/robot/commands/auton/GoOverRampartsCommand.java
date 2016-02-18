@@ -1,41 +1,30 @@
 package edu.stuy.robot.commands.auton;
 
-import edu.stuy.robot.Robot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class GoOverRampartsCommand extends DriveForwardCommand {
+/**
+ *
+ */
+public class GoOverRampartsCommand extends CommandGroup {
 
-    // private static final int MAX_DISTANCE_IN_INCHES = 48;
-    private static final int MAX_TIME_IN_SECONDS = 10;
-    private static final double SPEED = 1.0;
+	public GoOverRampartsCommand() {
+		// Add Commands here:
+		// e.g. addSequential(new Command1());
+		// addSequential(new Command2());
+		// these will run in order.
 
-    public GoOverRampartsCommand() {
-        super(SmartDashboard.getNumber("Ramparts"), MAX_TIME_IN_SECONDS, SPEED);
-    }
+		// To run multiple commands at the same time,
+		// use addParallel()
+		// e.g. addParallel(new Command1());
+		// addSequential(new Command2());
+		// Command1 and Command2 will run in parallel.
 
-    @Override
-    protected void initialize() {
-        super.initialize();
-        Robot.acquirer.lowerAcquirerToDrivingPosition();
-    }
-
-    @Override
-    protected void execute() {
-        super.setMaxDistanceInInches(SmartDashboard.getNumber("Ramparts"));
-        Robot.drivetrain.tankDrive(1.0, 1.0);
-    }
-
-    @Override
-    protected boolean isFinished() {
-        return super.isFinished();
-    }
-
-    @Override
-    protected void end() {
-        super.end();
-    }
-
-    @Override
-    protected void interrupted() {
-    }
+		// A command group will require all of the subsystems that each member
+		// would require.
+		// e.g. if Command1 requires chassis, and Command2 requires arm,
+		// a CommandGroup containing them would require both the chassis and the
+		// arm.
+		addSequential(new DropDownMoveToAngleCommand(35));
+		addSequential(new DriveOverRampartsCommand());
+	}
 }
