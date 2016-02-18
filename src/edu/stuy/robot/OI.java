@@ -2,14 +2,13 @@ package edu.stuy.robot;
 
 import static edu.stuy.robot.RobotMap.DRIVER_GAMEPAD;
 import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
+
 import edu.stuy.robot.commands.AcquirerAcquireCommand;
 import edu.stuy.robot.commands.AcquirerDeacquireCommand;
-import edu.stuy.robot.commands.LowGearCommand;
 import edu.stuy.robot.commands.HighGearCommand;
 import edu.stuy.robot.commands.HoodToggleCommand;
 import edu.stuy.robot.commands.HopperGoCommand;
-import edu.stuy.robot.commands.HopperReverseFeedCommand;
-import edu.stuy.robot.commands.SetupforShotCommand;
+import edu.stuy.robot.commands.LowGearCommand;
 import edu.stuy.robot.commands.ShooterSetHighCommand;
 import edu.stuy.robot.commands.ShooterSetLowCommand;
 import edu.stuy.robot.commands.ShooterSetMediumCommand;
@@ -55,7 +54,7 @@ public class OI {
 		driverGamepad = new Gamepad(DRIVER_GAMEPAD);
 		operatorGamepad = new Gamepad(OPERATOR_GAMEPAD);
 
-		operatorGamepad.getBottomButton().whileHeld(new SetupforShotCommand());
+		//operatorGamepad.getBottomButton().whileHeld(new SetupforShotCommand());
 		operatorGamepad.getLeftTrigger().whileHeld(new AcquirerAcquireCommand());
 		operatorGamepad.getRightTrigger().whileHeld(new AcquirerAcquireCommand());
 		operatorGamepad.getLeftBumper().whileHeld(new AcquirerDeacquireCommand());
@@ -65,6 +64,7 @@ public class OI {
 		operatorGamepad.getDPadRight().whenPressed(new ShooterSetHighCommand());
 		operatorGamepad.getDPadDown().whenPressed(new ShooterStopCommand());
 		operatorGamepad.getTopButton().whenPressed(new HoodToggleCommand());
+		operatorGamepad.getBottomButton().whileHeld(new HopperGoCommand());
 
 		driverGamepad.getRightTrigger().whenPressed(new LowGearCommand());
 		driverGamepad.getLeftTrigger().whenPressed(new HighGearCommand());
