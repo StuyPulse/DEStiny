@@ -151,7 +151,7 @@ public class Robot extends IterativeRobot {
 
 		// Solenoids:
 		SmartDashboard.putBoolean("Hood piston", Robot.hood.getState());
-		SmartDashboard.putBoolean("Gear shift solenoid", Robot.drivetrain.getGearShiftState());
+		SmartDashboard.putBoolean("Gear shift solenoid", Robot.drivetrain.gearUp);
 
 		// Thresholds:
 		SmartDashboard.putNumber("Gear Shifting Threshold", 40);
