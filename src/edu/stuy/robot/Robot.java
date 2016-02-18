@@ -139,8 +139,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("gyro", Robot.drivetrain.getGyroAngle());
 		SmartDashboard.putNumber("potentiometer", Robot.dropdown.getAngle());
 		SmartDashboard.putNumber("Potentiometer voltage", Robot.dropdown.getVoltage());
-		SmartDashboard.putNumber("shooter encoder", Robot.shooter.getEncoder());
-		SmartDashboard.putNumber("Current Shooter Motor Speed:", Robot.shooter.getCurrentMotorSpeed());
+		SmartDashboard.putNumber("Current Shooter Motor Speed:", Robot.shooter.getCurrentMotorSpeedInRPM());
 		SmartDashboard.putNumber("drivetrain left encoder", Robot.drivetrain.getLeftEncoder());
 		SmartDashboard.putNumber("drivetrain right encoder", Robot.drivetrain.getRightEncoder());
 		// Sonar:
