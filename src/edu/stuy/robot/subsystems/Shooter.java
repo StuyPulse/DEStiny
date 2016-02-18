@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Shooter extends Subsystem {
 
     private CANTalon shooterMotor;
+    private boolean on;
 
     public Shooter() {
         shooterMotor = new CANTalon(SHOOTER_MOTOR_CHANNEL);
@@ -28,6 +29,8 @@ public class Shooter extends Subsystem {
         shooterMotor.configNominalOutputVoltage(+0.0f, -0.0f);
         shooterMotor.configNominalOutputVoltage(+12.0f, -12.0f);
         shooterMotor.changeControlMode(TalonControlMode.Speed);
+
+        on = false;
     }
 
     public void setSpeed(double speed) {
@@ -46,6 +49,19 @@ public class Shooter extends Subsystem {
 
     public void setSpeedHigh() {
         setRPM(SHOOTER_ENCODER_MAXSPEED);
+    }
+
+    public void toggle() {
+        changePosition(on);
+    }
+
+    public void changePosition(boolean x) {
+        if (on) {
+            setSpeedHigh();
+        } else {
+            stop();
+        }
+        on = !on;
     }
 
     public double getCurrentMotorSpeedInRPM() {

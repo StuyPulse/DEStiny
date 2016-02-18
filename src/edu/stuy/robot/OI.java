@@ -9,8 +9,7 @@ import edu.stuy.robot.commands.EnableAutoGearShiftCommand;
 import edu.stuy.robot.commands.HoodToggleCommand;
 import edu.stuy.robot.commands.HopperFeedCommand;
 import edu.stuy.robot.commands.JionDriveCommand;
-import edu.stuy.robot.commands.ShooterSetHighCommand;
-import edu.stuy.robot.commands.ShooterStopCommand;
+import edu.stuy.robot.commands.ShooterToggleCommand;
 import edu.stuy.robot.commands.auton.DropDownMoveToAngleCommand;
 import edu.stuy.util.Gamepad;
 
@@ -62,10 +61,10 @@ public class OI {
 		operatorGamepad.getLeftBumper().whileHeld(new HopperFeedCommand());
 		operatorGamepad.getRightTrigger().whileHeld(new AcquirerAcquireCommand());
 		operatorGamepad.getRightBumper().whileHeld(new AcquirerDeacquireCommand());
-		operatorGamepad.getDPadLeft().whenPressed(new ShooterSetHighCommand());
-		operatorGamepad.getDPadUp().whenPressed(new ShooterSetHighCommand());
-		operatorGamepad.getDPadRight().whenPressed(new ShooterSetHighCommand());
-		operatorGamepad.getDPadDown().whenPressed(new ShooterStopCommand());
+		operatorGamepad.getDPadLeft().whenPressed(new ShooterToggleCommand());
+		operatorGamepad.getDPadUp().whenPressed(new ShooterToggleCommand());
+		operatorGamepad.getDPadRight().whenPressed(new ShooterToggleCommand());
+		operatorGamepad.getDPadDown().whenPressed(new ShooterToggleCommand());
 		operatorGamepad.getTopButton().whenPressed(new HoodToggleCommand());
 		operatorGamepad.getRightAnalogButton().whenPressed(new DropDownMoveToAngleCommand(35));
 	}
