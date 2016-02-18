@@ -62,6 +62,22 @@ public class Robot extends IterativeRobot {
 		hopper.setHopperBrakeMode(true);
 
 		SmartDashboard.putNumber(SHOOTER_SPEED_LABEL, 0.0);
+		// Auton Distances:
+		SmartDashboard.putNumber("Rock", 0);
+		SmartDashboard.putNumber("Moat", 0);
+		SmartDashboard.putNumber("Rough", 0);
+		SmartDashboard.putNumber("Ramparts", 0);
+		SmartDashboard.putNumber("Draw", 0); // complex
+		SmartDashboard.putNumber("Cheval", 0);
+		SmartDashboard.putNumber("Portcullis", 0); // complex
+
+		// Potentiometer
+		double initialVoltage = 287.5;
+		double finalVoltage = 295.5;
+		SmartDashboard.putNumber("Initial Voltage", initialVoltage);
+		SmartDashboard.putNumber("Final Voltage", finalVoltage);
+		SmartDashboard.putNumber("Conversion Factor", 90.0 / (finalVoltage - initialVoltage));
+
 		setupAutonChooser();
 	}
 
@@ -77,23 +93,18 @@ public class Robot extends IterativeRobot {
 
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		SmartDashboard.putNumber("drivetrain left encoder",
-				Robot.drivetrain.getLeftEncoder());
-		SmartDashboard.putNumber("drivetrain right encoder",
-				Robot.drivetrain.getRightEncoder());
+		SmartDashboard.putNumber("drivetrain left encoder", Robot.drivetrain.getLeftEncoder());
+		SmartDashboard.putNumber("drivetrain right encoder", Robot.drivetrain.getRightEncoder());
 		SmartDashboard.putNumber("Max distance of drivetrain encoders", Robot.drivetrain.getDistance());
 	}
 
 	private void setupAutonChooser() {
 		autonChooser = new SendableChooser();
 		autonChooser.addDefault("0. Do nothing", new CommandGroup());
-		autonChooser.addObject(
-				"1. Reach edge of obstacle but refrain from going over",
-				new ReachObstacleCommand());
+		autonChooser.addObject("1. Reach edge of obstacle but refrain from going over", new ReachObstacleCommand());
 		autonChooser.addObject("2. Rock Wall", new GoOverRockWallCommand());
 		autonChooser.addObject("3. Moat", new GoOverMoatCommand());
-		autonChooser.addObject("4. Rough Terrain",
-				new GoOverRoughTerrainCommand());
+		autonChooser.addObject("4. Rough Terrain", new GoOverRoughTerrainCommand());
 		autonChooser.addObject("5. Ramparts", new GoOverRampartsCommand());
 		autonChooser.addObject("6. Drawbridge", new PassDrawbridgeCommand());
 		autonChooser.addObject("7. Cheval", new PassChevalCommand());
@@ -129,10 +140,9 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("potentiometer", Robot.dropdown.getAngle());
 		SmartDashboard.putNumber("Potentiometer voltage", Robot.dropdown.getVoltage());
 		SmartDashboard.putNumber("shooter encoder", Robot.shooter.getEncoder());
-		SmartDashboard.putNumber("drivetrain left encoder",
-				Robot.drivetrain.getLeftEncoder());
-		SmartDashboard.putNumber("drivetrain right encoder",
-				Robot.drivetrain.getRightEncoder());
+		SmartDashboard.putNumber("Current Shooter Motor Speed:", Robot.shooter.getCurrentMotorSpeed());
+		SmartDashboard.putNumber("drivetrain left encoder", Robot.drivetrain.getLeftEncoder());
+		SmartDashboard.putNumber("drivetrain right encoder", Robot.drivetrain.getRightEncoder());
 		// Sonar:
 		// double[] sonarData = sonar.getData();
 		// System.out.println(Arrays.toString(sonarData));
@@ -142,15 +152,6 @@ public class Robot extends IterativeRobot {
 		// Solenoids:
 		SmartDashboard.putBoolean("Hood piston", Robot.hood.getState());
 		SmartDashboard.putBoolean("Gear shift solenoid", Robot.drivetrain.getGearShiftState());
-
-		// Auton Distances:
-		SmartDashboard.putNumber("Rock wall", 0);
-		SmartDashboard.putNumber("Moat", 0);
-		SmartDashboard.putNumber("Rough", 0);
-		SmartDashboard.putNumber("Ramparts", 0);
-		SmartDashboard.putNumber("Draw", 0); // complex
-		SmartDashboard.putNumber("Cheval", 0);
-		SmartDashboard.putNumber("Portcullis", 0); // complex
 
 		// Thresholds:
 		SmartDashboard.putNumber("Gear Shifting Threshold", 40);
