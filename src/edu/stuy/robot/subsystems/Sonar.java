@@ -62,7 +62,7 @@ public class Sonar extends Subsystem {
 	 *
 	 */
 	private boolean isParallel(double[] distances) {
-		return angleFinder(distances) < ERROR_MARGIN_SONAR;
+		return angleFinder(distances) < SONAR_ERROR_MARGIN;
 	}
 
 	/**
