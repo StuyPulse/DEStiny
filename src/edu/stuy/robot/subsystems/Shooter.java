@@ -48,14 +48,6 @@ public class Shooter extends Subsystem {
         setRPM(SHOOTER_ENCODER_MAXSPEED);
     }
 
-    public void setSpeedMedium() {
-        setRPM(0.925 * SHOOTER_ENCODER_MAXSPEED);
-    }
-
-    public void setSpeedLow() {
-        setRPM(0.875 * SHOOTER_ENCODER_MAXSPEED);
-    }
-
     public double getCurrentMotorSpeedInRPM() {
         return shooterMotor.getSpeed();
     }
