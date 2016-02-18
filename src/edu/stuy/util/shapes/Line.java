@@ -13,6 +13,7 @@ public class Line extends Function{
 		slope = (y2 - y1) / (x2 - x1);
 		yintercept = y1 - slope*x1;
 	}
+
 	public double calculate(double input) {
 		return yintercept + slope*input;
 	}

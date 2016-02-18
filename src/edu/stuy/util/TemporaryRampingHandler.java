@@ -106,7 +106,4 @@ public class TemporaryRampingHandler {
 		}
 		return result;
 	}
-	private void tickLoop() {
-		Thread thread = new Thread();
-	}
 }
