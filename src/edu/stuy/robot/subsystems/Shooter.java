@@ -62,7 +62,7 @@ public class Shooter extends Subsystem {
 		return angularSpeed / SHOOTER_ENCODER_MAXSPEED;
 	}
 
-	private double getCurrentMotorSpeed() {
+	public double getCurrentMotorSpeed() {
 		return convertAngularSpeedToMotorSpeed(convertToAngularSpeed(convertToLinearSpeed(shooterMotor.getSpeed())));
 	}
 
