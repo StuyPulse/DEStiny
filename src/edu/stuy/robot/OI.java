@@ -2,17 +2,16 @@ package edu.stuy.robot;
 
 import static edu.stuy.robot.RobotMap.DRIVER_GAMEPAD;
 import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
-
 import edu.stuy.robot.commands.AcquirerAcquireCommand;
 import edu.stuy.robot.commands.AcquirerDeacquireCommand;
 import edu.stuy.robot.commands.HighGearCommand;
 import edu.stuy.robot.commands.HoodToggleCommand;
-import edu.stuy.robot.commands.HopperGoCommand;
-import edu.stuy.robot.commands.LowGearCommand;
+import edu.stuy.robot.commands.HopperFeedCommand;
 import edu.stuy.robot.commands.ShooterSetHighCommand;
 import edu.stuy.robot.commands.ShooterSetLowCommand;
 import edu.stuy.robot.commands.ShooterSetMediumCommand;
 import edu.stuy.robot.commands.ShooterStopCommand;
+import edu.stuy.robot.commands.auton.DropDownMoveToAngleCommand;
 import edu.stuy.util.Gamepad;
 
 /**
@@ -55,18 +54,15 @@ public class OI {
 		operatorGamepad = new Gamepad(OPERATOR_GAMEPAD);
 
 		//operatorGamepad.getBottomButton().whileHeld(new SetupforShotCommand());
-		operatorGamepad.getLeftTrigger().whileHeld(new AcquirerAcquireCommand());
+		operatorGamepad.getLeftTrigger().whileHeld(new HopperFeedCommand());
+		operatorGamepad.getLeftBumper().whileHeld(new HopperFeedCommand());
 		operatorGamepad.getRightTrigger().whileHeld(new AcquirerAcquireCommand());
-		operatorGamepad.getLeftBumper().whileHeld(new AcquirerDeacquireCommand());
 		operatorGamepad.getRightBumper().whileHeld(new AcquirerDeacquireCommand());
 		operatorGamepad.getDPadLeft().whenPressed(new ShooterSetLowCommand());
 		operatorGamepad.getDPadUp().whenPressed(new ShooterSetMediumCommand());
 		operatorGamepad.getDPadRight().whenPressed(new ShooterSetHighCommand());
 		operatorGamepad.getDPadDown().whenPressed(new ShooterStopCommand());
 		operatorGamepad.getTopButton().whenPressed(new HoodToggleCommand());
-		operatorGamepad.getBottomButton().whileHeld(new HopperGoCommand());
-
-		driverGamepad.getRightTrigger().whenPressed(new LowGearCommand());
-		driverGamepad.getLeftTrigger().whenPressed(new HighGearCommand());
+		operatorGamepad.getRightAnalogButton().whenPressed(new DropDownMoveToAngleCommand(35));
 	}
 }

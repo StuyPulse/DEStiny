@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class HopperGoCommand extends Command {
+public class HopperFeedCommand extends Command {
 
-	public HopperGoCommand() {
+	public HopperFeedCommand() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.hopper);
@@ -16,17 +16,16 @@ public class HopperGoCommand extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		Robot.hopper.feed();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		double speed = Robot.oi.operatorGamepad.getLeftY();
-		Robot.hopper.go(speed);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return false;
+		return true;
 	}
 
 	// Called once after isFinished returns true

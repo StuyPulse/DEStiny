@@ -1,8 +1,7 @@
 package edu.stuy.robot.subsystems;
 
 import static edu.stuy.robot.RobotMap.HOPPER_MOTOR_CHANNEL;
-
-import edu.stuy.robot.commands.HopperGoCommand;
+import edu.stuy.robot.commands.HopperStopCommand;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -21,12 +20,15 @@ public class Hopper extends Subsystem {
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
-		// setDefaultCommand(new MySpecialCommand());
-		setDefaultCommand(new HopperGoCommand());
+		setDefaultCommand(new HopperStopCommand());
 	}
 
-	public void go(double speed) {
-		hopperMotor.set(speed);
+	public void feed() {
+		hopperMotor.set(1.0);
+	}
+
+	public void stop() {
+		hopperMotor.set(0.0);
 	}
 
 	public void setHopperBrakeMode(boolean on) {
