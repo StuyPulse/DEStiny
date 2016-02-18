@@ -41,8 +41,4 @@ public class Acquirer extends Subsystem {
 	public void deacquire() {
 		acquirerMotor.set(-1.0);
 	}
-
-	public void lowerAcquirerToDrivingPosition() {
-		acquirerMotor.set(0.25);
-	}
 }
