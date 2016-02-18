@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -54,10 +55,15 @@ public class DropDown extends Subsystem {
 
 	public double getAngle() {
 		double x = getVoltage();
-		return (x - INITIAL_VOLTAGE) * CONVERSION_FACTOR;
+		return (x - SmartDashboard.getNumber("Initial Voltage")) *
+				SmartDashboard.getNumber("Conversion Factor");
 	}
 
 	public void move(double speed) {
 		dropDownMotor.set(speed);
+	}
+
+	public void lowerAcquirerToDrivingPosition() {
+		dropDownMotor.set(0.25);
 	}
 }

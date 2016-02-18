@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class DropDownGoCommand extends Command {
 
-	private double liftamount;
+	private double speed;
 	double speedFactor = 1.0;
 	double startTime;
 	double currentTime;
@@ -24,11 +24,12 @@ public class DropDownGoCommand extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		liftamount = Robot.oi.operatorGamepad.getRightY() * speedFactor;
-		if (liftamount < 0) {
-			Robot.dropdown.go(liftamount * 0.5);
+		speed = Robot.oi.operatorGamepad.getRightY() * speedFactor;
+		if (speed < 0) {
+			// When lift amount is negative the dropdown goes up
+			Robot.dropdown.go(speed * 0.75);
 		} else {
-			Robot.dropdown.go(liftamount * 0.75);
+			Robot.dropdown.go(speed * 0.5);
 		}
 	}
 

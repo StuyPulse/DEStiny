@@ -27,7 +27,7 @@ public class DropDownMoveToAngleCommand extends Command{
 
 	@Override
 	protected boolean isFinished() {
-		return Math.abs(Robot.dropdown.getAngle() - desiredAngle) < 2;
+		return Math.abs(Robot.dropdown.getAngle() - desiredAngle) < 2.0;
 	}
 
 	@Override
