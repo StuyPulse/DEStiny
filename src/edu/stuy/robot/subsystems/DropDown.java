@@ -48,10 +48,6 @@ public class DropDown extends Subsystem {
 				SmartDashboard.getNumber("Conversion Factor");
 	}
 
-	public void move(double speed) {
-		dropDownMotor.set(speed);
-	}
-
 	public void lowerAcquirerToDrivingPosition() {
 		dropDownMotor.set(0.25);
 	}

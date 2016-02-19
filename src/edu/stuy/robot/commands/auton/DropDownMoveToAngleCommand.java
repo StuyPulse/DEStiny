@@ -19,9 +19,9 @@ public class DropDownMoveToAngleCommand extends Command{
 	@Override
 	protected void execute() {
 		if (Robot.dropdown.getAngle() < desiredAngle) {
-			Robot.dropdown.move(0.35);
+			Robot.dropdown.go(0.35);
 		} else {
-			Robot.dropdown.move(-0.35);
+			Robot.dropdown.go(-0.35);
 		}
 	}
 
