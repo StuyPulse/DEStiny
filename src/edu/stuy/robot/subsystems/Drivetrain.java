@@ -73,7 +73,7 @@ public class Drivetrain extends Subsystem {
 
         gearUp = false;
         overrideAutoGearShifting = false;
-        autoGearShiftingState = false;
+        autoGearShiftingState = true;
 
         out = new TankDriveOutput(robotDrive);
         gyro = new ADXRS450_Gyro();
@@ -160,6 +160,15 @@ public class Drivetrain extends Subsystem {
     public void manualgearShift(boolean on) {
         gearShift.set(on);
         gearUp = on;
+    }
+
+    public double inputSquared(double input) {
+        double retVal = input;
+        retVal = retVal * retVal;
+        if (input < 0) {
+            retVal *= -1;
+        }
+        return retVal;
     }
 
     public double getAverageCurrent() {

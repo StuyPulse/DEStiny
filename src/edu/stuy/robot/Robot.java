@@ -142,6 +142,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Current Shooter Motor Speed:", Robot.shooter.getCurrentMotorSpeedInRPM());
 		SmartDashboard.putNumber("drivetrain left encoder", Robot.drivetrain.getLeftEncoder());
 		SmartDashboard.putNumber("drivetrain right encoder", Robot.drivetrain.getRightEncoder());
+		SmartDashboard.putBoolean("Gear shift override", drivetrain.overrideAutoGearShifting);
 		// Sonar:
 		// double[] sonarData = sonar.getData();
 		// System.out.println(Arrays.toString(sonarData));

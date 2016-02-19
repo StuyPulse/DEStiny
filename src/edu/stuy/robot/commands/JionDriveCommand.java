@@ -20,8 +20,8 @@ public class JionDriveCommand extends Command {
         Robot.drivetrain.overrideAutoGearShifting = true; // Disable automatic
                                                           // gear shift
         Robot.drivetrain.manualgearShift(true); // Shift to high gear
-        double left = Robot.oi.driverGamepad.getLeftY();
-        double right = Robot.oi.driverGamepad.getRightY();
+        double left = Robot.drivetrain.inputSquared(Robot.oi.driverGamepad.getLeftY());
+        double right = Robot.drivetrain.inputSquared(Robot.oi.driverGamepad.getRightY());
         Robot.drivetrain.tankDrive(-left, -right); // Drive
     }
 
