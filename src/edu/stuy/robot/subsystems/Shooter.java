@@ -56,16 +56,16 @@ public class Shooter extends Subsystem {
     }
 
     public void toggle() {
-        changePosition(on);
+        changePosition(!on);
     }
 
-    public void changePosition(boolean x) {
-        if (on) {
+    public void changePosition(boolean turnOn) {
+        if (turnOn) {
             setSpeedHigh();
         } else {
             stop();
         }
-        on = !on;
+        on = turnOn;
     }
 
     public double getCurrentMotorSpeedInRPM() {
