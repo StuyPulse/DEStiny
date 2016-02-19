@@ -60,6 +60,7 @@ public class Robot extends IterativeRobot {
         drivetrain.setDrivetrainBrakeMode(true);
         shooter.setShooterBrakeMode(false);
         hopper.setHopperBrakeMode(true);
+        dropdown.setDropDownBreakMode(true);
 
         SmartDashboard.putNumber(SHOOTER_SPEED_LABEL, 0.0);
         // Auton Distances:

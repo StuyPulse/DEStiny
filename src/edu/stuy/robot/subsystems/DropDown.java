@@ -14,41 +14,47 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class DropDown extends Subsystem {
 
-	private CANTalon dropDownMotor;
-	private Potentiometer potentiometer;
-	// Put methods for controlling this subsystem
-	// here. Call these from Commands.
+    private CANTalon dropDownMotor;
+    private Potentiometer potentiometer;
 
-	public DropDown() {
-		dropDownMotor = new CANTalon(DROPDOWN_MOTOR_CHANNEL);
-		dropDownMotor.setInverted(true);
-		potentiometer = new AnalogPotentiometer(ACQUIRER_POTENTIOMETER_CHANNEL, 300, 0);
-	}
+    // Put methods for controlling this subsystem
+    // here. Call these from Commands.
 
-	public void initDefaultCommand() {
-		// Set the default command for a subsystem here.
-		setDefaultCommand(new DropDownGoCommand());
-	}
+    public DropDown() {
+        dropDownMotor = new CANTalon(DROPDOWN_MOTOR_CHANNEL);
+        dropDownMotor.setInverted(true);
+        potentiometer = new AnalogPotentiometer(ACQUIRER_POTENTIOMETER_CHANNEL,
+                300, 0);
+    }
 
-	public void go(double speed) {
-		dropDownMotor.set(speed);
-	}
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        setDefaultCommand(new DropDownGoCommand());
+    }
 
-	public void stop() {
-		dropDownMotor.set(0.0);
-	}
+    public void go(double speed) {
+        dropDownMotor.set(speed);
+    }
 
-	public double getVoltage() {
-		return potentiometer.get();
-	}
+    public void stop() {
+        dropDownMotor.set(0.0);
+    }
 
-	public double getAngle() {
-		double x = getVoltage();
-		return (x - SmartDashboard.getNumber("Initial Voltage")) *
-				SmartDashboard.getNumber("Conversion Factor");
-	}
+    public double getVoltage() {
+        return potentiometer.get();
+    }
 
-	public void lowerAcquirerToDrivingPosition() {
-		dropDownMotor.set(0.25);
-	}
+    public double getAngle() {
+        double x = getVoltage();
+        return (x - SmartDashboard.getNumber("Initial Voltage"))
+                * SmartDashboard.getNumber("Conversion Factor");
+    }
+
+    public void lowerAcquirerToDrivingPosition() {
+        dropDownMotor.set(0.25);
+    }
+
+    public void setDropDownBreakMode(boolean breakMode) {
+        dropDownMotor.enableBrakeMode(breakMode);
+    }
 }

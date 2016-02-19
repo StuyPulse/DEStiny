@@ -9,13 +9,14 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DropDownGoCommand extends Command {
 
 	private double speed;
-	double speedFactor = 1.0;
+	double speedFactor;
 	double startTime;
 	double currentTime;
 
 	public DropDownGoCommand() {
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.dropdown);
+		speedFactor = 1.0;
 	}
 
 	// Called just before this Command runs the first time
