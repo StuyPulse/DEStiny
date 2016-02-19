@@ -77,7 +77,9 @@ public class Drivetrain extends Subsystem {
 
         out = new TankDriveOutput(robotDrive);
         gyro = new ADXRS450_Gyro();
-        pid = new PIDController(0.030, 0.010, 0.05, gyro, out);
+        pid = new PIDController(SmartDashboard.getNumber("Gyro P"),
+                SmartDashboard.getNumber("Gyro I"),
+                SmartDashboard.getNumber("Gyro D"), gyro, out);
         drifts[0] = 0.0;
 
         // pid.setInputRange(0, 360);
