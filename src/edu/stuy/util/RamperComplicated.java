@@ -115,9 +115,9 @@ public class RamperComplicated implements Ramper{
 				double slope2 = graph[rampLength + 1] - graph[rampLength];
 				
 				Line line1 = new Line(currentSlope, getValue());
-				Line line2 = new Line(slope2, graph[rampLength] / graph.length);
-				//TODO: FIX LINE2 WITH SECOND CONSTRUCTOR
-				
+				Line line2 = line1.getPerpendicular(graph[rampLength] / graph.length);
+				//Line line2 = new Line(slope2, graph[rampLength] / graph.length);
+
 				Circle interCircle = null;
 				if (currentSlope > 0) {
 					System.out.println("Circle Up");
