@@ -27,9 +27,13 @@ public class Shooter extends Subsystem {
         shooterMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
         shooterMotor.reverseSensor(false);
         shooterMotor.configNominalOutputVoltage(+0.0f, -0.0f);
-        shooterMotor.configNominalOutputVoltage(+12.0f, -12.0f);
+        shooterMotor.configPeakOutputVoltage(+12.0f, -12.0f);
+        shooterMotor.setProfile(0);
+        shooterMotor.setF(0);
+        shooterMotor.setP(0);
+        shooterMotor.setI(0);
+        shooterMotor.setD(0);
         shooterMotor.changeControlMode(TalonControlMode.Speed);
-
         on = false;
     }
 
@@ -80,6 +84,23 @@ public class Shooter extends Subsystem {
                 currentRPM += 50.0;
             }
             setRPM(currentRPM);
+            if (Timer.getFPGATimestamp() - startTime > 2000.0) {
+                return;
+            }
+        }
+    }
+
+    public void setSpeedReliablyVBus(double speed) {
+        double currentSpeed = speed;
+        double startTime = Timer.getFPGATimestamp();
+        setSpeed(currentSpeed);
+        while (Math.abs(getCurrentMotorSpeedInRPM() - speed * SHOOTER_ENCODER_MAXSPEED) < 150.0) {
+            if (getCurrentMotorSpeedInRPM() - speed * SHOOTER_ENCODER_MAXSPEED > 0.0) {
+                currentSpeed -= 0.05;
+            } else {
+                currentSpeed += 0.05;
+            }
+            setSpeed(currentSpeed);
             if (Timer.getFPGATimestamp() - startTime > 2000.0) {
                 return;
             }
