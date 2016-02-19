@@ -16,7 +16,7 @@ public class Ramper {
 	private final int rampLength = 8; // How many iterations does it take to ramp (even number)
 	/// SHOULD BE EVEN OR THERE MIGHT BE PROBLEMS (test that actually!)
 	private int circleTimer;// If > 0, don't make another circle.
-	
+
 	public Ramper() {
 		graph = new double[graphDivisions];
 		currentSlope = 0;// Optional
@@ -116,19 +116,21 @@ public class Ramper {
 				
 				Line line1 = new Line(currentSlope, getValue());
 				Line line2 = new Line(slope2, graph[rampLength] / graph.length);
+				//TODO: FIX LINE2 WITH SECOND CONSTRUCTOR
+				
 				Circle interCircle = null;
 				if (currentSlope > 0) {
 					System.out.println("Circle Up");
 					// slope2: Slope of next sine wave.
 					interCircle = new Circle(line1,line2,0.0,
 							(double)rampLength / graph.length,true);
-					//graphFunction(0,getValue(), rampLength, getValue(), interCircle);
+					graphFunction(0,getValue(), rampLength, interCircle);
 				} else if (currentSlope < 0) {
 					System.out.println("Circle Down");
 					// slope2: Slope of next sine wave.
 					interCircle = new Circle(line1,line2,0.0,
 							(double)rampLength / graph.length,false);
-					//graphFunction(0,getValue(), rampLength, getValue(), interCircle);
+					graphFunction(0,getValue(), rampLength, interCircle);
 				}
 			} else {
 				/* 
