@@ -72,8 +72,8 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Portcullis", 0); // complex
 
         // Potentiometer
-        double initialVoltage = 287.5;
-        double finalVoltage = 295.5;
+        double initialVoltage = 125.0;
+        double finalVoltage = 0.0;
         SmartDashboard.putNumber("Initial Voltage", initialVoltage);
         SmartDashboard.putNumber("Final Voltage", finalVoltage);
         SmartDashboard.putNumber("Conversion Factor",
