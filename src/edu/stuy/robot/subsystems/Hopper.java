@@ -27,6 +27,10 @@ public class Hopper extends Subsystem {
 		hopperMotor.set(1.0);
 	}
 
+	public void vomit() {
+	    hopperMotor.set(-1.0);
+	}
+
 	public void stop() {
 		hopperMotor.set(0.0);
 	}
