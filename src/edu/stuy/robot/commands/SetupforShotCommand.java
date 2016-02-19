@@ -23,6 +23,7 @@ public class SetupforShotCommand extends Command {
 		// eg. requires(chassis);
 		requires(Robot.shooter);
 		requires(Robot.drivetrain);
+		requires(Robot.cvSignalLights);
 	}
 
 	// Called just before this Command runs the first time
@@ -37,11 +38,13 @@ public class SetupforShotCommand extends Command {
 		if (!stopAiming) {
 			if (currentReading == null) {
 			    goalInFrame = false;
+			    Robot.cvSignalLights.setNotInFrame();
 			    return;
 			}
+			Robot.cvSignalLights.setInFrame();
 			currentReading = reader.readVector();
 			double degsOff = pxOffsetToDegrees(currentReading[0]);
-			// TODO: Do real math, write non-wack calculation of rightWheelSpeed
+			// TODO: Do real math; write non-wack calculation of rightWheelSpeed
 			double rightWheelSpeed = -degsOff / (CAMERA_FRAME_PX_WIDTH / 2);
 			Robot.drivetrain.tankDrive(-rightWheelSpeed, rightWheelSpeed);
 		}
@@ -55,6 +58,7 @@ public class SetupforShotCommand extends Command {
 	    if (!goalInFrame) {
 	        return true;
 	    }
+	    Robot.cvSignalLights.setReadyToShoot();
 		double degsOff = pxOffsetToDegrees(currentReading[0]);
 		return Math.abs(degsOff) < MAX_DEGREES_OFF_AUTO_AIMING;
 	}
@@ -63,7 +67,6 @@ public class SetupforShotCommand extends Command {
 	protected void end() {
 		reader.closePort();
 		reader = null;
-		// TODO: Handle goalInFrame being false (e.g. with the LEDs)
 	}
 
 	// Called when another command which requires one or more of the same
