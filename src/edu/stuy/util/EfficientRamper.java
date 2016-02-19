@@ -1,6 +1,6 @@
 package edu.stuy.util;
 
-public class EfficientRamper extends Ramper{
+public class EfficientRamper implements Ramper {
 	private double target;
 	private double value;
 
