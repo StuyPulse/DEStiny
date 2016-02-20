@@ -28,20 +28,30 @@ public class RotateDrivetrainCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        Robot.drivetrain.resetGyro();
         if (angleAtRunTime) {
             Integer autonPosition = (Integer) Robot.autonPositionChooser.getSelected();
             angle = correspondingAngle(autonPosition);
         }
-        
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        // right is negative when turning right
+        if (angle < 0) {
+            Robot.drivetrain.tankDrive(-0.5, 0.5);
+        } else {
+            Robot.drivetrain.tankDrive(0.5, -0.5);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        if (angle < 0) {
+            return Math.abs(Robot.drivetrain.getGyroAngle() - (360 + angle)) < 1.0;
+        } else {
+            return Math.abs(Robot.drivetrain.getGyroAngle() - angle) < 1.0;
+        }
     }
 
     // Called once after isFinished returns true
