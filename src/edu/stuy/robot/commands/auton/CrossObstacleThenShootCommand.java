@@ -17,18 +17,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class CrossObstacleThenShootCommand extends CommandGroup {
 
-    public double correspondingAngle(Integer position) {
-        if (position == 2) {
-            return SLOT_ANGLE_TO_GOAL_2;
-        } else if (position == 3) {
-            return SLOT_ANGLE_TO_GOAL_3;
-        } else if (position == 4) {
-            return SLOT_ANGLE_TO_GOAL_4;
-        } else {
-            return SLOT_ANGLE_TO_GOAL_5;
-        }
-    }
-
     public CrossObstacleThenShootCommand(Command obstacle, Integer position) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
@@ -51,7 +39,7 @@ public class CrossObstacleThenShootCommand extends CommandGroup {
         addSequential(obstacle);
         addSequential(new AlignWithWallCommand(0.5));
         addSequential(new SetDistanceFromWallCommand(RobotMap.DISTANCE_TO_WALL, 0.5));
-        addSequential(new RotateDrivetrainCommand(correspondingAngle(position)));
+        addSequential(new RotateDrivetrainCommand());
         // TODO: Fix RotateDrivetrainCommand to work once we have PID tuning
         addSequential(new SetupforShotCommand());
         addSequential(new ShooterSetHighCommand());
