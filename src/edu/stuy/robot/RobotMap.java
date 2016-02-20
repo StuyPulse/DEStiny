@@ -71,6 +71,11 @@ public interface RobotMap {
     // Auton
     double ROCK_WALL_CURRENT_THRESHOLD = 0.0;
     double ARM_ANGLE_TO_MOVE_AUTON = 35.0;
+    double SLOT_ANGLE_TO_GOAL_1 = 15.632;
+    double SLOT_ANGLE_TO_GOAL_2 = 11.852;
+    double SLOT_ANGLE_TO_GOAL_3 = 0;
+    double SLOT_ANGLE_TO_GOAL_4 = -11.852;
+    double SLOT_ANGLE_TO_GOAL_5 = -15.632;
 
     // CV
     double MAX_DEGREES_OFF_AUTO_AIMING = 5;
