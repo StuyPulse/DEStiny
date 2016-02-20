@@ -65,6 +65,11 @@ public class Sonar extends Subsystem {
 		return Math.abs(angleFinder(distances)) < SONAR_ERROR_MARGIN;
 	}
 
+	public double getAverageDistance() {
+	    double[] data = getData();
+	    return (data[0] + data[1]) / 2;
+	}
+
 	/**
 	 * <pre>
 	 * 	Returns one of three integers:

@@ -1,5 +1,6 @@
 package edu.stuy.robot.commands.auton;
 
+import edu.stuy.robot.RobotMap;
 import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.SetupforShotCommand;
 import edu.stuy.robot.commands.ShooterSetHighCommand;
@@ -30,8 +31,9 @@ public class CrossObstacleThenShootCommand extends CommandGroup {
         // arm.
         addSequential(obstacle);
         addSequential(new AlignWithWallCommand(0.5));
-        // TODO: Add command that turns a set amount based on auton slot chosen
-        // from SmartDashboard
+        addSequential(new SetDistanceFromWallCommand(RobotMap.DISTANCE_TO_WALL, 0.5));
+        // addSequential(new RotateDrivetrainCommand(RobotMap.SLOT_ANGLE_TO_GOAL[0]));
+        // TODO: Fix RotateDrivetrainCommand to work once we have PID tuning
         addSequential(new SetupforShotCommand());
         addSequential(new ShooterSetHighCommand());
         addSequential(new HopperRunCommand(true));
