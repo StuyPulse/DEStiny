@@ -58,7 +58,7 @@ public interface RobotMap {
 
     // Sonar
     int SONAR_ERROR_MARGIN = 5;
-    double DISTANCE_TO_WALL = 14*12;//14ft in inches
+    double DISTANCE_TO_WALL = 14 * 12; // 14ft in inches
 
     // PID tuning values
     double PID_MAX_ROBOT_SPEED = 0.75;
@@ -72,7 +72,12 @@ public interface RobotMap {
     // Auton
     double ROCK_WALL_CURRENT_THRESHOLD = 0.0;
     double ARM_ANGLE_TO_MOVE_AUTON = 35.0;
-    double[] SLOT_ANGLE_TO_GOAL = {15.632,11.852,0,-11.852,-15.632};
+
+    double SLOT_ANGLE_TO_GOAL_1 = 15.632; // UNUSED (lowbar)
+    double SLOT_ANGLE_TO_GOAL_2 = 11.852;
+    double SLOT_ANGLE_TO_GOAL_3 = 0;
+    double SLOT_ANGLE_TO_GOAL_4 = -SLOT_ANGLE_TO_GOAL_2;
+    double SLOT_ANGLE_TO_GOAL_5 = -SLOT_ANGLE_TO_GOAL_1;
 
     // CV
     double MAX_DEGREES_OFF_AUTO_AIMING = 5;
