@@ -170,10 +170,8 @@ public class Robot extends IterativeRobot {
         // Thresholds:
         SmartDashboard.putNumber("Gear Shifting Threshold", 40);
 
-        // GyroPID
-        SmartDashboard.putNumber("Gyro P", 0);
-        SmartDashboard.putNumber("Gyro I", 0);
-        SmartDashboard.putNumber("Gyro D", 0);
+        System.out.println(oi.driverGamepad.getLeftY());
+        System.out.println(oi.driverGamepad.getRightY());
     }
 
     /**

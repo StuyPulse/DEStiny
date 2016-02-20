@@ -2,6 +2,7 @@ package edu.stuy.robot.commands;
 
 import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * JionDrive - When the left trigger is held, the drivetrain is set to high

@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class LowGearCommand extends Command {
+public class HighGearCommand extends Command {
 
-    public LowGearCommand() {
+    public HighGearCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.drivetrain);
