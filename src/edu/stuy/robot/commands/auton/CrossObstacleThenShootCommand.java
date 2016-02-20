@@ -2,7 +2,7 @@ package edu.stuy.robot.commands.auton;
 
 import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.SetupforShotCommand;
-import edu.stuy.robot.commands.ShooterToggleCommand;
+import edu.stuy.robot.commands.ShooterSetHighCommand;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -33,7 +33,7 @@ public class CrossObstacleThenShootCommand extends CommandGroup {
         // TODO: Add command that turns a set amount based on auton slot chosen
         // from SmartDashboard
         addSequential(new SetupforShotCommand());
-        addSequential(new ShooterToggleCommand());
+        addSequential(new ShooterSetHighCommand());
         addSequential(new HopperRunCommand(true));
     }
 }
