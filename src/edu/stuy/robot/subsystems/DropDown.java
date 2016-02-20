@@ -3,7 +3,7 @@ package edu.stuy.robot.subsystems;
 import static edu.stuy.robot.RobotMap.ACQUIRER_POTENTIOMETER_CHANNEL;
 import static edu.stuy.robot.RobotMap.DROPDOWN_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.DROP_DOWN_DEADBAND;
-import edu.stuy.robot.commands.DropDownGoCommand;
+import edu.stuy.robot.commands.DropDownDefaultCommand;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -17,6 +17,7 @@ public class DropDown extends Subsystem {
 
     private CANTalon dropDownMotor;
     private Potentiometer potentiometer;
+    public double currentAngle;
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -26,14 +27,15 @@ public class DropDown extends Subsystem {
         dropDownMotor.setInverted(true);
         potentiometer = new AnalogPotentiometer(ACQUIRER_POTENTIOMETER_CHANNEL,
                 300, 0);
+        currentAngle = getAngle();
     }
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new DropDownGoCommand());
+        setDefaultCommand(new DropDownDefaultCommand());
     }
 
-    public void go(double speed) {
+    public void move(double speed) {
         dropDownMotor.set(speed);
     }
 

@@ -6,14 +6,14 @@ import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class DropDownGoCommand extends Command {
+public class DropDownMoveCommand extends Command {
 
     private double speed;
     double speedFactor;
     double startTime;
     double currentTime;
 
-    public DropDownGoCommand() {
+    public DropDownMoveCommand() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.dropdown);
         speedFactor = 1.0;
@@ -21,24 +21,26 @@ public class DropDownGoCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        speed = Robot.oi.operatorGamepad.getRightY() * speedFactor;
+        if (Robot.dropdown.deadband(speed)) {
+            Robot.dropdown.move(0.0);
+        } else if (speed < 0) {
+            // When lift amount is negative the dropdown goes up
+            Robot.dropdown.move(speed * 0.55);
+            Robot.dropdown.currentAngle = Robot.dropdown.getAngle();
+        } else {
+            Robot.dropdown.move(speed * 0.35);
+            Robot.dropdown.currentAngle = Robot.dropdown.getAngle();
+        }
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        speed = Robot.oi.operatorGamepad.getRightY() * speedFactor;
-        if (Robot.dropdown.deadband(speed)) {
-            Robot.dropdown.go(0.0);
-        } else if (speed < 0) {
-            // When lift amount is negative the dropdown goes up
-            Robot.dropdown.go(speed * 0.55);
-        } else {
-            Robot.dropdown.go(speed * 0.35);
-        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
