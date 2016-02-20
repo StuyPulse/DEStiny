@@ -12,7 +12,7 @@ import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_A;
 import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_B;
 import edu.stuy.robot.commands.DrivetrainTankDriveCommand;
 import edu.stuy.util.EfficientRamper;
-import edu.stuy.util.Ramper;
+import edu.stuy.util.RamperComplicated;
 import edu.stuy.util.RamperTimeLoop;
 import edu.stuy.util.TankDriveOutput;
 import edu.stuy.util.TemporaryRampingHandler;
@@ -44,8 +44,8 @@ public class Drivetrain extends Subsystem {
 	private TemporaryRampingHandler rampRightOld;
 	private double rampSpeed = 0.1;
 
-	private Ramper rampLeft;
-	private Ramper rampRight;
+	private RamperComplicated rampLeft;
+	private RamperComplicated rampRight;
 	private EfficientRamper rampLeftEfficient;
 	private EfficientRamper rampRightEfficient;
 	private RamperTimeLoop rampTimeLoop;
@@ -121,8 +121,8 @@ public class Drivetrain extends Subsystem {
             rampLeftOld = new TemporaryRampingHandler(0, 0, rampSpeed);
             rampRightOld = new TemporaryRampingHandler(0, 0, rampSpeed);
         } else if (RAMP_TYPE == 0) {
-            rampLeft = new Ramper();
-            rampRight = new Ramper();
+            rampLeft = new RamperComplicated();
+            rampRight = new RamperComplicated();
             rampTimeLoop = new RamperTimeLoop();
             rampTimeLoop.addRamper(rampLeft);
             rampTimeLoop.addRamper(rampRight);
@@ -163,15 +163,6 @@ public class Drivetrain extends Subsystem {
         } else {
             robotDrive.tankDrive(left, right);
         }
-    }
-
-    public void updateOldRamping() {
-        rampLeftOld.update();
-        rampRightOld.update();
-    }
-
-    public void setRamping(boolean bool) {
-        useRamping = bool;
     }
 
     public double getGyroAngle() {
@@ -259,4 +250,17 @@ public class Drivetrain extends Subsystem {
         rightFrontMotor.enableBrakeMode(on);
         rightRearMotor.enableBrakeMode(on);
     }
+
+	public void updateOldRamping() {
+		rampLeftOld.update();
+		rampRightOld.update();
+	}
+
+	public void setRamping(boolean bool) {
+		useRamping = bool;
+	}
+
+	public boolean getGearShiftState() {
+		return gearUp;
+	}
 }
