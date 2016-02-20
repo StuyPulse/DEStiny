@@ -32,6 +32,7 @@ public class DropDownMoveToAngleCommand extends Command{
 
 	@Override
 	protected void end() {
+	    Robot.dropdown.currentAngle = desiredAngle;
 	    Robot.dropdown.move(0.0);
 	}
 
