@@ -121,12 +121,12 @@ public class Robot extends IterativeRobot {
 
     private void setupAutonPositionChooser() {
         autonPositionChooser = new SendableChooser();
+        SmartDashboard.putString("1", "The low bar is in position 1, not a valid autonomous choice");
         autonPositionChooser.addObject("2", 2);
         autonPositionChooser.addDefault("3", 3);
         autonPositionChooser.addObject("4", 4);
         autonPositionChooser.addObject("5", 5);
         SmartDashboard.putData("Auton Position", autonPositionChooser);
-        SmartDashboard.putString("1", "Position 1 is not a valid autonomous choice");
     }
 
     private void setupAutonChooser() {
