@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class HighGearCommand extends Command {
+public class LowGearCommand extends Command {
 
-    public HighGearCommand() {
+    public LowGearCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.drivetrain);
@@ -16,7 +16,7 @@ public class HighGearCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.drivetrain.manualgearShift(true);
+    	Robot.drivetrain.manualgearShift(false);
     }
 
     // Called repeatedly when this Command is scheduled to run

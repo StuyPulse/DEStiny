@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveOverMoatCommand extends DriveForwardCommand {
 
-    // private static final int MAX_DISTANCE_IN_INCHES = 48;
+    private static final int MAX_DISTANCE_IN_INCHES = 150;
     private static final int MAX_TIME_IN_SECONDS = 12;
-    private static final double SPEED = 1.0;
+    private static final double SPEED = 0.9;
 
     public DriveOverMoatCommand() {
         super(SmartDashboard.getNumber("Moat"), MAX_TIME_IN_SECONDS, SPEED);
@@ -22,7 +22,7 @@ public class DriveOverMoatCommand extends DriveForwardCommand {
     @Override
     protected void execute() {
         super.setMaxDistanceInInches(SmartDashboard.getNumber("Moat"));
-        Robot.drivetrain.tankDrive(1.0, 1.0);
+        Robot.drivetrain.tankDrive(0.9, 0.9);
     }
 
     @Override
