@@ -6,16 +6,17 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ShooterSetMediumCommand extends Command {
+public class EnableAutoGearShiftCommand extends Command {
 
-    public ShooterSetMediumCommand() {
+    public EnableAutoGearShiftCommand() {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.shooter);
+        requires(Robot.drivetrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shooter.setSpeedMedium();
+        Robot.drivetrain.overrideAutoGearShifting = false;
+        Robot.drivetrain.autoGearShiftingState = true;
     }
 
     // Called repeatedly when this Command is scheduled to run

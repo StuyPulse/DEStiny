@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.SerialPort;
 
 public class Sonar extends Subsystem {
-	
+
 	SerialPort sonarIn;
-	
+
 	public Sonar() {
 		sonarIn = new SerialPort(9600, SerialPort.Port.kMXP, 8, SerialPort.Parity.kNone, SerialPort.StopBits.kOne);
 		sonarIn.enableTermination();
@@ -34,7 +34,7 @@ public class Sonar extends Subsystem {
 		String recv = sonarIn.readString();
 		return parse(recv);
 	}
-	
+
 	/**
 	 * isParallel finds the angle of difference between the robot and the wall.
 	 * If the error is less then error margin degrees, then it declares the
@@ -61,8 +61,8 @@ public class Sonar extends Subsystem {
 	 * </pre>
 	 *
 	 */
-	private boolean isParallel(double[] distances) {
-		return angleFinder(distances) < ERROR_MARGIN_SONAR;
+	public boolean isParallel(double[] distances) {
+		return Math.abs(angleFinder(distances)) < SONAR_ERROR_MARGIN;
 	}
 
 	/**
@@ -71,10 +71,11 @@ public class Sonar extends Subsystem {
 	 *  left = -1 right = 1 parallel = 0
 	 * </pre>
 	 */
-	private int getSideToTurn(double[] d) {
-		if (isParallel(d)) {
+	public int getSideToTurn() {
+		double[] distances = getData();
+		if (isParallel(distances)) {
 			return 0;
-		} else if (d[0] < d[1]) {
+		} else if (distances[0] < distances[1]) {
 			return -1;
 		} else {
 			return 1;

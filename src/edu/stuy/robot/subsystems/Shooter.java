@@ -1,95 +1,118 @@
 package edu.stuy.robot.subsystems;
 
-import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_A_CHANNEL;
-import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_B_CHANNEL;
 import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_MAXSPEED;
 import static edu.stuy.robot.RobotMap.SHOOTER_MOTOR_CHANNEL;
-import static edu.stuy.robot.RobotMap.SHOOTER_WHEEL_DIAMETER;
-import static edu.stuy.robot.RobotMap.EPSILON;
-import static java.lang.Math.PI;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
+import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
+ * Class for the shooter subsystem for DEStiny
  *
+ * NOTES:
+ *  - Setting the shooterMotor can be done in 2 modes:
+ *      - Shooter.setSpeed(value) sets the speed in the standard [-1.0, 1.0] range
+ *      - Shooter.setRMP(value) sets the RPM [-6600,6600]
  */
 public class Shooter extends Subsystem {
 
-	private CANTalon shooterMotor;
-	private Encoder shooterEncoder;
+    private CANTalon shooterMotor;
+    private boolean on;
 
-	public Shooter() {
-		shooterMotor = new CANTalon(SHOOTER_MOTOR_CHANNEL);
-		shooterEncoder = new Encoder(SHOOTER_ENCODER_A_CHANNEL, SHOOTER_ENCODER_B_CHANNEL);
-	}
+    public Shooter() {
+        shooterMotor = new CANTalon(SHOOTER_MOTOR_CHANNEL);
+        shooterMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+        shooterMotor.reverseSensor(false);
+        shooterMotor.configNominalOutputVoltage(+0.0f, -0.0f);
+        shooterMotor.configPeakOutputVoltage(+12.0f, -12.0f);
+        shooterMotor.setProfile(0);
+        shooterMotor.setF(0.1);
+        shooterMotor.setP(0.5);
+        shooterMotor.setI(0.1);
+        shooterMotor.setD(0.05);
+        shooterMotor.changeControlMode(TalonControlMode.Speed);
+        on = false;
+    }
 
-	public void stop() {
-		shooterMotor.set(0.0);
-	}
+    public void setSpeed(double speed) {
+        shooterMotor.changeControlMode(TalonControlMode.PercentVbus);
+        shooterMotor.set(speed);
+    }
 
-	public int getEncoder() {
-		return shooterEncoder.get();
-	}
+    public void setRPM(double rpm) {
+        shooterMotor.changeControlMode(TalonControlMode.Speed);
+        shooterMotor.set(rpm);
+    }
 
-	public void setSpeed(double speed) {
-		shooterMotor.set(speed);
-	}
+    public void stop() {
+        setSpeed(0.0);
+    }
 
-	public void setSpeedHigh() {
-		shooterMotor.set(1.0);
-	}
+    public void setSpeedHigh() {
+        setRPM(SHOOTER_ENCODER_MAXSPEED);
+    }
 
-	public void setSpeedMedium() {
-		shooterMotor.set(0.5);
-	}
+    public void toggle() {
+        changePosition(!on);
+    }
 
-	public void setSpeedLow() {
-		shooterMotor.set(0.25);
-	}
+    public void changePosition(boolean turnOn) {
+        if (turnOn) {
+            setSpeedHigh();
+        } else {
+            stop();
+        }
+        on = turnOn;
+    }
 
-	private double convertToLinearSpeed(double RPM) {
-		return RPM / 60 * PI * SHOOTER_WHEEL_DIAMETER;
-	}
+    public double getCurrentMotorSpeedInRPM() {
+        return shooterMotor.getSpeed();
+    }
 
-	private double convertToAngularSpeed(double linearSpeed) {
-		return linearSpeed / (SHOOTER_WHEEL_DIAMETER / 2);
-	}
+    // Use the encoders to verify the speed
+    public void setSpeedReliablyRPM(double RPM) {
+        double currentRPM = RPM;
+        double startTime = Timer.getFPGATimestamp();
+        setRPM(currentRPM);
+        while (Math.abs(getCurrentMotorSpeedInRPM() - RPM) < 150.0) {
+            if (getCurrentMotorSpeedInRPM() - RPM > 0.0) {
+                currentRPM -= 50.0;
+            } else {
+                currentRPM += 50.0;
+            }
+            setRPM(currentRPM);
+            if (Timer.getFPGATimestamp() - startTime > 2000.0) {
+                return;
+            }
+        }
+    }
 
-	private double convertAngularSpeedToMotorSpeed(double angularSpeed) {
-		return angularSpeed / SHOOTER_ENCODER_MAXSPEED;
-	}
+    public void setSpeedReliablyVBus(double speed) {
+        double currentSpeed = speed;
+        double startTime = Timer.getFPGATimestamp();
+        setSpeed(currentSpeed);
+        while (Math.abs(getCurrentMotorSpeedInRPM() - speed * SHOOTER_ENCODER_MAXSPEED) < 150.0) {
+            if (getCurrentMotorSpeedInRPM() - speed * SHOOTER_ENCODER_MAXSPEED > 0.0) {
+                currentSpeed -= 0.05;
+            } else {
+                currentSpeed += 0.05;
+            }
+            setSpeed(currentSpeed);
+            if (Timer.getFPGATimestamp() - startTime > 2000.0) {
+                return;
+            }
+        }
+    }
 
-	private double getCurrentMotorSpeed() {
-		return convertAngularSpeedToMotorSpeed(convertToAngularSpeed(convertToLinearSpeed(shooterMotor.getSpeed())));
-	}
+    public void setShooterBrakeMode(boolean on) {
+        shooterMotor.enableBrakeMode(on);
+    }
 
-	// Use the encoders to verify the speed
-	public void setSpeedReliably(double speed) {
-		double currentSpeed = speed;
-		double startTime = Timer.getFPGATimestamp();
-		shooterMotor.set(currentSpeed);
-		while (Math.abs(getCurrentMotorSpeed() - speed) < EPSILON) {
-			if (getCurrentMotorSpeed() - speed > 0.0) {
-				currentSpeed -= 0.01;
-			} else {
-				currentSpeed += 0.01;
-			}
-			shooterMotor.set(currentSpeed);
-			if (Timer.getFPGATimestamp() - startTime > 2000) {
-				return;
-			}
-		}
-	}
-
-	public void setShooterBrakeMode(boolean on) {
-		shooterMotor.enableBrakeMode(on);
-	}
-
-	public void initDefaultCommand() {
-		// Set the default command for a subsystem here.
-		// setDefaultCommand(new ShooterTestSpeed());
-	}
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        // setDefaultCommand(new ShooterTestSpeed());
+    }
 }

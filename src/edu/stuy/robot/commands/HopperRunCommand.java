@@ -1,35 +1,38 @@
 package edu.stuy.robot.commands;
 
-import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
-import edu.stuy.robot.Robot;
+import edu.stuy.robot.*;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
-public class ShooterTestSpeed extends Command {
+public class HopperRunCommand extends Command {
 
-	private double speed;
+    private boolean feed;
 
-	public ShooterTestSpeed() {
+	public HopperRunCommand(boolean in) {
 		// Use requires() here to declare subsystem dependencies
-		requires(Robot.shooter);
+		// eg. requires(chassis);
+		requires(Robot.hopper);
+		feed = in;
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+	    if (feed) {
+	        Robot.hopper.feed();
+	    } else {
+	        Robot.hopper.vomit();
+	    }
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		speed = SmartDashboard.getNumber(SHOOTER_SPEED_LABEL);
-		Robot.shooter.setSpeed(speed);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return false;
+		return true;
 	}
 
 	// Called once after isFinished returns true

@@ -1,18 +1,17 @@
 package edu.stuy.robot.commands.auton;
 
-import edu.stuy.robot.commands.LowGearCommand;
+import edu.stuy.robot.commands.HopperRunCommand;
+import edu.stuy.robot.commands.SetupforShotCommand;
+import edu.stuy.robot.commands.ShooterSetHighCommand;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class GoOverMoatCommand extends CommandGroup {
+public class CrossObstacleThenShootCommand extends CommandGroup {
 
-    private static final double INITIAL_DISTANCE = 24.0;
-    private static final double INITIAL_TIME = 2.0;
-    private static final double INITIAL_SPEED = 0.7;
-
-    public GoOverMoatCommand() {
+    public CrossObstacleThenShootCommand(Command obstacle) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         // addSequential(new Command2());
@@ -29,9 +28,12 @@ public class GoOverMoatCommand extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-        addSequential(new DropDownMoveToAngleCommand(50));
-        addParallel(new LowGearCommand());
-        addSequential(new DriveForwardCommand(INITIAL_DISTANCE, INITIAL_TIME, INITIAL_SPEED));
-		addSequential(new DriveOverMoatCommand());
-	}
+        addSequential(obstacle);
+        addSequential(new AlignWithWallCommand(0.5));
+        // TODO: Add command that turns a set amount based on auton slot chosen
+        // from SmartDashboard
+        addSequential(new SetupforShotCommand());
+        addSequential(new ShooterSetHighCommand());
+        addSequential(new HopperRunCommand(true));
+    }
 }

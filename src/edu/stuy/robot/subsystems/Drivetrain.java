@@ -10,7 +10,6 @@ import static edu.stuy.robot.RobotMap.REAR_LEFT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.REAR_RIGHT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_A;
 import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_B;
-
 import edu.stuy.robot.commands.DrivetrainTankDriveCommand;
 import edu.stuy.util.EfficientRamper;
 import edu.stuy.util.Ramper;
@@ -31,24 +30,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class Drivetrain extends Subsystem {
-	private Encoder rightEncoder;
-	private Encoder leftEncoder;
-	private CANTalon leftFrontMotor;
-	private CANTalon rightFrontMotor;
-	private CANTalon leftRearMotor;
-	private CANTalon rightRearMotor;
-	private RobotDrive robotDrive;
-	private ADXRS450_Gyro gyro;
-	private PIDController pid;
-	private TankDriveOutput out;
-	private Solenoid gearShift;
-	private boolean gearUp;
-	private double[] currents;
-
-	private int gearCounter = 0;
-	private double[] drifts = new double[8];
-	private int counter = 0;
-	private double currentAngle = 0.0;
 
 	private boolean useRamping = true;
 	private final short RAMP_TYPE = 0;
@@ -71,169 +52,211 @@ public class Drivetrain extends Subsystem {
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
-	public Drivetrain() {
-		gearShift = new Solenoid(GEAR_SHIFT_CHANNEL);
-		currents = new double[10];
-		leftFrontMotor = new CANTalon(FRONT_LEFT_MOTOR_CHANNEL);
-		rightFrontMotor = new CANTalon(FRONT_RIGHT_MOTOR_CHANNEL);
-		leftRearMotor = new CANTalon(REAR_LEFT_MOTOR_CHANNEL);
-		rightRearMotor = new CANTalon(REAR_RIGHT_MOTOR_CHANNEL);
-		leftFrontMotor.setInverted(true);
-		rightFrontMotor.setInverted(true);
-		leftRearMotor.setInverted(true);
-		rightRearMotor.setInverted(true);
-		robotDrive = new RobotDrive(leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor);
 
-		rightEncoder = new Encoder(RIGHT_ENCODER_CHANNEL_A, RIGHT_ENCODER_CHANNEL_B);
-		leftEncoder = new Encoder(LEFT_ENCODER_CHANNEL_A, LEFT_ENCODER_CHANNEL_B);
+    private Encoder rightEncoder;
+    private Encoder leftEncoder;
+    private CANTalon leftFrontMotor;
+    private CANTalon rightFrontMotor;
+    private CANTalon leftRearMotor;
+    private CANTalon rightRearMotor;
+    private RobotDrive robotDrive;
+    private ADXRS450_Gyro gyro;
+    private PIDController pid;
+    private TankDriveOutput out;
+    private Solenoid gearShift;
+    private double[] currents;
 
-		out = new TankDriveOutput(robotDrive);
-		gyro = new ADXRS450_Gyro();
-		pid = new PIDController(0.030, 0.010, 0.05, gyro, out);
-		drifts[0] = 0.0;
+    public boolean gearUp; // Stores the state of the gear shift
+    public boolean overrideAutoGearShifting; // True if automatic gear shifting
+                                             // is not being used
+    public boolean autoGearShiftingState; // True if automatic gear shifting was
+                                          // disabled and never re-enabled
 
-		if (RAMP_TYPE == 2) {
-			rampLeftOld = new TemporaryRampingHandler(0, 0, rampSpeed);
-			rampRightOld = new TemporaryRampingHandler(0, 0, rampSpeed);
-		} else if (RAMP_TYPE == 0) {
-			rampLeft = new Ramper();
-			rampRight = new Ramper();
-			rampTimeLoop = new RamperTimeLoop();
-			rampTimeLoop.addRamper(rampLeft);
-			rampTimeLoop.addRamper(rampRight);
-			rampTimeLoop.start();
-		} else if (RAMP_TYPE == 1) {
-			rampLeftEfficient = new EfficientRamper();
-			rampRightEfficient = new EfficientRamper();
-			rampTimeLoop = new RamperTimeLoop();
-			rampTimeLoop.addRamper(rampLeftEfficient);
-			rampTimeLoop.addRamper(rampRightEfficient);
-			rampTimeLoop.start();
-		}
+    private int gearCounter = 0;
+    private double[] drifts = new double[8];
+    private int counter = 0;
+    private double currentAngle = 0.0;
 
+    // Put methods for controlling this subsystem
+    // here. Call these from Commands.
+    public Drivetrain() {
+        gearShift = new Solenoid(GEAR_SHIFT_CHANNEL);
+        currents = new double[10];
+        leftFrontMotor = new CANTalon(FRONT_LEFT_MOTOR_CHANNEL);
+        rightFrontMotor = new CANTalon(FRONT_RIGHT_MOTOR_CHANNEL);
+        leftRearMotor = new CANTalon(REAR_LEFT_MOTOR_CHANNEL);
+        rightRearMotor = new CANTalon(REAR_RIGHT_MOTOR_CHANNEL);
+        leftFrontMotor.setInverted(true);
+        rightFrontMotor.setInverted(true);
+        leftRearMotor.setInverted(true);
+        rightRearMotor.setInverted(true);
+        robotDrive = new RobotDrive(leftFrontMotor, leftRearMotor,
+                rightFrontMotor, rightRearMotor);
 
+        rightEncoder = new Encoder(RIGHT_ENCODER_CHANNEL_A,
+                RIGHT_ENCODER_CHANNEL_B);
+        leftEncoder = new Encoder(LEFT_ENCODER_CHANNEL_A,
+                LEFT_ENCODER_CHANNEL_B);
 
-		// pid.setInputRange(0, 360);
-		// pid.setContinuous();
-		leftEncoder.setDistancePerPulse(DRIVETRAIN_ENCODER_INCHES_PER_PULSE);
-		rightEncoder.setDistancePerPulse(DRIVETRAIN_ENCODER_INCHES_PER_PULSE);
-		gyro.reset();
-		gyro.setPIDSourceType(PIDSourceType.kDisplacement);
-		gyro.calibrate();
-	}
+        gearUp = false;
+        overrideAutoGearShifting = false;
+        autoGearShiftingState = true;
 
-	public void initDefaultCommand() {
-		// Set the default command for a subsystem here.
-		// setDefaultCommand(new MySpecialCommand());
-		setDefaultCommand(new DrivetrainTankDriveCommand());
-	}
+        out = new TankDriveOutput(robotDrive);
+        gyro = new ADXRS450_Gyro();
+        pid = new PIDController(SmartDashboard.getNumber("Gyro P"),
+                SmartDashboard.getNumber("Gyro I"),
+                SmartDashboard.getNumber("Gyro D"), gyro, out);
+        drifts[0] = 0.0;
 
-	public void tankDrive(double left, double right) {
-		if (useRamping) {
-			if (RAMP_TYPE == 2) {
-				// updateRamping() COULD be moved into DrivetrainTankDriveCommand
-				updateOldRamping();	
-				rampLeftOld.setTarget(left);
-				rampRightOld.setTarget(right);
-				robotDrive.tankDrive(rampLeftOld.getValue(), rampRightOld.getValue());
-			} else if (RAMP_TYPE == 0) {
-				rampLeft.setTarget(left);
-				rampRight.setTarget(right);
-				robotDrive.tankDrive(rampLeft.getValue(), rampRight.getValue());
-			} else if (RAMP_TYPE == 1) {
-				rampLeftEfficient.setTarget(left);
-				rampRightEfficient.setTarget(right);
-				robotDrive.tankDrive(rampLeftEfficient.getValue(), rampRightEfficient.getValue());
-			}
-		} else {
-			robotDrive.tankDrive(left, right);
-		}
-	}
+        // pid.setInputRange(0, 360);
+        // pid.setContinuous();
+        leftEncoder.setDistancePerPulse(DRIVETRAIN_ENCODER_INCHES_PER_PULSE);
+        rightEncoder.setDistancePerPulse(DRIVETRAIN_ENCODER_INCHES_PER_PULSE);
+        gyro.reset();
+        gyro.setPIDSourceType(PIDSourceType.kDisplacement);
+        gyro.calibrate();
 
-	public double getGyroAngle() {
-		drifts[counter % 8] = currentAngle - gyro.getAngle();
-		currentAngle = gyro.getAngle();
-		if (counter > 9) {
-			double avg = 0.0;
-			for (double d : drifts) {
-				avg += d;
-			}
-			System.out.println("Average of 8: " + (avg / 8));
-		}
-		counter++;
-		return gyro.getAngle();
-	}
+        if (RAMP_TYPE == 2) {
+            rampLeftOld = new TemporaryRampingHandler(0, 0, rampSpeed);
+            rampRightOld = new TemporaryRampingHandler(0, 0, rampSpeed);
+        } else if (RAMP_TYPE == 0) {
+            rampLeft = new Ramper();
+            rampRight = new Ramper();
+            rampTimeLoop = new RamperTimeLoop();
+            rampTimeLoop.addRamper(rampLeft);
+            rampTimeLoop.addRamper(rampRight);
+            rampTimeLoop.start();
+        } else if (RAMP_TYPE == 1) {
+            rampLeftEfficient = new EfficientRamper();
+            rampRightEfficient = new EfficientRamper();
+            rampTimeLoop = new RamperTimeLoop();
+            rampTimeLoop.addRamper(rampLeftEfficient);
+            rampTimeLoop.addRamper(rampRightEfficient);
+            rampTimeLoop.start();
+        }
+    }
 
-	public double getLeftEncoder() {
-		return Math.abs(leftEncoder.getDistance());
-	}
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        // setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new DrivetrainTankDriveCommand());
+    }
 
-	public double getRightEncoder() {
-		return Math.abs(rightEncoder.getDistance());
-	}
+    public void tankDrive(double left, double right) {
+        if (useRamping) {
+            if (RAMP_TYPE == 2) {
+                // updateRamping() COULD be moved into DrivetrainTankDriveCommand
+                updateOldRamping(); 
+                rampLeftOld.setTarget(left);
+                rampRightOld.setTarget(right);
+                robotDrive.tankDrive(rampLeftOld.getValue(), rampRightOld.getValue());
+            } else if (RAMP_TYPE == 0) {
+                rampLeft.setTarget(left);
+                rampRight.setTarget(right);
+                robotDrive.tankDrive(rampLeft.getValue(), rampRight.getValue());
+            } else if (RAMP_TYPE == 1) {
+                rampLeftEfficient.setTarget(left);
+                rampRightEfficient.setTarget(right);
+                robotDrive.tankDrive(rampLeftEfficient.getValue(), rampRightEfficient.getValue());
+            }
+        } else {
+            robotDrive.tankDrive(left, right);
+        }
+    }
 
-	public double getDistance() {
-		double left = getLeftEncoder();
-		double right = getRightEncoder();
-		return Math.max(left, right);
-	}
+    public void updateOldRamping() {
+        rampLeftOld.update();
+        rampRightOld.update();
+    }
 
-	public void resetEncoders() {
-		leftEncoder.reset();
-		rightEncoder.reset();
-	}
+    public void setRamping(boolean bool) {
+        useRamping = bool;
+    }
 
-	public void stop() {
-		robotDrive.tankDrive(0.0, 0.0);
-	}
+    public double getGyroAngle() {
+        drifts[counter % 8] = currentAngle - gyro.getAngle();
+        currentAngle = gyro.getAngle();
+        if (counter > 9) {
+            double avg = 0.0;
+            for (double d : drifts) {
+                avg += d;
+            }
+            System.out.println("Average of 8: " + (avg / 8));
+        }
+        counter++;
+        return gyro.getAngle();
+    }
 
-	public void autoGearShift(boolean override) {
-		if (override) {
-			gearCounter = 0;
-			return;
-		}
+    public double getLeftEncoder() {
+        return Math.abs(leftEncoder.getDistance());
+    }
 
-		if (gearCounter == 10) {
-			double sum = 0;
-			for (int i = 0; i < currents.length; i++) {
-				sum += currents[i];
-			}
-			gearUp = sum / currents.length > SmartDashboard.getNumber("Gear Shifting Threshold");
-			gearShift.set(gearUp);
-			gearCounter = 0;
-		} else {
-			currents[gearCounter] = getAverageCurrent();
-			gearCounter++;
-		}
-	}
+    public double getRightEncoder() {
+        return Math.abs(rightEncoder.getDistance());
+    }
 
-	public void manualgearShift(boolean on) {
-		gearShift.set(on);
-		gearUp = on;
-	}
+    public double getDistance() {
+        double left = getLeftEncoder();
+        double right = getRightEncoder();
+        return Math.max(left, right);
+    }
 
-	public double getAverageCurrent() {
-		return (leftRearMotor.getOutputCurrent() + rightRearMotor.getOutputCurrent() + leftFrontMotor.getOutputCurrent()
-				+ rightFrontMotor.getOutputCurrent()) / 4;
-	}
+    public void resetEncoders() {
+        leftEncoder.reset();
+        rightEncoder.reset();
+    }
 
-	public void setDrivetrainBrakeMode(boolean on) {
-		leftFrontMotor.enableBrakeMode(on);
-		leftRearMotor.enableBrakeMode(on);
-		rightFrontMotor.enableBrakeMode(on);
-		rightRearMotor.enableBrakeMode(on);
-	}
+    public void stop() {
+        robotDrive.tankDrive(0.0, 0.0);
+    }
 
-	public void updateOldRamping() {
-		rampLeftOld.update();
-		rampRightOld.update();
-	}
+    public void autoGearShift() {
+        if (overrideAutoGearShifting) {
+            gearCounter = 0;
+            return;
+        }
 
-	public void setRamping(boolean bool) {
-		useRamping = bool;
-	}
+        if (gearCounter == 10) {
+            double sum = 0;
+            for (int i = 0; i < currents.length; i++) {
+                sum += currents[i];
+            }
+            gearUp = sum / currents.length > SmartDashboard
+                    .getNumber("Gear Shifting Threshold");
+            gearShift.set(gearUp);
+            gearCounter = 0;
+        } else {
+            currents[gearCounter] = getAverageCurrent();
+            gearCounter++;
+        }
+    }
 
-	public boolean getGearShiftState() {
-		return gearUp;
-	}
+    public void manualgearShift(boolean on) {
+        gearShift.set(on);
+        gearUp = on;
+    }
+
+    public double inputSquared(double input) {
+        double retVal = input;
+        retVal = retVal * retVal;
+        if (input < 0) {
+            retVal *= -1;
+        }
+        return retVal;
+    }
+
+    public double getAverageCurrent() {
+        return (leftRearMotor.getOutputCurrent()
+                + rightRearMotor.getOutputCurrent()
+                + leftFrontMotor.getOutputCurrent() + rightFrontMotor
+                    .getOutputCurrent()) / 4;
+    }
+
+    public void setDrivetrainBrakeMode(boolean on) {
+        leftFrontMotor.enableBrakeMode(on);
+        leftRearMotor.enableBrakeMode(on);
+        rightFrontMotor.enableBrakeMode(on);
+        rightRearMotor.enableBrakeMode(on);
+    }
 }

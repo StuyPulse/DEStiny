@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class DropDownMoveToAngleCommand extends Command{
 	
-	private int desiredAngle;
+	private double desiredAngle;
 	
-	public DropDownMoveToAngleCommand(int angle) {
+	public DropDownMoveToAngleCommand(double angle) {
 		desiredAngle = angle;
 		requires(Robot.dropdown);
 	}
@@ -19,19 +19,20 @@ public class DropDownMoveToAngleCommand extends Command{
 	@Override
 	protected void execute() {
 		if (Robot.dropdown.getAngle() < desiredAngle) {
-			Robot.dropdown.move(0.35);
+			Robot.dropdown.move(-0.4);
 		} else {
-			Robot.dropdown.move(-0.35);
+			Robot.dropdown.move(0.55);
 		}
 	}
 
 	@Override
 	protected boolean isFinished() {
-		return Math.abs(Robot.dropdown.getAngle() - desiredAngle) < 2;
+		return Math.abs(Robot.dropdown.getAngle() - desiredAngle) < 4.0;
 	}
 
 	@Override
 	protected void end() {
+	    Robot.dropdown.move(0.0);
 	}
 
 	@Override

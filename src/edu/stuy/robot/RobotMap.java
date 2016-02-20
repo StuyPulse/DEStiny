@@ -7,72 +7,76 @@ package edu.stuy.robot;
  * floating around.
  */
 public interface RobotMap {
-	// For example to map the left and right motors, you could define the
-	// following variables to use with your drivetrain subsystem.
-	// public static int leftMotor = 1;
-	// public static int rightMotor = 2;
 
-	// If you are using multiple modules, make sure to define both the port
-	// number and the module. For example you with a rangefinder:
-	// public static int rangefinderPort = 1;
-	// public static int rangefinderModule = 1;
-	int FRONT_RIGHT_MOTOR_CHANNEL = 1;
-	int REAR_RIGHT_MOTOR_CHANNEL = 2;
-	int REAR_LEFT_MOTOR_CHANNEL = 3;
-	int FRONT_LEFT_MOTOR_CHANNEL = 4;
+    // Gamepad ports
+    int DRIVER_GAMEPAD = 0;
+    int OPERATOR_GAMEPAD = 1;
 
-	int HOPPER_MOTOR_CHANNEL = 5;
-	int ACQUIRER_MOTOR_CHANNEL = 6;
-	int SHOOTER_MOTOR_CHANNEL = 7;
-	int DROPDOWN_MOTOR_CHANNEL = 8;
+    // Drivetrain CANTalon channels
+    int FRONT_RIGHT_MOTOR_CHANNEL = 1;
+    int REAR_RIGHT_MOTOR_CHANNEL = 2;
+    int REAR_LEFT_MOTOR_CHANNEL = 3;
+    int FRONT_LEFT_MOTOR_CHANNEL = 4;
 
-	int DRIVER_GAMEPAD = 0;
-	int OPERATOR_GAMEPAD = 1;
+    // CANTalon channels for other subsystems
+    int HOPPER_MOTOR_CHANNEL = 5;
+    int ACQUIRER_MOTOR_CHANNEL = 6;
+    int SHOOTER_MOTOR_CHANNEL = 7;
+    int DROPDOWN_MOTOR_CHANNEL = 8;
 
-	int HOOD_SOLENOID_CHANNEL = 4;
-	int GEAR_SHIFT_CHANNEL = 5;
-	int GEAR_SHIFT_THRESHOLD = 40;
+    // Solenoid ports
+    int HOOD_SOLENOID_CHANNEL = 3;
+    int GEAR_SHIFT_CHANNEL = 6;
 
-	int LIMIT_SWITCH_CHANNEL = 6;
+    // Tuneable threshold for current (used in gear shifting for drivetrain)
+    int GEAR_SHIFT_THRESHOLD = 40;
 
-	int SHOOTER_WHEEL_DIAMETER = 4;
-	double SHOOTER_ENCODER_MAXSPEED = 6600.0;
+    // Digital IO Ports
+    int LEFT_ENCODER_CHANNEL_A = 0;
+    int LEFT_ENCODER_CHANNEL_B = 1;
+    int RIGHT_ENCODER_CHANNEL_A = 2;
+    int RIGHT_ENCODER_CHANNEL_B = 3;
+    int SHOOTER_ENCODER_A_CHANNEL = 4;
+    int SHOOTER_ENCODER_B_CHANNEL = 5;
+    int LIMIT_SWITCH_CHANNEL = 6;
 
-	int LEFT_ENCODER_CHANNEL_A = 0;
-	int LEFT_ENCODER_CHANNEL_B = 1;
-	int RIGHT_ENCODER_CHANNEL_A = 2;
-	int RIGHT_ENCODER_CHANNEL_B = 3;
-	int SHOOTER_ENCODER_A_CHANNEL = 4;
-	int SHOOTER_ENCODER_B_CHANNEL = 5;
+    // Analog ports
+    int ACQUIRER_POTENTIOMETER_CHANNEL = 0;
+    // Potentiometer
+    double INITIAL_VOLTAGE = 287.5; // Equal to 0 degrees
+    double CONVERSION_FACTOR = 11.25;
+    double EPSILON = 0.0005;
 
-	int ACQUIRER_POTENTIOMETER_CHANNEL = 0;
+    // Physical constants
+    int SHOOTER_WHEEL_DIAMETER = 4;
+    double SHOOTER_ENCODER_MAXSPEED = 3600.0;
+    int DIO_ENCODER_PULSES_PER_REVOLUTION = 360;
+    int DRIVETRAIN_WHEEL_DIAMETER = 8;
+    double DRIVETRAIN_WHEEL_CIRCUMFERENCE = DRIVETRAIN_WHEEL_DIAMETER * Math.PI;
+    double DRIVETRAIN_ENCODER_INCHES_PER_PULSE = DRIVETRAIN_WHEEL_CIRCUMFERENCE / DIO_ENCODER_PULSES_PER_REVOLUTION;
+    double DISTANCE_BETWEEN_SONAR = 1.0;
 
-	double PID_MAX_ROBOT_SPEED = 0.75;
-	double GYRO_P = 1.0;
-	double GYRO_I = 1.0;
-	double GYRO_D = 1.0;
+    // Sonar
+    int SONAR_ERROR_MARGIN = 5;
 
-	int PULSES_PER_REVOLUTION = 360;
-	int ERROR_MARGIN_SONAR = 5;
-	int DRIVETRAIN_WHEEL_DIAMETER = 8;
-	double DRIVETRAIN_WHEEL_CIRCUMFERENCE = DRIVETRAIN_WHEEL_DIAMETER * Math.PI;
-	double DRIVETRAIN_ENCODER_INCHES_PER_PULSE = DRIVETRAIN_WHEEL_CIRCUMFERENCE / PULSES_PER_REVOLUTION;
-	double DISTANCE_BETWEEN_SONAR = 1.0;
+    // PID tuning values
+    double PID_MAX_ROBOT_SPEED = 0.75;
+    double GYRO_P = 1.0;
+    double GYRO_I = 1.0;
+    double GYRO_D = 1.0;
 
-	String SHOOTER_SPEED_LABEL = "Shooter Speed";
+    // Smart Dashboard
+    String SHOOTER_SPEED_LABEL = "Shooter Speed";
 
-	// Auton
-	double ROCK_WALL_CURRENT_THRESHOLD = 0.0;
+    // Auton
+    double ROCK_WALL_CURRENT_THRESHOLD = 0.0;
+    double ARM_ANGLE_TO_MOVE_AUTON = 35.0;
 
-	// CV
-	double MAX_DEGREES_OFF_AUTO_AIMING = 5;
-	int CAMERA_FRAME_PX_WIDTH = 1280;
-	int CAMERA_FRAME_PX_HEIGHT = 720;
-	int CAMERA_VIEWING_ANGLE_X = 180; // This is most likely wrong
+    // CV
+    double MAX_DEGREES_OFF_AUTO_AIMING = 5;
+    int CAMERA_FRAME_PX_WIDTH = 1280;
+    int CAMERA_FRAME_PX_HEIGHT = 720;
+    int CAMERA_VIEWING_ANGLE_X = 180; // This is most likely wrong
 
-	// Potentiometer
-	double INITIAL_VOLTAGE = 287.5; // Equal to 0 degrees
-	double CONVERSION_FACTOR = 11.25;
-
-	double EPSILON = 0.0005;
+    double DROP_DOWN_DEADBAND = 0.01;
 }

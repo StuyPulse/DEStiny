@@ -1,41 +1,32 @@
 package edu.stuy.robot.commands.auton;
 
-import edu.stuy.robot.Robot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.stuy.robot.commands.LowGearCommand;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class GoOverRoughTerrainCommand extends DriveForwardCommand {
+/**
+ *
+ */
+public class GoOverRoughTerrainCommand extends CommandGroup {
 
-    // private static final int MAX_DISTANCE_IN_INCHES = 132;
-    private static final int MAX_TIME_IN_SECONDS = 15;
-    private static final double SPEED = 1.0;
+	public GoOverRoughTerrainCommand() {
+		// Add Commands here:
+		// e.g. addSequential(new Command1());
+		// addSequential(new Command2());
+		// these will run in order.
 
-    public GoOverRoughTerrainCommand() {
-        super(SmartDashboard.getNumber("Rough"), MAX_TIME_IN_SECONDS, SPEED);
-    }
+		// To run multiple commands at the same time,
+		// use addParallel()
+		// e.g. addParallel(new Command1());
+		// addSequential(new Command2());
+		// Command1 and Command2 will run in parallel.
 
-    @Override
-    protected void initialize() {
-        super.initialize();
-        Robot.acquirer.lowerAcquirerToDrivingPosition();
-    }
-
-    @Override
-    protected void execute() {
-        super.setMaxDistanceInInches(SmartDashboard.getNumber("Rough"));
-        super.execute();
-    }
-
-    @Override
-    protected boolean isFinished() {
-        return super.isFinished();
-    }
-
-    @Override
-    protected void end() {
-        super.end();
-    }
-
-    @Override
-    protected void interrupted() {
-    }
+		// A command group will require all of the subsystems that each member
+		// would require.
+		// e.g. if Command1 requires chassis, and Command2 requires arm,
+		// a CommandGroup containing them would require both the chassis and the
+		// arm.
+		addSequential(new DropDownMoveToAngleCommand(50));
+		addParallel(new LowGearCommand());
+		addSequential(new DriveOverRoughTerrainCommand());
+	}
 }

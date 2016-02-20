@@ -1,41 +1,36 @@
 package edu.stuy.robot.commands.auton;
 
-import edu.stuy.robot.Robot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.stuy.robot.commands.LowGearCommand;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class GoOverRockWallCommand extends DriveForwardCommand {
+/**
+ *
+ */
+public class GoOverRockWallCommand extends CommandGroup {
 
-    // private static final int MAX_DISTANCE_IN_INCHES = 180;
-    private static final int MAX_TIME_IN_SECONDS = 15;
-    private static final double SPEED = 1.0;
+    private static final double INITIAL_DISTANCE = 24.0;
+    private static final double INITIAL_TIME = 2.0;
+    private static final double INITIAL_SPEED = 0.7;
+	public GoOverRockWallCommand() {
+		// Add Commands here:
+		// e.g. addSequential(new Command1());
+		// addSequential(new Command2());
+		// these will run in order.
 
-    public GoOverRockWallCommand() {
-        super(SmartDashboard.getNumber("Rock wall"), MAX_TIME_IN_SECONDS, SPEED);
-    }
+		// To run multiple commands at the same time,
+		// use addParallel()
+		// e.g. addParallel(new Command1());
+		// addSequential(new Command2());
+		// Command1 and Command2 will run in parallel.
 
-    @Override
-    protected void initialize() {
-        super.initialize();
-        Robot.acquirer.lowerAcquirerToDrivingPosition();
-    }
-
-    @Override
-    protected void execute() {
-        super.setMaxDistanceInInches(SmartDashboard.getNumber("Rock wall"));
-        super.execute();
-    }
-
-    @Override
-    protected boolean isFinished() {
-        return super.isFinished();
-    }
-
-    @Override
-    protected void end() {
-        super.end();
-    }
-
-    @Override
-    protected void interrupted() {
-    }
+		// A command group will require all of the subsystems that each member
+		// would require.
+		// e.g. if Command1 requires chassis, and Command2 requires arm,
+		// a CommandGroup containing them would require both the chassis and the
+		// arm.
+		addSequential(new DropDownMoveToAngleCommand(50));
+		addParallel(new LowGearCommand());
+		addSequential(new DriveForwardCommand(INITIAL_DISTANCE, INITIAL_TIME, INITIAL_SPEED));
+		addSequential(new DriveOverRockWallCommand());
+	}
 }

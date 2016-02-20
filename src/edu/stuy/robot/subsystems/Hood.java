@@ -26,11 +26,11 @@ public class Hood extends Subsystem {
 
 	public void toggle() {
 		changePosition(up);
-		up = !up;
 	}
 
 	public void changePosition(boolean x) {
 		hoodSolenoid.set(x);
+	    up = !up;
 	}
 
 	public boolean getState() {

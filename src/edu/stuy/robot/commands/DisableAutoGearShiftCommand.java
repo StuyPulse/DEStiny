@@ -6,16 +6,17 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class HopperReverseFeedCommand extends Command {
+public class DisableAutoGearShiftCommand extends Command {
 
-    public HopperReverseFeedCommand() {
+    public DisableAutoGearShiftCommand() {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.hopper);
+        requires(Robot.drivetrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.hopper.reverseFeed();
+        Robot.drivetrain.overrideAutoGearShifting = true;
+        Robot.drivetrain.autoGearShiftingState = false;
     }
 
     // Called repeatedly when this Command is scheduled to run

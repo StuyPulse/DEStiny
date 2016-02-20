@@ -8,8 +8,6 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DrivetrainTankDriveCommand extends Command {
 
-	private boolean override;
-
 	public DrivetrainTankDriveCommand() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
@@ -18,20 +16,13 @@ public class DrivetrainTankDriveCommand extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		override = false;
+        Robot.drivetrain.overrideAutoGearShifting = false;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		if (Robot.oi.driverGamepad.getSelectButton().get()) {
-			override = true;
-		} else if (Robot.oi.driverGamepad.getStartButton().get()) {
-			override = false;
-		}
-		System.out.println(override);
-		double left = Robot.oi.driverGamepad.getLeftY();
-		double right = Robot.oi.driverGamepad.getRightY();
-		Robot.drivetrain.autoGearShift(override);
+        double left = Robot.drivetrain.inputSquared(Robot.oi.driverGamepad.getLeftY());
+        double right = Robot.drivetrain.inputSquared(Robot.oi.driverGamepad.getRightY());
 		Robot.drivetrain.tankDrive(-left, -right);
 		if (Robot.oi.driverGamepad.getRightButton().get()) {
 			Robot.drivetrain.setRamping(true);

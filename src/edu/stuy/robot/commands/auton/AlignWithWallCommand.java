@@ -1,34 +1,43 @@
-package edu.stuy.robot.commands;
+package edu.stuy.robot.commands.auton;
 
 import edu.stuy.robot.Robot;
+import edu.stuy.robot.subsystems.Sonar;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ShooterSetLowCommand extends Command {
+public class AlignWithWallCommand extends Command {
 
-    public ShooterSetLowCommand() {
-        // Use requires() here to declare subsystem dependencies
-        requires(Robot.shooter);
+    double turnSpeed;
+    int direction;
+
+    public AlignWithWallCommand(double turnSpeed) {
+        requires(Robot.sonar);
+        requires(Robot.drivetrain);
+        this.turnSpeed = turnSpeed;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shooter.setSpeedLow();
+        direction = Robot.sonar.getSideToTurn();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        direction = Robot.sonar.getSideToTurn();
+        Robot.drivetrain.tankDrive(-1 * direction * turnSpeed, direction * turnSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return (direction == 0);
     }
 
     // Called once after isFinished returns true
     protected void end() {
+        // Just to make sure it stops when we finish
+        Robot.drivetrain.tankDrive(0, 0);
     }
 
     // Called when another command which requires one or more of the same
