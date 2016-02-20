@@ -18,6 +18,7 @@ import edu.stuy.robot.subsystems.Hopper;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.stuy.robot.subsystems.Sonar;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -44,6 +45,8 @@ public class Robot extends IterativeRobot {
     public static OI oi;
     Command autonomousCommand;
     SendableChooser autonChooser;
+
+    private double autonStartTime;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -83,8 +86,7 @@ public class Robot extends IterativeRobot {
         double finalVoltage = 170;
         SmartDashboard.putNumber("Initial Voltage", initialVoltage);
         SmartDashboard.putNumber("Final Voltage", finalVoltage);
-        SmartDashboard.putNumber("Conversion Factor",
-                90.0 / (finalVoltage - initialVoltage));
+        SmartDashboard.putNumber("Conversion Factor", 90.0 / (finalVoltage - initialVoltage));
 
         setupAutonChooser();
     }
@@ -97,31 +99,29 @@ public class Robot extends IterativeRobot {
         autonomousCommand = (Command) autonChooser.getSelected();
         autonomousCommand.start();
         Robot.drivetrain.resetEncoders();
+        autonStartTime = Timer.getFPGATimestamp();
     }
 
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("drivetrain left encoder",
-                Robot.drivetrain.getLeftEncoder());
-        SmartDashboard.putNumber("drivetrain right encoder",
-                Robot.drivetrain.getRightEncoder());
-        SmartDashboard.putNumber("Max distance of drivetrain encoders",
-                Robot.drivetrain.getDistance());
+        SmartDashboard.putNumber("drivetrain left encoder", Robot.drivetrain.getLeftEncoder());
+        SmartDashboard.putNumber("drivetrain right encoder", Robot.drivetrain.getRightEncoder());
+        SmartDashboard.putNumber("Max distance of drivetrain encoders", Robot.drivetrain.getDistance());
         SmartDashboard.putNumber("potentiometer", Robot.dropdown.getAngle());
-        SmartDashboard.putNumber("Potentiometer voltage",
-                Robot.dropdown.getVoltage());
+        SmartDashboard.putNumber("Potentiometer voltage", Robot.dropdown.getVoltage());
+        if (Timer.getFPGATimestamp() - autonStartTime > 14) {
+            Robot.shooter.stop();
+            Robot.hopper.stop();
+        }
     }
 
     private void setupAutonChooser() {
         autonChooser = new SendableChooser();
         autonChooser.addDefault("0. Do nothing", new CommandGroup());
-        autonChooser.addObject(
-                "1. Reach edge of obstacle but refrain from going over",
-                new ReachObstacleCommand());
+        autonChooser.addObject("1. Reach edge of obstacle but refrain from going over", new ReachObstacleCommand());
         autonChooser.addObject("2. Rock Wall", new GoOverRockWallCommand());
         autonChooser.addObject("3. Moat", new GoOverMoatCommand());
-        autonChooser.addObject("4. Rough Terrain",
-                new GoOverRoughTerrainCommand());
+        autonChooser.addObject("4. Rough Terrain", new GoOverRoughTerrainCommand());
         autonChooser.addObject("5. Ramparts", new GoOverRampartsCommand());
         autonChooser.addObject("6. Drawbridge", new PassDrawbridgeCommand());
         autonChooser.addObject("7. Cheval", new PassChevalCommand());
@@ -155,16 +155,11 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
         SmartDashboard.putNumber("gyro", Robot.drivetrain.getGyroAngle());
         SmartDashboard.putNumber("potentiometer", Robot.dropdown.getAngle());
-        SmartDashboard.putNumber("Potentiometer voltage",
-                Robot.dropdown.getVoltage());
-        SmartDashboard.putNumber("Current Shooter Motor Speed:",
-                Robot.shooter.getCurrentMotorSpeedInRPM());
-        SmartDashboard.putNumber("drivetrain left encoder",
-                Robot.drivetrain.getLeftEncoder());
-        SmartDashboard.putNumber("drivetrain right encoder",
-                Robot.drivetrain.getRightEncoder());
-        SmartDashboard.putBoolean("Gear shift override",
-                drivetrain.overrideAutoGearShifting);
+        SmartDashboard.putNumber("Potentiometer voltage", Robot.dropdown.getVoltage());
+        SmartDashboard.putNumber("Current Shooter Motor Speed:", Robot.shooter.getCurrentMotorSpeedInRPM());
+        SmartDashboard.putNumber("drivetrain left encoder", Robot.drivetrain.getLeftEncoder());
+        SmartDashboard.putNumber("drivetrain right encoder", Robot.drivetrain.getRightEncoder());
+        SmartDashboard.putBoolean("Gear shift override", drivetrain.overrideAutoGearShifting);
         // Sonar:
         // double[] sonarData = sonar.getData();
         // System.out.println(Arrays.toString(sonarData));
@@ -173,8 +168,7 @@ public class Robot extends IterativeRobot {
 
         // Solenoids:
         SmartDashboard.putBoolean("Hood piston", Robot.hood.getState());
-        SmartDashboard.putBoolean("Gear shift solenoid",
-                Robot.drivetrain.gearUp);
+        SmartDashboard.putBoolean("Gear shift solenoid", Robot.drivetrain.gearUp);
 
         // Thresholds:
         SmartDashboard.putNumber("Gear Shifting Threshold", 40);
