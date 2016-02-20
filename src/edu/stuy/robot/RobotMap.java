@@ -42,6 +42,8 @@ public interface RobotMap {
 
     // Analog ports
     int ACQUIRER_POTENTIOMETER_CHANNEL = 0;
+    int HOPPER_SENSOR_CHANNEL = 3;
+
     // Potentiometer
     double INITIAL_VOLTAGE = 287.5; // Equal to 0 degrees
     double CONVERSION_FACTOR = 11.25;
