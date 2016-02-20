@@ -16,6 +16,7 @@ import edu.stuy.robot.subsystems.DropDown;
 import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Hopper;
 import edu.stuy.robot.subsystems.Shooter;
+import edu.stuy.robot.subsystems.Sonar;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -39,7 +40,7 @@ public class Robot extends IterativeRobot {
     public static DropDown dropdown;
     public static Shooter shooter;
     public static Hood hood;
-    // public static Sonar sonar;
+    public static Sonar sonar;
     public static OI oi;
     Command autonomousCommand;
     SendableChooser autonChooser;
@@ -59,6 +60,7 @@ public class Robot extends IterativeRobot {
         hopper = new Hopper();
         shooter = new Shooter();
         hood = new Hood();
+        sonar = new Sonar();
         oi = new OI();
 
         drivetrain.setDrivetrainBrakeMode(true);
