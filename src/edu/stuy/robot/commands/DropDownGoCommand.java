@@ -28,9 +28,9 @@ public class DropDownGoCommand extends Command {
 		speed = Robot.oi.operatorGamepad.getRightY() * speedFactor;
 		if (speed < 0) {
 			// When lift amount is negative the dropdown goes up
-			Robot.dropdown.go(speed * 0.75);
+			Robot.dropdown.go(speed * 0.55);
 		} else {
-			Robot.dropdown.go(speed * 0.5);
+			Robot.dropdown.go(speed * 0.35);
 		}
 	}
 

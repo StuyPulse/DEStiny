@@ -49,6 +49,10 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
+        // GyroPID
+        SmartDashboard.putNumber("Gyro P", 0);
+        SmartDashboard.putNumber("Gyro I", 0);
+        SmartDashboard.putNumber("Gyro D", 0);
         drivetrain = new Drivetrain();
         acquirer = new Acquirer();
         dropdown = new DropDown();
@@ -73,8 +77,8 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Portcullis", 0); // complex
 
         // Potentiometer
-        double initialVoltage = 125.0;
-        double finalVoltage = 0.0;
+        double initialVoltage = 93.5;
+        double finalVoltage = 170;
         SmartDashboard.putNumber("Initial Voltage", initialVoltage);
         SmartDashboard.putNumber("Final Voltage", finalVoltage);
         SmartDashboard.putNumber("Conversion Factor",
@@ -101,6 +105,9 @@ public class Robot extends IterativeRobot {
                 Robot.drivetrain.getRightEncoder());
         SmartDashboard.putNumber("Max distance of drivetrain encoders",
                 Robot.drivetrain.getDistance());
+        SmartDashboard.putNumber("potentiometer", Robot.dropdown.getAngle());
+        SmartDashboard.putNumber("Potentiometer voltage",
+                Robot.dropdown.getVoltage());
     }
 
     private void setupAutonChooser() {
