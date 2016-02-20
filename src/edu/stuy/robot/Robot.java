@@ -43,8 +43,10 @@ public class Robot extends IterativeRobot {
     public static Hood hood;
     public static Sonar sonar;
     public static OI oi;
+    double autonPosition;
     Command autonomousCommand;
     SendableChooser autonChooser;
+    SendableChooser autonPositionChooser;
 
     private double autonStartTime;
 
@@ -89,6 +91,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Conversion Factor", 90.0 / (finalVoltage - initialVoltage));
 
         setupAutonChooser();
+        setupAutonPositionChooser();
     }
 
     public void disabledPeriodic() {
@@ -97,6 +100,7 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
         autonomousCommand = (Command) autonChooser.getSelected();
+        autonPosition = (Integer) autonPositionChooser.getSelected();
         autonomousCommand.start();
         Robot.drivetrain.resetEncoders();
         autonStartTime = Timer.getFPGATimestamp();
@@ -113,6 +117,16 @@ public class Robot extends IterativeRobot {
             Robot.shooter.stop();
             Robot.hopper.stop();
         }
+    }
+
+    private void setupAutonPositionChooser() {
+        autonPositionChooser = new SendableChooser();
+        autonPositionChooser.addObject("2", 2);
+        autonPositionChooser.addDefault("3", 3);
+        autonPositionChooser.addObject("4", 4);
+        autonPositionChooser.addObject("5", 5);
+        SmartDashboard.putData("Auton Position", autonPositionChooser);
+        SmartDashboard.putString("1", "Position 1 is not a valid autonomous choice");
     }
 
     private void setupAutonChooser() {
