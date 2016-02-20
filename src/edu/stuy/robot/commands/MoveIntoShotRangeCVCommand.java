@@ -1,26 +1,26 @@
 package edu.stuy.robot.commands;
 
 import edu.stuy.robot.Robot;
-import static edu.stuy.robot.RobotMap.*;
 import edu.stuy.util.TegraDataReader;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import static edu.stuy.robot.RobotMap.IDEAL_VERTICAL_OFFSET_AUTO_AIMING;
+import static edu.stuy.robot.RobotMap.MAX_VERTICAL_PX_OFF_AUTO_AIMING;
+import static edu.stuy.robot.RobotMap.CAMERA_FRAME_PX_HEIGHT;
+
 /**
  *
  */
-public class SetupforShotCommand extends Command {
+public class MoveIntoShotRangeCVCommand extends Command {
 
     private TegraDataReader reader;
     private double[] currentReading;
-    private boolean goalInFrame;
-    private boolean forceStopped = false;
+    private boolean forceStopped;
+    private boolean goalLeftFrame;
+    private boolean readyForShot;
 
-    private static double pxOffsetToDegrees(double px) {
-        return CAMERA_VIEWING_ANGLE_X * px / CAMERA_FRAME_PX_WIDTH;
-    }
-
-    public SetupforShotCommand() {
+    public MoveIntoShotRangeCVCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.drivetrain);
@@ -28,9 +28,11 @@ public class SetupforShotCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        // Robot.shooter.setSpeedTesting(0.7);
         reader = new TegraDataReader();
-        goalInFrame = true; // Assume it is there until we see otherwise
+        forceStopped = false;
+        // Goal should be in frame at start
+        goalLeftFrame = false;
+        readyForShot = false;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -42,45 +44,38 @@ public class SetupforShotCommand extends Command {
             currentReading = reader.readVector();
             SmartDashboard.putBoolean("CV| Goal in frame?", currentReading != null);
             if (currentReading == null) {
-                goalInFrame = false;
+                goalLeftFrame = true;
                 return;
             }
             SmartDashboard.putNumber("CV| vector X", currentReading[0]);
             SmartDashboard.putNumber("CV| vector Y", currentReading[1]);
             SmartDashboard.putNumber("CV| bounding rect angle", currentReading[2]);
-            double degsOff = pxOffsetToDegrees(currentReading[0]);
-            // TODO: Do real math; write non-wack calculation of rightWheelSpeed
-            // Set rightWheelSpeed to the ratio of how far off it
-            // is to how far it could possibly be off
-            double rightWheelSpeed = -degsOff / (CAMERA_FRAME_PX_WIDTH / 2);
-            // Test with the following modification, or similar ones:
-            // rightWheelSpeed = Math.signum(rightWheelSpeed) * Math.pow(rightWheelSpeed, 2);
-            SmartDashboard.putNumber("CV| rightWheelSpeed to use", rightWheelSpeed);
-
-            // Do not move for now, to just confirm communication
-            // Robot.drivetrain.tankDrive(-rightWheelSpeed, rightWheelSpeed);
+            double verticalOffset = currentReading[1];
+            double offsetFromIdeal = IDEAL_VERTICAL_OFFSET_AUTO_AIMING - verticalOffset;
+            if (Math.abs(offsetFromIdeal) < MAX_VERTICAL_PX_OFF_AUTO_AIMING) {
+                readyForShot = true;
+                return;
+            }
+            // Set wheelSpeed to ratio of how much off to how much could possibly be off
+            double wheelSpeed = offsetFromIdeal / (CAMERA_FRAME_PX_HEIGHT / 2 + IDEAL_VERTICAL_OFFSET_AUTO_AIMING);
+            SmartDashboard.putNumber("CV| wheelSpeed to use", wheelSpeed);
+            Robot.drivetrain.tankDrive(wheelSpeed, wheelSpeed);
         }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        if (!goalInFrame || forceStopped) {
-            return true;
-        }
-        double degsOff = pxOffsetToDegrees(currentReading[0]);
-        return Math.abs(degsOff) < MAX_DEGREES_OFF_AUTO_AIMING;
+        return readyForShot || goalLeftFrame || forceStopped;
     }
 
     // Called once after isFinished returns true
     protected void end() {
         reader.closePort();
         reader = null;
-        // TODO: Handle goalInFrame being false (e.g. with the LEDs)
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-        reader.closePort();
     }
 }

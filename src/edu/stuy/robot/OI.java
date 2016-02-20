@@ -9,6 +9,7 @@ import edu.stuy.robot.commands.EnableAutoGearShiftCommand;
 import edu.stuy.robot.commands.HoodToggleCommand;
 import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.JionDriveCommand;
+import edu.stuy.robot.commands.SetupforShotCommand;
 import edu.stuy.robot.commands.HighGearCommand;
 import edu.stuy.robot.commands.ShooterToggleCommand;
 import edu.stuy.robot.commands.auton.DropDownMoveToAngleCommand;
@@ -58,7 +59,7 @@ public class OI {
 		driverGamepad.getLeftTrigger().whileHeld(new JionDriveCommand());
 		driverGamepad.getLeftTrigger().whenReleased(new HighGearCommand());
 
-		//operatorGamepad.getBottomButton().whileHeld(new SetupforShotCommand());
+		operatorGamepad.getBottomButton().whileHeld(new SetupforShotCommand());
 		operatorGamepad.getLeftTrigger().whileHeld(new HopperRunCommand(true));
 		operatorGamepad.getLeftBumper().whileHeld(new HopperRunCommand(false));
 		operatorGamepad.getRightTrigger().whileHeld(new AcquirerAcquireCommand());

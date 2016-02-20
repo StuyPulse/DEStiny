@@ -78,10 +78,12 @@ public interface RobotMap {
     double SLOT_ANGLE_TO_GOAL_5 = -15.632;
 
     // CV
-    double MAX_DEGREES_OFF_AUTO_AIMING = 5;
+    double MAX_DEGREES_OFF_AUTO_AIMING = 2;
     int CAMERA_FRAME_PX_WIDTH = 1280;
     int CAMERA_FRAME_PX_HEIGHT = 720;
-    int CAMERA_VIEWING_ANGLE_X = 180; // This is most likely wrong
+    int CAMERA_VIEWING_ANGLE_X = 60;
+    double IDEAL_VERTICAL_OFFSET_AUTO_AIMING = 0;
+    double MAX_VERTICAL_PX_OFF_AUTO_AIMING = 20;
 
     double DROP_DOWN_DEADBAND = 0.01;
 }
