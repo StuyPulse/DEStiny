@@ -2,6 +2,7 @@ package edu.stuy.robot.subsystems;
 
 import static edu.stuy.robot.RobotMap.ACQUIRER_POTENTIOMETER_CHANNEL;
 import static edu.stuy.robot.RobotMap.DROPDOWN_MOTOR_CHANNEL;
+import static edu.stuy.robot.RobotMap.DROP_DOWN_DEADBAND;
 import edu.stuy.robot.commands.DropDownGoCommand;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.CANTalon;
@@ -56,5 +57,9 @@ public class DropDown extends Subsystem {
 
     public void setDropDownBreakMode(boolean breakMode) {
         dropDownMotor.enableBrakeMode(breakMode);
+    }
+
+    public boolean deadband(double speed) {
+        return Math.abs(speed) < DROP_DOWN_DEADBAND;
     }
 }

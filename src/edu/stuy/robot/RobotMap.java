@@ -77,4 +77,6 @@ public interface RobotMap {
     int CAMERA_FRAME_PX_WIDTH = 1280;
     int CAMERA_FRAME_PX_HEIGHT = 720;
     int CAMERA_VIEWING_ANGLE_X = 180; // This is most likely wrong
+
+    double DROP_DOWN_DEADBAND = 0.01;
 }
