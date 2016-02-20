@@ -73,11 +73,11 @@ public interface RobotMap {
     double ROCK_WALL_CURRENT_THRESHOLD = 0.0;
     double ARM_ANGLE_TO_MOVE_AUTON = 35.0;
 
-    double SLOT_ANGLE_TO_GOAL_1 = 15.632; // UNUSED (lowbar)
-    double SLOT_ANGLE_TO_GOAL_2 = 11.852;
-    double SLOT_ANGLE_TO_GOAL_3 = 0;
-    double SLOT_ANGLE_TO_GOAL_4 = -SLOT_ANGLE_TO_GOAL_2;
-    double SLOT_ANGLE_TO_GOAL_5 = -SLOT_ANGLE_TO_GOAL_1;
+    double SLOT_ANGLE_TO_GOAL_1 = 39.614; // UNUSED (lowbar)
+    double SLOT_ANGLE_TO_GOAL_2 = 29.535;
+    double SLOT_ANGLE_TO_GOAL_3 = 16.987;
+    double SLOT_ANGLE_TO_GOAL_4 = -12.228;
+    double SLOT_ANGLE_TO_GOAL_5 = -25.539;
 
     // CV
     double MAX_DEGREES_OFF_AUTO_AIMING = 5;
