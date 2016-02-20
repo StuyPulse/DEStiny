@@ -187,4 +187,7 @@ public class Drivetrain extends Subsystem {
         rightRearMotor.enableBrakeMode(on);
     }
 
+    public void resetGyro() {
+        gyro.reset();
+    }
 }

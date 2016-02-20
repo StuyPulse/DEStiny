@@ -43,10 +43,9 @@ public class Robot extends IterativeRobot {
     public static Hood hood;
     public static Sonar sonar;
     public static OI oi;
-    double autonPosition;
     Command autonomousCommand;
     SendableChooser autonChooser;
-    SendableChooser autonPositionChooser;
+    public static SendableChooser autonPositionChooser;
 
     private double autonStartTime;
 
@@ -100,7 +99,6 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
         autonomousCommand = (Command) autonChooser.getSelected();
-        autonPosition = (Integer) autonPositionChooser.getSelected();
         autonomousCommand.start();
         Robot.drivetrain.resetEncoders();
         autonStartTime = Timer.getFPGATimestamp();
