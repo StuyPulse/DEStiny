@@ -14,6 +14,7 @@ public class TegraDataReader implements Runnable {
     private AtomicReference<double[]> mostRecentValue;
 
     public TegraDataReader() {
+        System.out.println("\n\n\n\nABOUT TO INITIALIZE PORT\n\n\n");
         SerialPort.Port p = SerialPort.Port.kOnboard;
         serialPort = new SerialPort(9600, p, 8, SerialPort.Parity.kNone, SerialPort.StopBits.kOne);
         mostRecentValue = new AtomicReference<double[]>();
@@ -21,6 +22,7 @@ public class TegraDataReader implements Runnable {
 
     @Override
     public void run() {
+        System.out.println("In TegraDataReader run()");
         PrintWriter writer = null;
         try {
             writer = new PrintWriter("/tmp/tegra-data-output.txt", "UTF-8");
@@ -44,7 +46,8 @@ public class TegraDataReader implements Runnable {
         // Treat writer like an Option type, so that a writer
         // may be easily passed for testing.
         boolean verbose = writer != null;
-        for (;;) {
+        while (!Thread.currentThread().isInterrupted()) {
+            System.out.println("In readVectorsConstantly loop");
             // Read 3 doubles, as there are 3 doubles in each
             // vector we are reading
             double[] vector = new double[3];
@@ -71,5 +74,7 @@ public class TegraDataReader implements Runnable {
             }
             mostRecentValue.set(valToSave);
         }
+        // At this point the thread has been interrupted, so clean up
+        serialPort.free();
     }
 }

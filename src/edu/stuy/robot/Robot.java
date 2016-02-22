@@ -48,6 +48,7 @@ public class Robot extends IterativeRobot {
     SendableChooser autonChooser;
 
     private static TegraDataReader tegraDataReader;
+    private static Thread tegraThread;
     private double autonStartTime;
 
     /**
@@ -55,25 +56,15 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
+        System.out.println("IN ROBOT INIT. Starting robot.");
+
         // GyroPID
         SmartDashboard.putNumber("Gyro P", 0);
         SmartDashboard.putNumber("Gyro I", 0);
         SmartDashboard.putNumber("Gyro D", 0);
-        drivetrain = new Drivetrain();
-        acquirer = new Acquirer();
-        dropdown = new DropDown();
-        hopper = new Hopper();
-        shooter = new Shooter();
-        hood = new Hood();
-        sonar = new Sonar();
-        oi = new OI();
-
-        drivetrain.setDrivetrainBrakeMode(true);
-        shooter.setShooterBrakeMode(false);
-        hopper.setHopperBrakeMode(true);
-        dropdown.setDropDownBreakMode(true);
 
         SmartDashboard.putNumber(SHOOTER_SPEED_LABEL, 0.0);
+
         // Auton Distances:
         SmartDashboard.putNumber("Rock", 0);
         SmartDashboard.putNumber("Moat", 0);
@@ -90,15 +81,38 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Final Voltage", finalVoltage);
         SmartDashboard.putNumber("Conversion Factor", 90.0 / (finalVoltage - initialVoltage));
 
+        drivetrain = new Drivetrain();
+        acquirer = new Acquirer();
+        dropdown = new DropDown();
+        hopper = new Hopper();
+        shooter = new Shooter();
+        hood = new Hood();
+        sonar = new Sonar();
+        oi = new OI();
+
+        drivetrain.setDrivetrainBrakeMode(true);
+        shooter.setShooterBrakeMode(false);
+        hopper.setHopperBrakeMode(true);
+        dropdown.setDropDownBreakMode(true);
+
         setupAutonChooser();
 
-        startTegraReadingThread();
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                if (tegraThread != null && tegraThread.isAlive()) {
+                    tegraThread.interrupt();
+                }
+            }
+        });
+        System.out.println("ADDED SHUTDOWN HOOK");
     }
 
     private void startTegraReadingThread() {
         tegraDataReader = new TegraDataReader();
         // Call .start(), rather than .run(), to run it in a separate thread
-        new Thread(tegraDataReader).start();
+        tegraThread = new Thread(tegraDataReader);
+        tegraThread.start();
     }
 
     public static double[] readTegraVector() {
@@ -148,10 +162,15 @@ public class Robot extends IterativeRobot {
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
-        if (autonomousCommand != null)
+        if (autonomousCommand != null) {
             autonomousCommand.cancel();
+        }
         Robot.drivetrain.resetEncoders();
         Robot.shooter.stop();
+        System.out.println("STARTING TEGRA THREAD");
+        // TODO: Re-add try,catch for the following:
+        startTegraReadingThread();
+        System.out.println("Started tegra thread");
     }
 
     /**
@@ -159,7 +178,9 @@ public class Robot extends IterativeRobot {
      * to reset subsystems before shutting down.
      */
     public void disabledInit() {
-
+        if (tegraThread != null && tegraThread.isAlive()) {
+            tegraThread.interrupt();
+        }
     }
 
     /**
@@ -186,9 +207,6 @@ public class Robot extends IterativeRobot {
 
         // Thresholds:
         SmartDashboard.putNumber("Gear Shifting Threshold", 40);
-
-        System.out.println(oi.driverGamepad.getLeftY());
-        System.out.println(oi.driverGamepad.getRightY());
     }
 
     /**
