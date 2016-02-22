@@ -2,7 +2,6 @@ package edu.stuy.robot.commands;
 
 import edu.stuy.robot.Robot;
 import static edu.stuy.robot.RobotMap.*;
-import edu.stuy.util.TegraDataReader;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -11,7 +10,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class SetupforShotCommand extends Command {
 
-    private TegraDataReader reader;
     private double[] currentReading;
     private boolean goalInFrame;
     private boolean forceStopped = false;
@@ -28,8 +26,6 @@ public class SetupforShotCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        // Robot.shooter.setSpeedTesting(0.7);
-        reader = new TegraDataReader();
         goalInFrame = true; // Assume it is there until we see otherwise
     }
 
@@ -39,7 +35,7 @@ public class SetupforShotCommand extends Command {
             forceStopped = true;
         }
         if (!forceStopped) {
-            currentReading = reader.readVector();
+            currentReading = Robot.readTegraVector();
             SmartDashboard.putBoolean("CV| Goal in frame?", currentReading != null);
             if (currentReading == null) {
                 goalInFrame = false;
@@ -73,14 +69,11 @@ public class SetupforShotCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-        reader.closePort();
-        reader = null;
         // TODO: Handle goalInFrame being false (e.g. with the LEDs)
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-        reader.closePort();
     }
 }

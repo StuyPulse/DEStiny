@@ -14,7 +14,6 @@ import static edu.stuy.robot.RobotMap.CAMERA_FRAME_PX_HEIGHT;
  */
 public class MoveIntoShotRangeCVCommand extends Command {
 
-    private TegraDataReader reader;
     private double[] currentReading;
     private boolean forceStopped;
     private boolean goalLeftFrame;
@@ -28,7 +27,6 @@ public class MoveIntoShotRangeCVCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        reader = new TegraDataReader();
         forceStopped = false;
         // Goal should be in frame at start
         goalLeftFrame = false;
@@ -41,7 +39,7 @@ public class MoveIntoShotRangeCVCommand extends Command {
             forceStopped = true;
         }
         if (!forceStopped) {
-            currentReading = reader.readVector();
+            currentReading = Robot.readTegraVector();
             SmartDashboard.putBoolean("CV| Goal in frame?", currentReading != null);
             if (currentReading == null) {
                 goalLeftFrame = true;
@@ -70,8 +68,6 @@ public class MoveIntoShotRangeCVCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-        reader.closePort();
-        reader = null;
     }
 
     // Called when another command which requires one or more of the same

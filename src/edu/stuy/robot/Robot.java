@@ -17,6 +17,7 @@ import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Hopper;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.stuy.robot.subsystems.Sonar;
+import edu.stuy.util.TegraDataReader;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -46,6 +47,7 @@ public class Robot extends IterativeRobot {
     Command autonomousCommand;
     SendableChooser autonChooser;
 
+    private static TegraDataReader tegraDataReader;
     private double autonStartTime;
 
     /**
@@ -89,6 +91,18 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Conversion Factor", 90.0 / (finalVoltage - initialVoltage));
 
         setupAutonChooser();
+
+        startTegraReadingThread();
+    }
+
+    private void startTegraReadingThread() {
+        tegraDataReader = new TegraDataReader();
+        // Call .start(), rather than .run(), to run it in a separate thread
+        new Thread(tegraDataReader).start();
+    }
+
+    public static double[] readTegraVector() {
+        return tegraDataReader.getMostRecent();
     }
 
     public void disabledPeriodic() {
