@@ -17,7 +17,7 @@ import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Hopper;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.stuy.robot.subsystems.Sonar;
-import edu.stuy.util.TegraDataReader;
+import edu.stuy.util.TegraSocketReader;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -47,7 +47,9 @@ public class Robot extends IterativeRobot {
     Command autonomousCommand;
     SendableChooser autonChooser;
 
-    private static TegraDataReader tegraDataReader;
+    public static boolean dontStartCommands;
+
+    private static TegraSocketReader tegraReader;
     private static Thread tegraThread;
     private double autonStartTime;
 
@@ -62,6 +64,21 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Gyro P", 0);
         SmartDashboard.putNumber("Gyro I", 0);
         SmartDashboard.putNumber("Gyro D", 0);
+        drivetrain = new Drivetrain();
+        acquirer = new Acquirer();
+        dropdown = new DropDown();
+        hopper = new Hopper();
+        shooter = new Shooter();
+        hood = new Hood();
+        sonar = new Sonar();
+        oi = new OI();
+
+        dontStartCommands = false;
+
+        drivetrain.setDrivetrainBrakeMode(true);
+        shooter.setShooterBrakeMode(false);
+        hopper.setHopperBrakeMode(true);
+        dropdown.setDropDownBreakMode(true);
 
         SmartDashboard.putNumber(SHOOTER_SPEED_LABEL, 0.0);
 
@@ -109,14 +126,14 @@ public class Robot extends IterativeRobot {
     }
 
     private void startTegraReadingThread() {
-        tegraDataReader = new TegraDataReader();
+        tegraReader = new TegraSocketReader();
         // Call .start(), rather than .run(), to run it in a separate thread
-        tegraThread = new Thread(tegraDataReader);
+        tegraThread = new Thread(tegraReader);
         tegraThread.start();
     }
 
     public static double[] readTegraVector() {
-        return tegraDataReader.getMostRecent();
+        return tegraReader.getMostRecent();
     }
 
     public void disabledPeriodic() {

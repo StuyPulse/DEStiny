@@ -48,7 +48,7 @@ public class SetupforShotCommand extends Command {
             // TODO: Do real math; write non-wack calculation of rightWheelSpeed
             // Set rightWheelSpeed to the ratio of how far off it
             // is to how far it could possibly be off
-            double rightWheelSpeed = -degsOff / (CAMERA_FRAME_PX_WIDTH / 2);
+            double rightWheelSpeed = capWithinOne(-degsOff / (CAMERA_FRAME_PX_WIDTH / 2) * 10);
             // Test with the following modification, or similar ones:
             // rightWheelSpeed = Math.signum(rightWheelSpeed) * Math.pow(rightWheelSpeed, 2);
             SmartDashboard.putNumber("CV| rightWheelSpeed to use", rightWheelSpeed);
@@ -56,6 +56,10 @@ public class SetupforShotCommand extends Command {
             // Do not move for now, to just confirm communication
             // Robot.drivetrain.tankDrive(-rightWheelSpeed, rightWheelSpeed);
         }
+    }
+
+    private double capWithinOne(double x) {
+        return Math.signum(x) * Math.min(Math.abs(x), 1);
     }
 
     // Make this return true when this Command no longer needs to run execute()

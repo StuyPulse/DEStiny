@@ -113,6 +113,8 @@ public class Drivetrain extends Subsystem {
         counter++;
         return gyro.getAngle();
     }
+    
+    public void resetGyro() { gyro.reset(); }
 
     public double getLeftEncoder() {
         return Math.abs(leftEncoder.getDistance());

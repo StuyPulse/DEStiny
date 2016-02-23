@@ -14,10 +14,19 @@ public class TegraDataReader implements Runnable {
     private AtomicReference<double[]> mostRecentValue;
 
     public TegraDataReader() {
+        openPort();
+        mostRecentValue = new AtomicReference<double[]>();
+    }
+
+    private void openPort() {
         System.out.println("\n\n\n\nABOUT TO INITIALIZE PORT\n\n\n");
         SerialPort.Port p = SerialPort.Port.kOnboard;
         serialPort = new SerialPort(9600, p, 8, SerialPort.Parity.kNone, SerialPort.StopBits.kOne);
-        mostRecentValue = new AtomicReference<double[]>();
+    }
+
+    private void closePort() {
+        serialPort.free();
+        serialPort = null;
     }
 
     @Override
@@ -36,6 +45,10 @@ public class TegraDataReader implements Runnable {
 
     public double[] getMostRecent() {
         return mostRecentValue.get();
+    }
+
+    public boolean getPortOpen() {
+        return serialPort != null;
     }
 
     private void readVectorsConstantly() {
@@ -75,6 +88,6 @@ public class TegraDataReader implements Runnable {
             mostRecentValue.set(valToSave);
         }
         // At this point the thread has been interrupted, so clean up
-        serialPort.free();
+        closePort();
     }
 }
