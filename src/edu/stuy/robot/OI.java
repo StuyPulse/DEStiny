@@ -7,6 +7,7 @@ import edu.stuy.robot.commands.AcquirerAcquireCommand;
 import edu.stuy.robot.commands.AcquirerDeacquireCommand;
 import edu.stuy.robot.commands.DisableAutoGearShiftCommand;
 import edu.stuy.robot.commands.EnableAutoGearShiftCommand;
+import edu.stuy.robot.commands.FlashlightToggleCommand;
 import edu.stuy.robot.commands.HighGearCommand;
 import edu.stuy.robot.commands.HoodDownCommand;
 import edu.stuy.robot.commands.HoodUpCommand;
@@ -76,6 +77,7 @@ public class OI {
         operatorGamepad.getDPadUp().whenPressed(new ShooterRaiseSpeed());
         operatorGamepad.getDPadDown().whenPressed(new ShooterLowerSpeed());
         operatorGamepad.getDPadLeft().whenPressed(new ShooterSetLayupCommand());
+        operatorGamepad.getDPadRight().whenPressed(new FlashlightToggleCommand());
 
         operatorGamepad.getTopButton().whenPressed(new HoodUpCommand());
         operatorGamepad.getRightButton().whenPressed(new HoodDownCommand());
