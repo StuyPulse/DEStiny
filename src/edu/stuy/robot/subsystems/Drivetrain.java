@@ -109,7 +109,7 @@ public class Drivetrain extends Subsystem {
             for (double d : drifts) {
                 avg += d;
             }
-            System.out.println("Average of 8: " + (avg / 8));
+            //System.out.println("Average of 8: " + (avg / 8));
         }
         counter++;
         return gyro.getAngle();

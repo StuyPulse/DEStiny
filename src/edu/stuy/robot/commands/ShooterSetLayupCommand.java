@@ -6,16 +6,17 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ShooterSetHighCommand extends Command {
+public class ShooterSetLayupCommand extends Command {
 
-    public ShooterSetHighCommand() {
+    public ShooterSetLayupCommand() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.shooter);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        Robot.shooter.setSpeed(Robot.shooter.currSpeed);
+        Robot.shooter.setSpeed(0.76);
+        Robot.shooter.currSpeed = 0.76;
     }
 
     // Called repeatedly when this Command is scheduled to run

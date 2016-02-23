@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveOverRampartsCommand extends DriveForwardCommand {
 
-    private static final int MAX_DISTANCE_IN_INCHES = 150;
     private static final int MAX_TIME_IN_SECONDS = 10;
     private static final double SPEED = 1.0;
 

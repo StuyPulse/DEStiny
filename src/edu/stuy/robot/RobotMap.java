@@ -12,6 +12,10 @@ public interface RobotMap {
     int DRIVER_GAMEPAD = 0;
     int OPERATOR_GAMEPAD = 1;
 
+    // Operator IDs
+    boolean JONAH_ID = true;
+    boolean YUBIN_ID = false;
+
     // Drivetrain CANTalon channels
     int FRONT_RIGHT_MOTOR_CHANNEL = 1;
     int REAR_RIGHT_MOTOR_CHANNEL = 2;
@@ -30,6 +34,10 @@ public interface RobotMap {
 
     // Tuneable threshold for current (used in gear shifting for drivetrain)
     int GEAR_SHIFT_THRESHOLD = 40;
+
+    // Hood Constants
+    boolean HOOD_UP_POSITION = false;
+    boolean HOOD_DOWN_POSITION = true;
 
     // Digital IO Ports
     int LEFT_ENCODER_CHANNEL_A = 0;
@@ -55,8 +63,7 @@ public interface RobotMap {
     int DIO_ENCODER_PULSES_PER_REVOLUTION = 360;
     int DRIVETRAIN_WHEEL_DIAMETER = 8;
     double DRIVETRAIN_WHEEL_CIRCUMFERENCE = DRIVETRAIN_WHEEL_DIAMETER * Math.PI;
-    double DRIVETRAIN_ENCODER_INCHES_PER_PULSE = DRIVETRAIN_WHEEL_CIRCUMFERENCE
-            / DIO_ENCODER_PULSES_PER_REVOLUTION;
+    double DRIVETRAIN_ENCODER_INCHES_PER_PULSE = DRIVETRAIN_WHEEL_CIRCUMFERENCE / DIO_ENCODER_PULSES_PER_REVOLUTION;
     double DISTANCE_BETWEEN_SONAR = 1.0;
 
     // Sonar

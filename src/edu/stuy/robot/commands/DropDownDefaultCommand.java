@@ -28,7 +28,7 @@ public class DropDownDefaultCommand extends CommandGroup {
         // arm.
 
         // To prevent backdriving
-        if (Math.abs(Robot.dropdown.currentAngle - Robot.dropdown.getAngle()) < 0.05) {
+        if (Math.abs(Robot.dropdown.currentAngle - Robot.dropdown.getAngle()) > 0.05) {
             addParallel(new DropDownMoveToAngleCommand(Robot.dropdown.currentAngle));
         }
         addSequential(new DropDownMoveCommand());

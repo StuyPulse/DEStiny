@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveOverMoatCommand extends DriveForwardCommand {
 
-    private static final int MAX_DISTANCE_IN_INCHES = 150;
     private static final int MAX_TIME_IN_SECONDS = 12;
     private static final double SPEED = 0.9;
 

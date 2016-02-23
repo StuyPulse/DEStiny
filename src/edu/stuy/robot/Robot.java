@@ -1,6 +1,8 @@
 package edu.stuy.robot;
 
 import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
+import static edu.stuy.robot.RobotMap.JONAH_ID;
+import static edu.stuy.robot.RobotMap.YUBIN_ID;
 
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
@@ -43,8 +45,11 @@ public class Robot extends IterativeRobot {
     public static Hood hood;
     public static Sonar sonar;
     public static OI oi;
+
     Command autonomousCommand;
-    SendableChooser autonChooser;
+
+    public static SendableChooser autonChooser;
+    public static SendableChooser operatorChooser;
     public static SendableChooser autonPositionChooser;
 
     private double autonStartTime;
@@ -58,6 +63,9 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Gyro P", 0);
         SmartDashboard.putNumber("Gyro I", 0);
         SmartDashboard.putNumber("Gyro D", 0);
+
+        chooseOperator();
+
         drivetrain = new Drivetrain();
         acquirer = new Acquirer();
         dropdown = new DropDown();
@@ -74,10 +82,10 @@ public class Robot extends IterativeRobot {
 
         SmartDashboard.putNumber(SHOOTER_SPEED_LABEL, 0.0);
         // Auton Distances:
-        SmartDashboard.putNumber("Rock", 0);
-        SmartDashboard.putNumber("Moat", 0);
-        SmartDashboard.putNumber("Rough", 0);
-        SmartDashboard.putNumber("Ramparts", 0);
+        SmartDashboard.putNumber("Rock", 168.0);
+        SmartDashboard.putNumber("Moat", 198.0);
+        SmartDashboard.putNumber("Rough", 196.0);
+        SmartDashboard.putNumber("Ramparts", 180.0);
         SmartDashboard.putNumber("Draw", 0); // complex
         SmartDashboard.putNumber("Cheval", 0);
         SmartDashboard.putNumber("Portcullis", 0); // complex
@@ -127,6 +135,12 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData("Auton Position", autonPositionChooser);
     }
 
+    private void chooseOperator() {
+        operatorChooser = new SendableChooser();
+        operatorChooser.addDefault("Jonah", JONAH_ID);
+        operatorChooser.addObject("Yubin", YUBIN_ID);
+    }
+
     private void setupAutonChooser() {
         autonChooser = new SendableChooser();
         autonChooser.addDefault("0. Do nothing", new CommandGroup());
@@ -173,7 +187,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("drivetrain right encoder", Robot.drivetrain.getRightEncoder());
         try {
             SmartDashboard.putNumber("Hopper Sensor Thing", Robot.hopper.getDistance());
-        } catch(Exception e) {
+        } catch (Exception e) {
             SmartDashboard.putNumber("Hopper Sensor Thing", -1.0);
         }
         SmartDashboard.putBoolean("Gear shift override", drivetrain.overrideAutoGearShifting);
@@ -190,8 +204,8 @@ public class Robot extends IterativeRobot {
         // Thresholds:
         SmartDashboard.putNumber("Gear Shifting Threshold", 40);
 
-        System.out.println(oi.driverGamepad.getLeftY());
-        System.out.println(oi.driverGamepad.getRightY());
+        // System.out.println(oi.driverGamepad.getLeftY());
+        // System.out.println(oi.driverGamepad.getRightY());
     }
 
     /**

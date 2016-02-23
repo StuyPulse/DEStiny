@@ -6,6 +6,9 @@ import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
+import static edu.stuy.robot.RobotMap.JONAH_ID;
+import static edu.stuy.robot.RobotMap.YUBIN_ID;
+
 public class DropDownMoveCommand extends Command {
 
     private double speed;
@@ -22,6 +25,12 @@ public class DropDownMoveCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
         speed = Robot.oi.operatorGamepad.getRightY() * speedFactor;
+        // boolean operator = (Boolean) Robot.operatorChooser.getSelected();
+        boolean operator = YUBIN_ID;
+        if (operator == JONAH_ID) { // True denotes Jonah, False denotes Yubin
+            // Jonah plays Flight Simulator. Apparently pulling down goes... up.
+            speed *= -1;
+        }
         if (Robot.dropdown.deadband(speed)) {
             Robot.dropdown.move(0.0);
         } else if (speed < 0) {
