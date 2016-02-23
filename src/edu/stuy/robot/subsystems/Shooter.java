@@ -29,8 +29,8 @@ public class Shooter extends Subsystem {
         shooterMotor.configNominalOutputVoltage(+0.0f, -0.0f);
         shooterMotor.configPeakOutputVoltage(+12.0f, -12.0f);
         shooterMotor.setProfile(0);
-        shooterMotor.setF(0.1);
-        shooterMotor.setP(0.5);
+        shooterMotor.setF(0.08);
+        shooterMotor.setP(0.45);
         shooterMotor.setI(0.1);
         shooterMotor.setD(0.05);
         shooterMotor.changeControlMode(TalonControlMode.Speed);
@@ -52,7 +52,7 @@ public class Shooter extends Subsystem {
     }
 
     public void setSpeedHigh() {
-        setRPM(SHOOTER_ENCODER_MAXSPEED);
+        setRPM(SHOOTER_ENCODER_MAXSPEED - 400.0);
     }
 
     public void toggle() {

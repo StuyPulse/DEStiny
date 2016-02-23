@@ -9,6 +9,8 @@ import edu.stuy.robot.commands.EnableAutoGearShiftCommand;
 import edu.stuy.robot.commands.HoodToggleCommand;
 import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.JionDriveCommand;
+import edu.stuy.robot.commands.ShooterSetHighCommand;
+import edu.stuy.robot.commands.ShooterStopCommand;
 import edu.stuy.robot.commands.HighGearCommand;
 import edu.stuy.robot.commands.ShooterToggleCommand;
 import edu.stuy.robot.commands.auton.DropDownMoveToAngleCommand;
@@ -68,6 +70,8 @@ public class OI {
 		operatorGamepad.getDPadRight().whenPressed(new ShooterToggleCommand());
 		operatorGamepad.getDPadDown().whenPressed(new ShooterToggleCommand());
 		operatorGamepad.getTopButton().whenPressed(new HoodToggleCommand());
+		operatorGamepad.getBottomButton().whenPressed(new ShooterSetHighCommand());
+		operatorGamepad.getRightButton().whenPressed(new ShooterStopCommand());
 		operatorGamepad.getRightAnalogButton().whenPressed(new DropDownMoveToAngleCommand(35));
 	}
 }
