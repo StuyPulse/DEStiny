@@ -1,6 +1,5 @@
 package edu.stuy.robot.commands.auton;
 
-import edu.stuy.robot.commands.LowGearCommand;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -26,6 +25,7 @@ public class GoOverRampartsCommand extends CommandGroup {
 		// a CommandGroup containing them would require both the chassis and the
 		// arm.
 		addSequential(new DropDownMoveToAngleCommand(50));
+		addSequential(new DriveForwardCommand(48.0, 3.0, 0.7));
 		addSequential(new DriveOverRampartsCommand());
 	}
 }

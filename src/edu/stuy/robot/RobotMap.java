@@ -25,8 +25,8 @@ public interface RobotMap {
     int DROPDOWN_MOTOR_CHANNEL = 8;
 
     // Solenoid ports
-    int HOOD_SOLENOID_CHANNEL = 3;
-    int GEAR_SHIFT_CHANNEL = 6;
+    int HOOD_SOLENOID_CHANNEL = 6;
+    int GEAR_SHIFT_CHANNEL = 3;
 
     // Tuneable threshold for current (used in gear shifting for drivetrain)
     int GEAR_SHIFT_THRESHOLD = 40;

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class GoOverRockWallCommand extends CommandGroup {
 
-    private static final double INITIAL_DISTANCE = 24.0;
+    private static final double INITIAL_DISTANCE = 72.0;
     private static final double INITIAL_TIME = 2.0;
     private static final double INITIAL_SPEED = 0.7;
 	public GoOverRockWallCommand() {

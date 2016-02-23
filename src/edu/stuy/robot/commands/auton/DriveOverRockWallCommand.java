@@ -22,7 +22,7 @@ public class DriveOverRockWallCommand extends DriveForwardCommand {
     @Override
     protected void execute() {
         super.setMaxDistanceInInches(SmartDashboard.getNumber("Rock"));
-        Robot.drivetrain.tankDrive(motorSpeed, 1.0);
+        super.execute();
     }
 
     @Override
