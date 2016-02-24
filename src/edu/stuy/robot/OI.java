@@ -16,6 +16,7 @@ import edu.stuy.robot.commands.ShooterLowerSpeed;
 import edu.stuy.robot.commands.ShooterRaiseSpeed;
 import edu.stuy.robot.commands.ShooterSetHighCommand;
 import edu.stuy.robot.commands.ShooterSetLayupCommand;
+import edu.stuy.robot.commands.ShooterSetMaxSpeed;
 import edu.stuy.robot.commands.ShooterStopCommand;
 import edu.stuy.robot.commands.ShooterToggleCommand;
 import edu.stuy.robot.commands.auton.DropDownMoveToAngleCommand;
@@ -73,15 +74,23 @@ public class OI {
         operatorGamepad.getRightTrigger().whileHeld(new AcquirerAcquireCommand());
         operatorGamepad.getRightBumper().whileHeld(new AcquirerDeacquireCommand());
 
-        operatorGamepad.getDPadUp().whenPressed(new ShooterRaiseSpeed());
-        operatorGamepad.getDPadDown().whenPressed(new ShooterLowerSpeed());
+        /*
+         * operatorGamepad.getDPadUp().whenPressed(new ShooterRaiseSpeed());
+         * operatorGamepad.getDPadDown().whenPressed(new ShooterLowerSpeed());
+         * operatorGamepad.getDPadLeft().whenPressed(new
+         * ShooterSetLayupCommand());
+         */
+
+        operatorGamepad.getDPadUp().whenPressed(new ShooterSetHighCommand());
         operatorGamepad.getDPadLeft().whenPressed(new ShooterSetLayupCommand());
+        operatorGamepad.getDPadRight().whenPressed(new ShooterSetMaxSpeed());
+        operatorGamepad.getDPadDown().whenPressed(new ShooterStopCommand());
 
         operatorGamepad.getTopButton().whenPressed(new HoodUpCommand());
         operatorGamepad.getRightButton().whenPressed(new HoodDownCommand());
-        operatorGamepad.getLeftButton().whenPressed(new ShooterSetHighCommand());
-        operatorGamepad.getBottomButton().whenPressed(new ShooterStopCommand());
+        // operatorGamepad.getLeftButton().whenPressed(new ShooterSetHighCommand());
+        // operatorGamepad.getBottomButton().whenPressed(new ShooterStopCommand());
 
-        operatorGamepad.getRightAnalogButton().whenPressed(new DropDownMoveToAngleCommand(35));
+        operatorGamepad.getRightAnalogButton().whenPressed(new DropDownMoveToAngleCommand(40));
     }
 }
