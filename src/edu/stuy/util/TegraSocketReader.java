@@ -46,6 +46,7 @@ public class TegraSocketReader implements Runnable {
                 latestData.set(parseMessage(in.readLine()));
                 System.out.println(Arrays.toString(latestData.get()));
             }
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

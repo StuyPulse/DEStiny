@@ -48,13 +48,14 @@ public class SetupforShotCommand extends Command {
             // TODO: Do real math; write non-wack calculation of rightWheelSpeed
             // Set rightWheelSpeed to the ratio of how far off it
             // is to how far it could possibly be off
-            double rightWheelSpeed = capWithinOne(-degsOff / (CAMERA_FRAME_PX_WIDTH / 2) * 10);
+            //double rightWheelSpeed = capWithinOne(-degsOff / (CAMERA_FRAME_PX_WIDTH / 2) * 300);
+            double rightWheelSpeed = 0.5;
             // Test with the following modification, or similar ones:
             // rightWheelSpeed = Math.signum(rightWheelSpeed) * Math.pow(rightWheelSpeed, 2);
             SmartDashboard.putNumber("CV| rightWheelSpeed to use", rightWheelSpeed);
+            System.out.println("\n\n\n\n\n\nTelling DT to move");
 
-            // Do not move for now, to just confirm communication
-            // Robot.drivetrain.tankDrive(-rightWheelSpeed, rightWheelSpeed);
+            Robot.drivetrain.tankDrive(-rightWheelSpeed, rightWheelSpeed);
         }
     }
 
@@ -64,11 +65,12 @@ public class SetupforShotCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        if (!goalInFrame || forceStopped) {
-            return true;
-        }
-        double degsOff = pxOffsetToDegrees(currentReading[0]);
-        return Math.abs(degsOff) < MAX_DEGREES_OFF_AUTO_AIMING;
+        return !forceStopped;
+        //if (!goalInFrame || forceStopped) {
+        //    return true;
+        //}
+        //double degsOff = pxOffsetToDegrees(currentReading[0]);
+        //return Math.abs(degsOff) < MAX_DEGREES_OFF_AUTO_AIMING;
     }
 
     // Called once after isFinished returns true

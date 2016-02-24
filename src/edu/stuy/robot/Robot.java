@@ -76,7 +76,7 @@ public class Robot extends IterativeRobot {
         dontStartCommands = false;
 
         drivetrain.setDrivetrainBrakeMode(true);
-        shooter.setShooterBrakeMode(false);
+        /*shooter.setShooterBrakeMode(false);
         hopper.setHopperBrakeMode(true);
         dropdown.setDropDownBreakMode(true);
 
@@ -96,21 +96,12 @@ public class Robot extends IterativeRobot {
         double finalVoltage = 170;
         SmartDashboard.putNumber("Initial Voltage", initialVoltage);
         SmartDashboard.putNumber("Final Voltage", finalVoltage);
-        SmartDashboard.putNumber("Conversion Factor", 90.0 / (finalVoltage - initialVoltage));
+        SmartDashboard.putNumber("Conversion Factor", 90.0 / (finalVoltage - initialVoltage));*/
 
-        drivetrain = new Drivetrain();
-        acquirer = new Acquirer();
-        dropdown = new DropDown();
-        hopper = new Hopper();
-        shooter = new Shooter();
-        hood = new Hood();
-        sonar = new Sonar();
-        oi = new OI();
-
-        drivetrain.setDrivetrainBrakeMode(true);
+        /*drivetrain.setDrivetrainBrakeMode(true);
         shooter.setShooterBrakeMode(false);
         hopper.setHopperBrakeMode(true);
-        dropdown.setDropDownBreakMode(true);
+        dropdown.setDropDownBreakMode(true);*/
 
         setupAutonChooser();
 
