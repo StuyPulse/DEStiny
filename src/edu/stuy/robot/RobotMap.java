@@ -47,6 +47,7 @@ public interface RobotMap {
     int SHOOTER_ENCODER_A_CHANNEL = 4;
     int SHOOTER_ENCODER_B_CHANNEL = 5;
     int LIMIT_SWITCH_CHANNEL = 6;
+    int FLASHLIGHT_CHANNEL = 7;
 
     // Analog ports
     int ACQUIRER_POTENTIOMETER_CHANNEL = 0;

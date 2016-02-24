@@ -7,6 +7,7 @@ import edu.stuy.robot.commands.AcquirerAcquireCommand;
 import edu.stuy.robot.commands.AcquirerDeacquireCommand;
 import edu.stuy.robot.commands.DisableAutoGearShiftCommand;
 import edu.stuy.robot.commands.EnableAutoGearShiftCommand;
+import edu.stuy.robot.commands.FlashlightToggleCommand;
 import edu.stuy.robot.commands.HighGearCommand;
 import edu.stuy.robot.commands.HoodDownCommand;
 import edu.stuy.robot.commands.HoodUpCommand;
@@ -65,6 +66,8 @@ public class OI {
         driverGamepad.getSelectButton().whenPressed(new DisableAutoGearShiftCommand());
         driverGamepad.getLeftTrigger().whileHeld(new JionDriveCommand());
         driverGamepad.getLeftTrigger().whenReleased(new HighGearCommand());
+        driverGamepad.getRightBumper().whenPressed(new FlashlightToggleCommand());
+        driverGamepad.getLeftBumper().whenPressed(new FlashlightToggleCommand());
 
         // operatorGamepad.getBottomButton().whileHeld(new
         // SetupforShotCommand());

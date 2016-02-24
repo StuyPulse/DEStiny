@@ -1,7 +1,7 @@
 package edu.stuy.robot;
 
-import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
 import static edu.stuy.robot.RobotMap.JONAH_ID;
+import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
 import static edu.stuy.robot.RobotMap.YUBIN_ID;
 
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
@@ -15,6 +15,7 @@ import edu.stuy.robot.commands.auton.ReachObstacleCommand;
 import edu.stuy.robot.subsystems.Acquirer;
 import edu.stuy.robot.subsystems.Drivetrain;
 import edu.stuy.robot.subsystems.DropDown;
+import edu.stuy.robot.subsystems.Flashlight;
 import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Hopper;
 import edu.stuy.robot.subsystems.Shooter;
@@ -44,6 +45,7 @@ public class Robot extends IterativeRobot {
     public static Shooter shooter;
     public static Hood hood;
     public static Sonar sonar;
+    public static Flashlight flashlight;
     public static OI oi;
 
     Command autonomousCommand;
@@ -73,6 +75,7 @@ public class Robot extends IterativeRobot {
         shooter = new Shooter();
         hood = new Hood();
         sonar = new Sonar();
+        flashlight = new Flashlight();
         oi = new OI();
 
         drivetrain.setDrivetrainBrakeMode(true);
