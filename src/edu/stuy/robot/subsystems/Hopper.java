@@ -2,10 +2,13 @@ package edu.stuy.robot.subsystems;
 
 import static edu.stuy.robot.RobotMap.HOPPER_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.HOPPER_SENSOR_CHANNEL;
+import static edu.stuy.robot.RobotMap.HOPPER_SENSOR_THRESHOLD;
 
+import edu.stuy.robot.Robot;
 import edu.stuy.robot.commands.HopperStopCommand;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -16,11 +19,13 @@ public class Hopper extends Subsystem {
     // here. Call these from Commands.
     private CANTalon hopperMotor;
     private AnalogInput distanceSensor;
+    private DigitalOutput yellowStrip;
 
     public Hopper() {
         hopperMotor = new CANTalon(HOPPER_MOTOR_CHANNEL);
         hopperMotor.setInverted(true);
         distanceSensor = new AnalogInput(HOPPER_SENSOR_CHANNEL);
+        yellowStrip = new DigitalOutput(5);
     }
 
     public void initDefaultCommand() {
@@ -46,5 +51,25 @@ public class Hopper extends Subsystem {
 
     public double getDistance() {
         return distanceSensor.getVoltage();
+    }
+
+    public boolean hasBall() {
+        return getDistance() > HOPPER_SENSOR_THRESHOLD;
+    }
+
+    public void lightOn() {
+        yellowStrip.set(true);
+    }
+
+    public void lightOff() {
+        yellowStrip.set(false);
+    }
+
+    public void runHopperSensor() {
+        if (hasBall()) {
+            lightOn();
+        } else {
+            lightOff();
+        }
     }
 }

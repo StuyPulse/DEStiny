@@ -39,6 +39,9 @@ public interface RobotMap {
     boolean HOOD_UP_POSITION = false;
     boolean HOOD_DOWN_POSITION = true;
 
+    // Hopper Constants
+    double HOPPER_SENSOR_THRESHOLD = 1.0;
+
     // Digital IO Ports
     int LEFT_ENCODER_CHANNEL_A = 0;
     int LEFT_ENCODER_CHANNEL_B = 1;
