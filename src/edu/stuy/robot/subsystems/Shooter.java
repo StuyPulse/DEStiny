@@ -75,6 +75,10 @@ public class Shooter extends Subsystem {
     }
 
     // Use the encoders to verify the speed
+    /**
+     * Sets the speed higher or lower (by 50.0) depending on the RPM
+     * @param RPM - The speed of the shooter from the RPM
+     */
     public void setSpeedReliablyRPM(double RPM) {
         double currentRPM = RPM;
         double startTime = Timer.getFPGATimestamp();
@@ -91,7 +95,11 @@ public class Shooter extends Subsystem {
             }
         }
     }
-
+    
+    /**
+     * Sets the speed higher or lower (by 0.05) depending on V Bus.
+     * @param speed - The speed of the shooter from the V Bus.
+     */
     public void setSpeedReliablyVBus(double speed) {
         double currentSpeed = speed;
         double startTime = Timer.getFPGATimestamp();

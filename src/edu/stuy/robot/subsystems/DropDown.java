@@ -52,7 +52,10 @@ public class DropDown extends Subsystem {
         return (x - SmartDashboard.getNumber("Initial Voltage"))
                 * SmartDashboard.getNumber("Conversion Factor");
     }
-
+    
+    /**
+     * Use in auton to lower acquirer to driving position
+     */
     public void lowerAcquirerToDrivingPosition() {
         dropDownMotor.set(0.25);
     }
@@ -61,6 +64,12 @@ public class DropDown extends Subsystem {
         dropDownMotor.enableBrakeMode(breakMode);
     }
 
+    /**
+     * Returns any number and its absolute value less than 0.1, to zero.
+     * @param speed - The speed of the dropdown
+     * @return Any number and its absolute value less than 0.1, to zero.
+     */
+    
     public boolean deadband(double speed) {
         return Math.abs(speed) < DROP_DOWN_DEADBAND;
     }
