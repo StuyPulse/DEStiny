@@ -48,8 +48,7 @@ public class SetupforShotCommand extends Command {
             // TODO: Do real math; write non-wack calculation of rightWheelSpeed
             // Set rightWheelSpeed to the ratio of how far off it
             // is to how far it could possibly be off
-            //double rightWheelSpeed = capWithinOne(-degsOff / (CAMERA_FRAME_PX_WIDTH / 2) * 300);
-            double rightWheelSpeed = 0.5;
+            double rightWheelSpeed = capWithinOne(-degsOff / (CAMERA_FRAME_PX_WIDTH / 2) * 300);
             // Test with the following modification, or similar ones:
             // rightWheelSpeed = Math.signum(rightWheelSpeed) * Math.pow(rightWheelSpeed, 2);
             SmartDashboard.putNumber("CV| rightWheelSpeed to use", rightWheelSpeed);

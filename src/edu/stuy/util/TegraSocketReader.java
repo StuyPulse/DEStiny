@@ -25,12 +25,9 @@ public class TegraSocketReader implements Runnable {
 
     private void setupSocket() {
         try {
-            System.out.println("About to set up serverSocket");
             socket = new ServerSocket(socketPort);
-            System.out.println("Just made serverSocket");
         } catch (IOException e) {
             e.printStackTrace();
-            int x = (new int[] {})[111];
         }
     }
 
@@ -38,6 +35,7 @@ public class TegraSocketReader implements Runnable {
     public void run() {
         try {
             tegraClient = socket.accept();
+            System.out.println("Accepting data from tegra socket");
             BufferedReader in =
                 new BufferedReader(
                     new InputStreamReader(tegraClient.getInputStream()));

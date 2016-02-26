@@ -58,8 +58,6 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-        System.out.println("IN ROBOT INIT. Starting robot.");
-
         // GyroPID
         SmartDashboard.putNumber("Gyro P", 0);
         SmartDashboard.putNumber("Gyro I", 0);
@@ -76,7 +74,7 @@ public class Robot extends IterativeRobot {
         dontStartCommands = false;
 
         drivetrain.setDrivetrainBrakeMode(true);
-        /*shooter.setShooterBrakeMode(false);
+        shooter.setShooterBrakeMode(false);
         hopper.setHopperBrakeMode(true);
         dropdown.setDropDownBreakMode(true);
 
@@ -96,19 +94,18 @@ public class Robot extends IterativeRobot {
         double finalVoltage = 170;
         SmartDashboard.putNumber("Initial Voltage", initialVoltage);
         SmartDashboard.putNumber("Final Voltage", finalVoltage);
-        SmartDashboard.putNumber("Conversion Factor", 90.0 / (finalVoltage - initialVoltage));*/
+        SmartDashboard.putNumber("Conversion Factor", 90.0 / (finalVoltage - initialVoltage));
 
-        /*drivetrain.setDrivetrainBrakeMode(true);
+        drivetrain.setDrivetrainBrakeMode(true);
         shooter.setShooterBrakeMode(false);
         hopper.setHopperBrakeMode(true);
-        dropdown.setDropDownBreakMode(true);*/
+        dropdown.setDropDownBreakMode(true);
 
         setupAutonChooser();
 
-        System.out.println("STARTING TEGRA THREAD");
-        // TODO: Re-add try,catch for the following:
+        System.out.println("Starting Tegra thread");
         startTegraReadingThread();
-        System.out.println("Started tegra thread");
+        System.out.println("Tegra thread running");
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
@@ -118,7 +115,6 @@ public class Robot extends IterativeRobot {
                 }
             }
         });
-        System.out.println("ADDED SHUTDOWN HOOK");
     }
 
     private void startTegraReadingThread() {
@@ -201,11 +197,11 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("drivetrain left encoder", Robot.drivetrain.getLeftEncoder());
         SmartDashboard.putNumber("drivetrain right encoder", Robot.drivetrain.getRightEncoder());
         SmartDashboard.putBoolean("Gear shift override", drivetrain.overrideAutoGearShifting);
+
         // Sonar:
-        // double[] sonarData = sonar.getData();
-        // System.out.println(Arrays.toString(sonarData));
-        // SmartDashboard.putNumber("Sonar L", sonarData[0]);
-        // SmartDashboard.putNumber("Sonar R", sonarData[1]);
+        double[] sonarData = sonar.getData();
+        SmartDashboard.putNumber("Sonar L", sonarData[0]);
+        SmartDashboard.putNumber("Sonar R", sonarData[1]);
 
         // Solenoids:
         SmartDashboard.putBoolean("Hood piston", Robot.hood.getState());
