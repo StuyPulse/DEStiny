@@ -105,6 +105,11 @@ public class Robot extends IterativeRobot {
 
         setupAutonChooser();
 
+        System.out.println("STARTING TEGRA THREAD");
+        // TODO: Re-add try,catch for the following:
+        startTegraReadingThread();
+        System.out.println("Started tegra thread");
+
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
@@ -175,10 +180,6 @@ public class Robot extends IterativeRobot {
         }
         Robot.drivetrain.resetEncoders();
         Robot.shooter.stop();
-        System.out.println("STARTING TEGRA THREAD");
-        // TODO: Re-add try,catch for the following:
-        startTegraReadingThread();
-        System.out.println("Started tegra thread");
     }
 
     /**
@@ -186,9 +187,6 @@ public class Robot extends IterativeRobot {
      * to reset subsystems before shutting down.
      */
     public void disabledInit() {
-        if (tegraThread != null && tegraThread.isAlive()) {
-            tegraThread.interrupt();
-        }
     }
 
     /**
