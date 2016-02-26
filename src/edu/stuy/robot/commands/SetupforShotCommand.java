@@ -67,7 +67,6 @@ public class SetupforShotCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         if (!goalInFrame || forceStopped) {
-            Robot.redSignalLight.setOff();
             return true;
         }
         Robot.redSignalLight.setOn();
@@ -77,6 +76,7 @@ public class SetupforShotCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+        Robot.redSignalLight.set(goalInFrame);
     }
 
     // Called when another command which requires one or more of the same
