@@ -127,7 +127,9 @@ public class Robot extends IterativeRobot {
             Robot.hopper.stop();
         }
     }
-
+    /**
+     * Maps the relative locations of the obstacles
+     */
     private void setupAutonPositionChooser() {
         autonPositionChooser = new SendableChooser();
         SmartDashboard.putString("1", "The low bar is in position 1, not a valid autonomous choice");

@@ -8,7 +8,7 @@ import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * Turns robot relative to its current position
  */
 public class RotateDrivetrainCommand extends Command {
 

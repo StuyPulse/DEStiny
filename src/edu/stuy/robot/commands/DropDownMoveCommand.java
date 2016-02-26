@@ -26,7 +26,7 @@ public class DropDownMoveCommand extends Command {
     protected void initialize() {
         speed = Robot.oi.operatorGamepad.getRightY() * speedFactor;
         // boolean operator = (Boolean) Robot.operatorChooser.getSelected();
-        boolean operator = YUBIN_ID;
+        boolean operator = JONAH_ID;
         if (operator == JONAH_ID) { // True denotes Jonah, False denotes Yubin
             // Jonah plays Flight Simulator. Apparently pulling down goes... up.
             speed *= -1;
@@ -35,7 +35,7 @@ public class DropDownMoveCommand extends Command {
             Robot.dropdown.move(0.0);
         } else if (speed < 0) {
             // When lift amount is negative the dropdown goes up
-            Robot.dropdown.move(speed * 0.55);
+            Robot.dropdown.move(speed * 0.75);
             Robot.dropdown.currentAngle = Robot.dropdown.getAngle();
         } else {
             Robot.dropdown.move(speed * 0.35);

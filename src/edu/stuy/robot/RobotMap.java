@@ -85,7 +85,7 @@ public interface RobotMap {
 
     // Auton
     double ROCK_WALL_CURRENT_THRESHOLD = 0.0;
-    double ARM_ANGLE_TO_MOVE_AUTON = 35.0;
+    int ARM_CROSSING_OBSTACLE_ANGLE = 50;
 
     double SLOT_ANGLE_TO_GOAL_1 = 39.614; // UNUSED (lowbar)
     double SLOT_ANGLE_TO_GOAL_2 = 29.535;

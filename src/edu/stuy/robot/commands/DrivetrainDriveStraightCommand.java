@@ -53,6 +53,9 @@ public class DrivetrainDriveStraightCommand extends Command {
     protected void interrupted() {
     }
 
+    /**
+     * @return The factor at which side you slow down if you are moving too fast
+     */
     private double getSpeedMultiplier() {
         if (leftDist > rightDist) {
             return 1.0 - Math.min(((leftDist - rightDist) / (rightDist + 0.5)), 1.0);

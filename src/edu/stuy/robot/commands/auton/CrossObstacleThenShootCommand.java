@@ -37,7 +37,9 @@ public class CrossObstacleThenShootCommand extends CommandGroup {
         
         
         addSequential(obstacle);
+        //Turns robot to face wall
         addSequential(new AlignWithWallCommand(0.5));
+        //Sets robot a specific distance away from the wall
         addSequential(new SetDistanceFromWallCommand(RobotMap.DISTANCE_TO_WALL, 0.5));
         addSequential(new RotateDrivetrainCommand());
         // TODO: Fix RotateDrivetrainCommand to work once we have PID tuning
