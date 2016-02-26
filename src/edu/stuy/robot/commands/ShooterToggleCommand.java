@@ -11,16 +11,16 @@ public class ShooterToggleCommand extends Command {
 	public ShooterToggleCommand() {
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.shooter);
-		requires(Robot.cvSignalLights);
+		requires(Robot.redSignalLight);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		boolean shooterOn = Robot.shooter.toggle();
 		if (!shooterOn) {
-			// If they've finished shooting, turn off
-			// the cv status lights if they were on
-			Robot.cvSignalLights.turnOffAll();
+            // If they've finished shooting, make sure
+            // the ready-to-shoot light is off
+			Robot.redSignalLight.setOff();
 		}
 	}
 

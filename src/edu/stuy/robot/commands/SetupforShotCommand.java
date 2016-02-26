@@ -23,7 +23,7 @@ public class SetupforShotCommand extends Command {
 		// eg. requires(chassis);
 		requires(Robot.shooter);
 		requires(Robot.drivetrain);
-		requires(Robot.cvSignalLights);
+		requires(Robot.redSignalLight);
 	}
 
 	// Called just before this Command runs the first time
@@ -36,13 +36,11 @@ public class SetupforShotCommand extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		if (!stopAiming) {
+            currentReading = reader.readVector();
 			if (currentReading == null) {
 			    goalInFrame = false;
-			    Robot.cvSignalLights.setNotInFrame();
 			    return;
 			}
-			Robot.cvSignalLights.setInFrame();
-			currentReading = reader.readVector();
 			double degsOff = pxOffsetToDegrees(currentReading[0]);
 			// TODO: Do real math; write non-wack calculation of rightWheelSpeed
 			double rightWheelSpeed = -degsOff / (CAMERA_FRAME_PX_WIDTH / 2);
@@ -56,9 +54,10 @@ public class SetupforShotCommand extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 	    if (!goalInFrame) {
+	        Robot.redSignalLight.setOff();
 	        return true;
 	    }
-	    Robot.cvSignalLights.setReadyToShoot();
+	    Robot.redSignalLight.setOn();
 		double degsOff = pxOffsetToDegrees(currentReading[0]);
 		return Math.abs(degsOff) < MAX_DEGREES_OFF_AUTO_AIMING;
 	}

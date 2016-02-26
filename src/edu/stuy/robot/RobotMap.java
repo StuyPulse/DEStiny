@@ -78,8 +78,8 @@ public interface RobotMap {
     int CAMERA_FRAME_PX_HEIGHT = 720;
     int CAMERA_VIEWING_ANGLE_X = 180; // This is most likely wrong
 
-    // CV Signal Lights
-    int CV_SIGNAL_LIGHT_RED_PORT = 4;
-    int CV_SIGNAL_LIGHT_YELLOW_PORT = 5;
-    int CV_SIGNAL_LIGHT_BLUE_PORT = 6;
+    // Signal Lights
+    int SIGNAL_LIGHT_RED_PORT = 4;
+    int SIGNAL_LIGHT_YELLOW_PORT = 5;
+    int SIGNAL_LIGHT_BLUE_PORT = 6;
 }

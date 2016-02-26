@@ -11,11 +11,11 @@ import edu.stuy.robot.commands.auton.PassDrawbridgeCommand;
 import edu.stuy.robot.commands.auton.PassPortcullisCommand;
 import edu.stuy.robot.commands.auton.ReachObstacleCommand;
 import edu.stuy.robot.subsystems.Acquirer;
-import edu.stuy.robot.subsystems.CVSignalLights;
 import edu.stuy.robot.subsystems.Drivetrain;
 import edu.stuy.robot.subsystems.DropDown;
 import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Hopper;
+import edu.stuy.robot.subsystems.RedSignalLight;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -40,7 +40,7 @@ public class Robot extends IterativeRobot {
     public static DropDown dropdown;
     public static Shooter shooter;
     public static Hood hood;
-    public static CVSignalLights cvSignalLights;
+    public static RedSignalLight redSignalLight;
     // public static Sonar sonar;
     public static OI oi;
     Command autonomousCommand;
@@ -57,7 +57,7 @@ public class Robot extends IterativeRobot {
         hopper = new Hopper();
         shooter = new Shooter();
         hood = new Hood();
-        cvSignalLights = new CVSignalLights();
+        redSignalLight = new RedSignalLight();
         oi = new OI();
 
         drivetrain.setDrivetrainBrakeMode(true);
