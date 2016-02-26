@@ -86,4 +86,9 @@ public interface RobotMap {
     double MAX_VERTICAL_PX_OFF_AUTO_AIMING = 20;
 
     double DROP_DOWN_DEADBAND = 0.01;
+
+    // Signal Lights
+    int SIGNAL_LIGHT_RED_PORT = 4;
+    int SIGNAL_LIGHT_YELLOW_PORT = 5;
+    int SIGNAL_LIGHT_BLUE_PORT = 6;
 }

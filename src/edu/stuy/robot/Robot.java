@@ -15,6 +15,7 @@ import edu.stuy.robot.subsystems.Drivetrain;
 import edu.stuy.robot.subsystems.DropDown;
 import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Hopper;
+import edu.stuy.robot.subsystems.RedSignalLight;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.stuy.robot.subsystems.Sonar;
 import edu.stuy.util.TegraSocketReader;
@@ -43,6 +44,7 @@ public class Robot extends IterativeRobot {
     public static Shooter shooter;
     public static Hood hood;
     public static Sonar sonar;
+    public static RedSignalLight redSignalLight;
     public static OI oi;
     Command autonomousCommand;
     SendableChooser autonChooser;
@@ -69,6 +71,8 @@ public class Robot extends IterativeRobot {
         shooter = new Shooter();
         hood = new Hood();
         sonar = new Sonar();
+        redSignalLight = new RedSignalLight();
+
         oi = new OI();
 
         dontStartCommands = false;

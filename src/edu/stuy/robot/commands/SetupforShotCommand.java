@@ -18,11 +18,13 @@ public class SetupforShotCommand extends Command {
         return CAMERA_VIEWING_ANGLE_X * px / CAMERA_FRAME_PX_WIDTH;
     }
 
-    public SetupforShotCommand() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-        requires(Robot.drivetrain);
-    }
+	public SetupforShotCommand() {
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+		requires(Robot.shooter);
+		requires(Robot.drivetrain);
+		requires(Robot.redSignalLight);
+	}
 
     // Called just before this Command runs the first time
     protected void initialize() {
@@ -64,17 +66,17 @@ public class SetupforShotCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return !forceStopped;
-        //if (!goalInFrame || forceStopped) {
-        //    return true;
-        //}
-        //double degsOff = pxOffsetToDegrees(currentReading[0]);
-        //return Math.abs(degsOff) < MAX_DEGREES_OFF_AUTO_AIMING;
+        if (!goalInFrame || forceStopped) {
+            Robot.redSignalLight.setOff();
+            return true;
+        }
+        Robot.redSignalLight.setOn();
+        double degsOff = pxOffsetToDegrees(currentReading[0]);
+        return Math.abs(degsOff) < MAX_DEGREES_OFF_AUTO_AIMING;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-        // TODO: Handle goalInFrame being false (e.g. with the LEDs)
     }
 
     // Called when another command which requires one or more of the same
