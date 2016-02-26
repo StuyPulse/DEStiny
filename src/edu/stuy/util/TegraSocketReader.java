@@ -8,14 +8,25 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Runnable for setting up a server socket and with it, reading data
+ * from a client running on the Tegra
+ * @author Berkow
+ *
+ */
 public class TegraSocketReader implements Runnable {
 
+    /**
+     * Holds the array of three <code>double</code>s most recently read from the
+     * Tegra. If nothing has yet been read, or if the failure value (three
+     * <code>Infinity</code>s) is received, it contains <code>null</code>.
+     */
     private AtomicReference<double[]> latestData;
 
     private ServerSocket socket;
     private Socket tegraClient;
 
-    private static int socketPort = 7054;
+    private static final int socketPort = 7054;
 
     public TegraSocketReader() {
         latestData = new AtomicReference<double[]>();
@@ -23,6 +34,9 @@ public class TegraSocketReader implements Runnable {
         setupSocket();
     }
 
+    /**
+     * Creates a server socket on port 7054
+     */
     private void setupSocket() {
         try {
             socket = new ServerSocket(socketPort);
@@ -31,6 +45,11 @@ public class TegraSocketReader implements Runnable {
         }
     }
 
+    /**
+     * Reads lines of data sent to the ServerSocket. Each line
+     * is parsed into an array of three doubles, and <code>latestData</code>
+     * is set to this array.
+     */
     @Override
     public void run() {
         try {
@@ -50,7 +69,14 @@ public class TegraSocketReader implements Runnable {
         }
     }
 
-    // Parse a string of the form "DOUBLE,DOUBLE,DOUBLE\n" into a double[]
+    /**
+     * Parses three doubles separated by commas into an array of 3
+     * <code>double</code>s
+     * @param data Three <code>double</code> literals separated by commas,
+     * with optional whitespace around each <code>double</code>
+     * @return An array of three <code>double</code>s, read from
+     * <code>data</code>
+     */
     private static double[] parseMessage(String data) {
         String[] dbls = data.split(",");
         if (dbls.length < 3) {
