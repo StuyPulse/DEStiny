@@ -12,10 +12,6 @@ public interface RobotMap {
     int DRIVER_GAMEPAD = 0;
     int OPERATOR_GAMEPAD = 1;
 
-    // Operator IDs
-    boolean JONAH_ID = true;
-    boolean YUBIN_ID = false;
-
     // Drivetrain CANTalon channels
     int FRONT_RIGHT_MOTOR_CHANNEL = 1;
     int REAR_RIGHT_MOTOR_CHANNEL = 2;
@@ -101,4 +97,9 @@ public interface RobotMap {
     int CAMERA_FRAME_PX_WIDTH = 1280;
     int CAMERA_FRAME_PX_HEIGHT = 720;
     int CAMERA_VIEWING_ANGLE_X = 180; // This is most likely wrong
+
+    // Operator IDs
+    int JONAH_ID = 0;
+    int YUBIN_ID = 1;
+
 }
