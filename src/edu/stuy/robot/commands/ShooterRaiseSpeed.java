@@ -15,10 +15,10 @@ public class ShooterRaiseSpeed extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        if (Robot.shooter.currSpeed < 1.0) {
-            Robot.shooter.currSpeed += 0.04;
+        if (Robot.shooter.currentSpeed < 1.0) {
+            Robot.shooter.currentSpeed += 0.04;
         }
-        System.out.println(Robot.shooter.currSpeed);
+        System.out.println(Robot.shooter.currentSpeed);
     }
 
     // Called repeatedly when this Command is scheduled to run

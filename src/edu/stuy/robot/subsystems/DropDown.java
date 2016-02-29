@@ -49,8 +49,10 @@ public class DropDown extends Subsystem {
 
     public double getAngle() {
         double x = getVoltage();
-        return (x - SmartDashboard.getNumber("Initial Voltage"))
-                * SmartDashboard.getNumber("Conversion Factor");
+        double initialVoltage = 93.5;
+        double finalVoltage = 170.0;
+        double conversionFactor = 90.0 / (finalVoltage - initialVoltage);
+        return (x - initialVoltage) * conversionFactor;
     }
     
     /**

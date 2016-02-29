@@ -1,9 +1,8 @@
 package edu.stuy.robot.subsystems;
 
+import static edu.stuy.robot.RobotMap.FLASHLIGHT_CHANNEL;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
-import static edu.stuy.robot.RobotMap.FLASHLIGHT_CHANNEL;
 
 /**
  *

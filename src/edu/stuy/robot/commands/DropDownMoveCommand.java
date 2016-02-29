@@ -25,10 +25,10 @@ public class DropDownMoveCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
         speed = Robot.oi.operatorGamepad.getRightY() * speedFactor;
-        // boolean operator = (Boolean) Robot.operatorChooser.getSelected();
-        boolean operator = JONAH_ID;
-        if (operator == JONAH_ID) { // True denotes Jonah, False denotes Yubin
-            // Jonah plays Flight Simulator. Apparently pulling down goes... up.
+        boolean operator = JONAH_ID; // (Boolean) Robot.operatorChooser.getSelected();
+        if (operator == JONAH_ID) {
+            // True denotes Jonah, False denotes Yubin
+            // Jonah plays Flight Simulators so pulling up goes down
             speed *= -1;
         }
         if (Robot.dropdown.deadband(speed)) {

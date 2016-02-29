@@ -1,7 +1,6 @@
 package edu.stuy.robot.commands.auton;
 
 import edu.stuy.robot.Robot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveOverRockWallCommand extends DriveForwardCommand {
 
@@ -20,7 +19,7 @@ public class DriveOverRockWallCommand extends DriveForwardCommand {
 
     @Override
     protected void execute() {
-        super.setMaxDistanceInInches(SmartDashboard.getNumber("Rock"));
+        super.setMaxDistanceInInches(168.0);
         super.execute();
     }
 

@@ -48,9 +48,9 @@ public class RotateDrivetrainCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         if (angle < 0) {
-            return Math.abs(Robot.drivetrain.getGyroAngle() - (360 + angle)) < 1.0;
+            return true; // Math.abs(Robot.drivetrain.getGyroAngle() - (360 + angle)) < 1.0;
         } else {
-            return Math.abs(Robot.drivetrain.getGyroAngle() - angle) < 1.0;
+            return true; // Math.abs(Robot.drivetrain.getGyroAngle() - angle) < 1.0;
         }
     }
 

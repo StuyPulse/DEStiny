@@ -1,12 +1,9 @@
 package edu.stuy.robot.subsystems;
 
 import static edu.stuy.robot.RobotMap.ACQUIRER_MOTOR_CHANNEL;
-import static edu.stuy.robot.RobotMap.ACQUIRER_POTENTIOMETER_CHANNEL;
 import edu.stuy.robot.commands.AcquirerStopCommand;
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 
 /**
  *
@@ -14,7 +11,6 @@ import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 public class Acquirer extends Subsystem {
 
 	private CANTalon acquirerMotor;
-	private String outString = "";
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
@@ -22,8 +18,6 @@ public class Acquirer extends Subsystem {
 	public Acquirer() {
 		acquirerMotor = new CANTalon(ACQUIRER_MOTOR_CHANNEL);
 	}
-
-	// Used for auton
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.

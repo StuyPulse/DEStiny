@@ -99,7 +99,10 @@ public class Drivetrain extends Subsystem {
         robotDrive.tankDrive(left, right);
     }
 
-    public double getGyroAngle() {
+    
+    /*
+     * Does not work, TODO: FIX
+     public double getGyroAngle() {
         drifts[counter % 8] = currentAngle - gyro.getAngle();
         currentAngle = gyro.getAngle();
         if (counter > 9) {
@@ -107,11 +110,11 @@ public class Drivetrain extends Subsystem {
             for (double d : drifts) {
                 avg += d;
             }
-            //System.out.println("Average of 8: " + (avg / 8));
         }
         counter++;
         return gyro.getAngle();
     }
+    */
 
     public double getLeftEncoder() {
         return Math.abs(leftEncoder.getDistance());

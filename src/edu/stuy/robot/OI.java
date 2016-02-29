@@ -2,7 +2,6 @@ package edu.stuy.robot;
 
 import static edu.stuy.robot.RobotMap.DRIVER_GAMEPAD;
 import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
-
 import edu.stuy.robot.commands.AcquirerAcquireCommand;
 import edu.stuy.robot.commands.AcquirerDeacquireCommand;
 import edu.stuy.robot.commands.DisableAutoGearShiftCommand;
@@ -13,13 +12,10 @@ import edu.stuy.robot.commands.HoodDownCommand;
 import edu.stuy.robot.commands.HoodUpCommand;
 import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.JionDriveCommand;
-import edu.stuy.robot.commands.ShooterLowerSpeed;
-import edu.stuy.robot.commands.ShooterRaiseSpeed;
 import edu.stuy.robot.commands.ShooterSetHighCommand;
 import edu.stuy.robot.commands.ShooterSetLayupCommand;
 import edu.stuy.robot.commands.ShooterSetMaxSpeed;
 import edu.stuy.robot.commands.ShooterStopCommand;
-import edu.stuy.robot.commands.ShooterToggleCommand;
 import edu.stuy.robot.commands.auton.DropDownMoveToAngleCommand;
 import edu.stuy.util.Gamepad;
 
@@ -69,20 +65,10 @@ public class OI {
         driverGamepad.getRightBumper().whenPressed(new FlashlightToggleCommand());
         driverGamepad.getLeftBumper().whenPressed(new FlashlightToggleCommand());
 
-        // operatorGamepad.getBottomButton().whileHeld(new
-        // SetupforShotCommand());
-
         operatorGamepad.getLeftTrigger().whileHeld(new HopperRunCommand(true));
         operatorGamepad.getLeftBumper().whileHeld(new HopperRunCommand(false));
         operatorGamepad.getRightTrigger().whileHeld(new AcquirerAcquireCommand());
         operatorGamepad.getRightBumper().whileHeld(new AcquirerDeacquireCommand());
-
-        /*
-         * operatorGamepad.getDPadUp().whenPressed(new ShooterRaiseSpeed());
-         * operatorGamepad.getDPadDown().whenPressed(new ShooterLowerSpeed());
-         * operatorGamepad.getDPadLeft().whenPressed(new
-         * ShooterSetLayupCommand());
-         */
 
         operatorGamepad.getDPadUp().whenPressed(new ShooterSetHighCommand());
         operatorGamepad.getDPadLeft().whenPressed(new ShooterSetLayupCommand());
@@ -91,8 +77,6 @@ public class OI {
 
         operatorGamepad.getTopButton().whenPressed(new HoodUpCommand());
         operatorGamepad.getRightButton().whenPressed(new HoodDownCommand());
-        // operatorGamepad.getLeftButton().whenPressed(new ShooterSetHighCommand());
-        // operatorGamepad.getBottomButton().whenPressed(new ShooterStopCommand());
 
         operatorGamepad.getRightAnalogButton().whenPressed(new DropDownMoveToAngleCommand(40));
     }

@@ -15,7 +15,7 @@ public class ShooterSetHighCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        Robot.shooter.setSpeed(Robot.shooter.currSpeed);
+        Robot.shooter.setSpeed(Robot.shooter.currentSpeed);
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -35,6 +35,9 @@ public interface RobotMap {
     // Tuneable threshold for current (used in gear shifting for drivetrain)
     int GEAR_SHIFT_THRESHOLD = 40;
 
+    // DropDown Constants
+    double DROP_DOWN_DEADBAND = 0.01;
+
     // Hood Constants
     boolean HOOD_UP_POSITION = false;
     boolean HOOD_DOWN_POSITION = true;
@@ -98,6 +101,4 @@ public interface RobotMap {
     int CAMERA_FRAME_PX_WIDTH = 1280;
     int CAMERA_FRAME_PX_HEIGHT = 720;
     int CAMERA_VIEWING_ANGLE_X = 180; // This is most likely wrong
-
-    double DROP_DOWN_DEADBAND = 0.01;
 }

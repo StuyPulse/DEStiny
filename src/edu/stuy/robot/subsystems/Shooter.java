@@ -22,7 +22,7 @@ public class Shooter extends Subsystem {
     private CANTalon shooterMotor;
     private boolean on;
 
-    public double currSpeed = 1.0;
+    public double currentSpeed = 1.0;
 
     public Shooter() {
         shooterMotor = new CANTalon(SHOOTER_MOTOR_CHANNEL);

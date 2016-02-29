@@ -15,8 +15,8 @@ public class ShooterLowerSpeed extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        Robot.shooter.currSpeed -= 0.04;
-        System.out.println(Robot.shooter.currSpeed);
+        Robot.shooter.currentSpeed -= 0.04;
+        System.out.println(Robot.shooter.currentSpeed);
     }
 
     // Called repeatedly when this Command is scheduled to run
