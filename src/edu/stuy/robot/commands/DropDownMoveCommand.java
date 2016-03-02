@@ -1,13 +1,11 @@
 package edu.stuy.robot.commands;
 
+import static edu.stuy.robot.RobotMap.JONAH_ID;
 import static java.lang.Math.PI;
 import static java.lang.Math.sin;
 import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-
-import static edu.stuy.robot.RobotMap.JONAH_ID;
-import static edu.stuy.robot.RobotMap.YUBIN_ID;
 
 public class DropDownMoveCommand extends Command {
 
