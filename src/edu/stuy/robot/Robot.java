@@ -107,10 +107,7 @@ public class Robot extends IterativeRobot {
 
         setupAutonChooser();
 
-        System.out.println("Starting Tegra thread");
         startTegraReadingThread();
-        System.out.println("Tegra thread running");
-
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
@@ -119,13 +116,17 @@ public class Robot extends IterativeRobot {
                 }
             }
         });
+        System.out.println("Added shutdown hook for Tegra thread interruption");
     }
 
     private void startTegraReadingThread() {
+        System.out.println("Initializing a TegraSocketReader");
         tegraReader = new TegraSocketReader();
-        // Call .start(), rather than .run(), to run it in a separate thread
+        System.out.println("Setting up thread");
         tegraThread = new Thread(tegraReader);
+        // Call .start(), rather than .run(), to run it in a separate thread
         tegraThread.start();
+        System.out.println("Done!");
     }
 
     public static double[] readTegraVector() {

@@ -1,14 +1,18 @@
 package edu.stuy.robot.commands;
 
+import static edu.stuy.robot.RobotMap.CAMERA_FRAME_PX_WIDTH;
+import static edu.stuy.robot.RobotMap.CAMERA_VIEWING_ANGLE_X;
+import static edu.stuy.robot.RobotMap.MAX_DEGREES_OFF_AUTO_AIMING;
+
 import edu.stuy.robot.Robot;
-import static edu.stuy.robot.RobotMap.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
+ * Incrementally rotate the drivetrain until a high goal
+ * is centered in thecamera's frame
  */
-public class SetupforShotCommand extends Command {
+public class RotateToGoalCommand extends Command {
 
     private double[] currentReading;
     private boolean goalInFrame;
@@ -18,22 +22,22 @@ public class SetupforShotCommand extends Command {
         return CAMERA_VIEWING_ANGLE_X * px / CAMERA_FRAME_PX_WIDTH;
     }
 
-	public SetupforShotCommand() {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
-		requires(Robot.shooter);
-		requires(Robot.drivetrain);
-		requires(Robot.redSignalLight);
-	}
+    public RotateToGoalCommand() {
+        // Use requires() here to declare subsystem dependencies
+        requires(Robot.drivetrain);
+        requires(Robot.redSignalLight);
+    }
 
     // Called just before this Command runs the first time
+    @Override
     protected void initialize() {
         goalInFrame = true; // Assume it is there until we see otherwise
     }
 
     // Called repeatedly when this Command is scheduled to run
+    @Override
     protected void execute() {
-        if (Robot.oi.operatorGamepad.getStartButton().get()) {
+        if (Robot.oi.driverGamepad.getStartButton().get()) {
             forceStopped = true;
         }
         if (!forceStopped) {
@@ -47,24 +51,21 @@ public class SetupforShotCommand extends Command {
             SmartDashboard.putNumber("CV| vector Y", currentReading[1]);
             SmartDashboard.putNumber("CV| bounding rect angle", currentReading[2]);
             double degsOff = pxOffsetToDegrees(currentReading[0]);
-            // TODO: Do real math; write non-wack calculation of rightWheelSpeed
-            // Set rightWheelSpeed to the ratio of how far off it
-            // is to how far it could possibly be off
-            double rightWheelSpeed = capWithinOne(-degsOff / (CAMERA_FRAME_PX_WIDTH / 2) * 300);
-            // Test with the following modification, or similar ones:
+            double rightWheelSpeed = clampWithinOne(-degsOff / (CAMERA_FRAME_PX_WIDTH / 2) * 50);
+            // Try with the following modification, or similar ones:
             // rightWheelSpeed = Math.signum(rightWheelSpeed) * Math.pow(rightWheelSpeed, 2);
             SmartDashboard.putNumber("CV| rightWheelSpeed to use", rightWheelSpeed);
-            System.out.println("\n\n\n\n\n\nTelling DT to move");
 
             Robot.drivetrain.tankDrive(-rightWheelSpeed, rightWheelSpeed);
         }
     }
 
-    private double capWithinOne(double x) {
+    private double clampWithinOne(double x) {
         return Math.signum(x) * Math.min(Math.abs(x), 1);
     }
 
     // Make this return true when this Command no longer needs to run execute()
+    @Override
     protected boolean isFinished() {
         if (!goalInFrame || forceStopped) {
             return true;
@@ -75,12 +76,14 @@ public class SetupforShotCommand extends Command {
     }
 
     // Called once after isFinished returns true
+    @Override
     protected void end() {
         Robot.redSignalLight.set(goalInFrame);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
+    @Override
     protected void interrupted() {
     }
 }

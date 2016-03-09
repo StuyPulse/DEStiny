@@ -9,8 +9,9 @@ import edu.stuy.robot.commands.EnableAutoGearShiftCommand;
 import edu.stuy.robot.commands.HoodToggleCommand;
 import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.JionDriveCommand;
+import edu.stuy.robot.commands.MoveIntoShotRangeCommand;
 import edu.stuy.robot.commands.RotateToAimCommand;
-import edu.stuy.robot.commands.SetupforShotCommand;
+import edu.stuy.robot.commands.RotateToGoalCommand;
 import edu.stuy.robot.commands.HighGearCommand;
 import edu.stuy.robot.commands.ShooterToggleCommand;
 import edu.stuy.robot.commands.auton.DropDownMoveToAngleCommand;
@@ -57,10 +58,11 @@ public class OI {
 
 		driverGamepad.getStartButton().whenPressed(new EnableAutoGearShiftCommand());
 		driverGamepad.getSelectButton().whenPressed(new DisableAutoGearShiftCommand());
-		driverGamepad.getLeftTrigger().whileHeld(new JionDriveCommand());
-		driverGamepad.getLeftTrigger().whenReleased(new HighGearCommand());
 
-		operatorGamepad.getBottomButton().whileHeld(new SetupforShotCommand());
+		driverGamepad.getLeftTrigger().whileHeld(new RotateToGoalCommand());
+		driverGamepad.getLeftTrigger().whenReleased(new MoveIntoShotRangeCommand());
+
+		operatorGamepad.getBottomButton().whileHeld(new RotateToGoalCommand());
 		operatorGamepad.getLeftTrigger().whileHeld(new RotateToAimCommand());//new HopperRunCommand(true));
 		operatorGamepad.getLeftBumper().whileHeld(new HopperRunCommand(false));
 		operatorGamepad.getRightTrigger().whileHeld(new AcquirerAcquireCommand());

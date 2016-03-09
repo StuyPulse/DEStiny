@@ -11,16 +11,15 @@ import static edu.stuy.robot.RobotMap.CAMERA_FRAME_PX_HEIGHT;
 /**
  *
  */
-public class MoveIntoShotRangeCVCommand extends Command {
+public class MoveIntoShotRangeCommand extends Command {
 
     private double[] currentReading;
     private boolean forceStopped;
     private boolean goalLeftFrame;
     private boolean readyForShot;
 
-    public MoveIntoShotRangeCVCommand() {
+    public MoveIntoShotRangeCommand() {
         // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
         requires(Robot.drivetrain);
     }
 
