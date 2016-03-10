@@ -9,11 +9,13 @@ public class AcquirerAcquireCommand extends Command {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.acquirer);
+		requires(Robot.hopper);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		Robot.acquirer.acquire();
+		Robot.hopper.feed();
 	}
 
 	// Called repeatedly when this Command is scheduled to run

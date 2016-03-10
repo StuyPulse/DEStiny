@@ -5,7 +5,7 @@ import edu.stuy.robot.subsystems.Sonar;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * Makes robot face wall
  */
 public class AlignWithWallCommand extends Command {
 

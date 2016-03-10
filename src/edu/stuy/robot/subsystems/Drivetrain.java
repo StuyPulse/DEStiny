@@ -40,10 +40,8 @@ public class Drivetrain extends Subsystem {
     private double[] currents;
 
     public boolean gearUp; // Stores the state of the gear shift
-    public boolean overrideAutoGearShifting; // True if automatic gear shifting
-                                             // is not being used
-    public boolean autoGearShiftingState; // True if automatic gear shifting was
-                                          // disabled and never re-enabled
+    public boolean overrideAutoGearShifting; // True if automatic gear shifting is not being used
+    public boolean autoGearShiftingState; // True if automatic gear shifting was disabled and never re-enabled
 
     private int gearCounter = 0;
     private double[] drifts = new double[8];
@@ -101,7 +99,10 @@ public class Drivetrain extends Subsystem {
         robotDrive.tankDrive(left, right);
     }
 
-    public double getGyroAngle() {
+    
+    /*
+     * Does not work, TODO: FIX
+     public double getGyroAngle() {
         drifts[counter % 8] = currentAngle - gyro.getAngle();
         currentAngle = gyro.getAngle();
         if (counter > 9) {
@@ -113,8 +114,7 @@ public class Drivetrain extends Subsystem {
         counter++;
         return gyro.getAngle();
     }
-    
-    public void resetGyro() { gyro.reset(); }
+    */
 
     public double getLeftEncoder() {
         return Math.abs(leftEncoder.getDistance());
@@ -139,6 +139,10 @@ public class Drivetrain extends Subsystem {
         robotDrive.tankDrive(0.0, 0.0);
     }
 
+    /**
+     * Changes from high gear to low gear or low gear to high gear automatically when the current spikes
+     * @return Changes from high gear to low gear or low gear to high gear automatically when the current spikes
+     */
     public void autoGearShift() {
         if (overrideAutoGearShifting) {
             gearCounter = 0;
@@ -159,12 +163,20 @@ public class Drivetrain extends Subsystem {
             gearCounter++;
         }
     }
-
-    public void manualgearShift(boolean on) {
+    
+    /**
+     * Forces a gear shift, regardless of automatic gear shifting.
+     * @param on - True if low gear is desired. False if high gear is desired.
+     */
+    public void manualGearShift(boolean on) {
         gearShift.set(on);
-        gearUp = on;
+        gearUp = on; 
     }
 
+    /**
+     * @param input - The joystick value
+     * @return input^2 if input is positive, -(input^2) if input is negative.
+     */
     public double inputSquared(double input) {
         double retVal = input;
         retVal = retVal * retVal;
@@ -174,6 +186,9 @@ public class Drivetrain extends Subsystem {
         return retVal;
     }
 
+    /**
+     * @return The average currents from all 4 motors to help with automatic gear shifting.
+     */
     public double getAverageCurrent() {
         return (leftRearMotor.getOutputCurrent()
                 + rightRearMotor.getOutputCurrent()
@@ -188,4 +203,7 @@ public class Drivetrain extends Subsystem {
         rightRearMotor.enableBrakeMode(on);
     }
 
+    public void resetGyro() {
+        gyro.reset();
+    }
 }

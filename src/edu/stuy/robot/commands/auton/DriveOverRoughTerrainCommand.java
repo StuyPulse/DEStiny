@@ -5,9 +5,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveOverRoughTerrainCommand extends DriveForwardCommand {
 
-    private static final int MAX_DISTANCE_IN_INCHES = 144;
     private static final int MAX_TIME_IN_SECONDS = 15;
-    private static final double SPEED = 0.7;
+    private static final double SPEED = 1.0;
 
     public DriveOverRoughTerrainCommand() {
         super(SmartDashboard.getNumber("Rough"), MAX_TIME_IN_SECONDS, SPEED);
@@ -21,8 +20,8 @@ public class DriveOverRoughTerrainCommand extends DriveForwardCommand {
 
     @Override
     protected void execute() {
-        super.setMaxDistanceInInches(SmartDashboard.getNumber("Rough"));
-        Robot.drivetrain.tankDrive(0.7, 0.7);
+        super.setMaxDistanceInInches(196.0);
+        Robot.drivetrain.tankDrive(1.0, 1.0);
     }
 
     @Override

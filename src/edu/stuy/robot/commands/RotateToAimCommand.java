@@ -55,6 +55,8 @@ public class RotateToAimCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+        return true;
+        /* Use when gyro is fixed:
         if (forceStopped || !goalInFrame) {
             return true;
         }
@@ -62,6 +64,7 @@ public class RotateToAimCommand extends Command {
             return Math.abs(Robot.drivetrain.getGyroAngle() - (360 + angle)) < 1.0;
         }
         return Math.abs(Robot.drivetrain.getGyroAngle() - angle) < 1.0;
+        */
     }
 
     // Called once after isFinished returns true

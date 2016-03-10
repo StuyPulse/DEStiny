@@ -1,21 +1,23 @@
 package edu.stuy.robot.commands;
 
+import static edu.stuy.robot.RobotMap.HOOD_DOWN_POSITION;
+
 import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ShooterSetHighCommand extends Command {
+public class HoodDownCommand extends Command {
 
-    public ShooterSetHighCommand() {
+    public HoodDownCommand() {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.shooter);
+        requires(Robot.hood);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        Robot.shooter.setSpeed(Robot.shooter.currentSpeed);
+        Robot.hood.changePosition(HOOD_DOWN_POSITION);
     }
 
     // Called repeatedly when this Command is scheduled to run

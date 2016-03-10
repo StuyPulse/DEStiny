@@ -22,6 +22,8 @@ public class Shooter extends Subsystem {
     private CANTalon shooterMotor;
     private boolean on;
 
+    public double currentSpeed = 1.0;
+
     public Shooter() {
         shooterMotor = new CANTalon(SHOOTER_MOTOR_CHANNEL);
         shooterMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
@@ -29,8 +31,8 @@ public class Shooter extends Subsystem {
         shooterMotor.configNominalOutputVoltage(+0.0f, -0.0f);
         shooterMotor.configPeakOutputVoltage(+12.0f, -12.0f);
         shooterMotor.setProfile(0);
-        shooterMotor.setF(0.1);
-        shooterMotor.setP(0.5);
+        shooterMotor.setF(0.08);
+        shooterMotor.setP(0.45);
         shooterMotor.setI(0.1);
         shooterMotor.setD(0.05);
         shooterMotor.changeControlMode(TalonControlMode.Speed);
@@ -52,7 +54,7 @@ public class Shooter extends Subsystem {
     }
 
     public void setSpeedHigh() {
-        setRPM(SHOOTER_ENCODER_MAXSPEED);
+        setRPM(SHOOTER_ENCODER_MAXSPEED - 400.0);
     }
 
     public boolean toggle() {
@@ -74,6 +76,10 @@ public class Shooter extends Subsystem {
     }
 
     // Use the encoders to verify the speed
+    /**
+     * Sets the speed higher or lower (by 50.0) depending on the RPM
+     * @param RPM - The speed of the shooter from the RPM
+     */
     public void setSpeedReliablyRPM(double RPM) {
         double currentRPM = RPM;
         double startTime = Timer.getFPGATimestamp();
@@ -90,7 +96,11 @@ public class Shooter extends Subsystem {
             }
         }
     }
-
+    
+    /**
+     * Sets the speed higher or lower (by 0.05) depending on V Bus.
+     * @param speed - The speed of the shooter from the V Bus.
+     */
     public void setSpeedReliablyVBus(double speed) {
         double currentSpeed = speed;
         double startTime = Timer.getFPGATimestamp();

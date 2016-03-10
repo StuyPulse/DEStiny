@@ -1,5 +1,6 @@
 package edu.stuy.robot.commands;
 
+import static edu.stuy.robot.RobotMap.JONAH_ID;
 import static java.lang.Math.PI;
 import static java.lang.Math.sin;
 import edu.stuy.robot.Robot;
@@ -22,11 +23,16 @@ public class DropDownMoveCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
         speed = Robot.oi.operatorGamepad.getRightY() * speedFactor;
+        int operator = (Integer) Robot.operatorChooser.getSelected();
+        if (operator == JONAH_ID) {
+            // Jonah plays Flight Simulators so pulling up goes down
+            speed *= -1;
+        }
         if (Robot.dropdown.deadband(speed)) {
             Robot.dropdown.move(0.0);
         } else if (speed < 0) {
             // When lift amount is negative the dropdown goes up
-            Robot.dropdown.move(speed * 0.55);
+            Robot.dropdown.move(speed * 0.75);
             Robot.dropdown.currentAngle = Robot.dropdown.getAngle();
         } else {
             Robot.dropdown.move(speed * 0.35);

@@ -10,9 +10,12 @@ public class Sonar extends Subsystem {
 	SerialPort sonarIn;
 
 	public Sonar() {
-		sonarIn = new SerialPort(9600, SerialPort.Port.kMXP, 8, SerialPort.Parity.kNone, SerialPort.StopBits.kOne);
-		sonarIn.enableTermination();
-		sonarIn.reset();
+	    try {
+	        sonarIn = new SerialPort(9600, SerialPort.Port.kMXP, 8, SerialPort.Parity.kNone, SerialPort.StopBits.kOne);
+	        sonarIn.enableTermination();
+	        sonarIn.reset();
+	    } catch (Exception e) {
+	    }
 	}
 
 	// format of raw data is string "L####R####" (like "L1234R1234")
@@ -31,8 +34,12 @@ public class Sonar extends Subsystem {
 	}
 
 	public double[] getData() {
-		String recv = sonarIn.readString();
-		return parse(recv);
+	    try {
+	        String recv = sonarIn.readString();
+	        return parse(recv);
+	    } catch (Exception e) {
+	        return new double[]{0.0, 0.0};
+	    }
 	}
 
 	/**
@@ -63,6 +70,11 @@ public class Sonar extends Subsystem {
 	 */
 	public boolean isParallel(double[] distances) {
 		return Math.abs(angleFinder(distances)) < SONAR_ERROR_MARGIN;
+	}
+
+	public double getAverageDistance() {
+	    double[] data = getData();
+	    return (data[0] + data[1]) / 2;
 	}
 
 	/**

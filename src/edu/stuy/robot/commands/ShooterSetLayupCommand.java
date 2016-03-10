@@ -6,17 +6,17 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class HoodToggleCommand extends Command {
+public class ShooterSetLayupCommand extends Command {
 
-    public HoodToggleCommand() {
+    public ShooterSetLayupCommand() {
         // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.hood);
+        requires(Robot.shooter);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.hood.toggle();
+        Robot.shooter.setSpeed(0.76);
+        Robot.shooter.currentSpeed = 0.76;
     }
 
     // Called repeatedly when this Command is scheduled to run
