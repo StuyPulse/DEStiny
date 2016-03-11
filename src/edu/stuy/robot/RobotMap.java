@@ -97,7 +97,7 @@ public interface RobotMap {
     int CAMERA_FRAME_PX_WIDTH = 1280;
     int CAMERA_FRAME_PX_HEIGHT = 720;
     int CAMERA_VIEWING_ANGLE_X = 60;
-    double IDEAL_VERTICAL_OFFSET_AUTO_AIMING = 0;
+    double IDEAL_VERTICAL_OFFSET_AUTO_AIMING = 70;
     double MAX_VERTICAL_PX_OFF_AUTO_AIMING = 20;
 
     // Signal Lights
