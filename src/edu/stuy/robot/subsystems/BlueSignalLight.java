@@ -1,6 +1,6 @@
 package edu.stuy.robot.subsystems;
 
-import static edu.stuy.robot.RobotMap.SIGNAL_LIGHT_RED_PORT;
+import static edu.stuy.robot.RobotMap.SIGNAL_LIGHT_BLUE_PORT;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  *
  */
-public class RedSignalLight extends Subsystem {
+public class BlueSignalLight extends Subsystem {
 
     private DigitalOutput redLight;
 
     public void initDefaultCommand() {
-        redLight = new DigitalOutput(SIGNAL_LIGHT_RED_PORT);
+        redLight = new DigitalOutput(SIGNAL_LIGHT_BLUE_PORT);
     }
 
     public void set(boolean on) {
