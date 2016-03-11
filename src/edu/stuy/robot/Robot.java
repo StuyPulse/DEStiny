@@ -179,8 +179,8 @@ public class Robot extends IterativeRobot {
 
     private void setupAutonChooser() {
         autonShootChooser = new SendableChooser();
-        autonShootChooser.addDefault("No", false);
-        autonShootChooser.addObject("Yes", true);
+        autonShootChooser.addDefault("Yes", true);
+        autonShootChooser.addObject("No", false);
         SmartDashboard.putData("Shoot during auton?", autonShootChooser);
 
         autonChooser = new SendableChooser();
