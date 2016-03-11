@@ -13,7 +13,6 @@ import edu.stuy.robot.commands.HoodUpCommand;
 import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.JionDriveCommand;
 import edu.stuy.robot.commands.MoveIntoShotRangeCommand;
-import edu.stuy.robot.commands.RotateToAimCommand;
 import edu.stuy.robot.commands.RotateToGoalCommand;
 import edu.stuy.robot.commands.ShooterToggleCommand;
 import edu.stuy.robot.commands.ShooterSetHighCommand;

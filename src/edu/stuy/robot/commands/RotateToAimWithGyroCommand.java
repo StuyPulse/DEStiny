@@ -8,18 +8,24 @@ import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class RotateToAimCommand extends Command {
+/**
+ * DO NOT USE, as this depends on the gyro, which is not functional as of the
+ * Thursday before Javitz.
+ * @author Wilson
+ *
+ */
+public class RotateToAimWithGyroCommand extends Command {
 
     private boolean goalInFrame;
     private boolean forceStopped = false;
-    
+
     private int angle;
 
     private static int pxOffsetToDegrees(double px) {
         return (int) (CAMERA_VIEWING_ANGLE_X * px / CAMERA_FRAME_PX_WIDTH);
     }
 
-    public RotateToAimCommand() {
+    public RotateToAimWithGyroCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.drivetrain);

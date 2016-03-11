@@ -3,6 +3,8 @@ package edu.stuy.robot;
 import static edu.stuy.robot.RobotMap.JONAH_ID;
 import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
 import static edu.stuy.robot.RobotMap.YUBIN_ID;
+
+import edu.stuy.robot.commands.auton.CrossObstacleThenShootCommand;
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
 import edu.stuy.robot.commands.auton.GoOverRockWallCommand;
@@ -181,13 +183,13 @@ public class Robot extends IterativeRobot {
         autonChooser.addObject(
                 "1. Reach edge of obstacle but refrain from going over",
                 new ReachObstacleCommand());
-        autonChooser.addObject("2. Rock Wall", new GoOverRockWallCommand());
-        autonChooser.addObject("3. Moat", new GoOverMoatCommand());
+        autonChooser.addObject("2. Rock Wall", new CrossObstacleThenShootCommand(new GoOverRockWallCommand()));
+        autonChooser.addObject("3. Moat", new CrossObstacleThenShootCommand(new GoOverMoatCommand()));
         autonChooser.addObject("4. Rough Terrain",
                 new GoOverRoughTerrainCommand());
-        autonChooser.addObject("5. Ramparts", new GoOverRampartsCommand());
-        autonChooser.addObject("6. Cheval", new PassChevalCommand());
-        autonChooser.addObject("7. Portcullis", new PassPortcullisCommand());
+        autonChooser.addObject("5. Ramparts", new CrossObstacleThenShootCommand(new GoOverRampartsCommand()));
+        autonChooser.addObject("6. Cheval", new CrossObstacleThenShootCommand(new PassChevalCommand()));
+        autonChooser.addObject("7. Portcullis", new CrossObstacleThenShootCommand(new PassPortcullisCommand()));
         SmartDashboard.putData("Auton setting", autonChooser);
     }
 

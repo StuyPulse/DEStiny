@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class CrossObstacleThenShootCommand extends CommandGroup {
 
-    public CrossObstacleThenShootCommand(Command obstacle, Integer position) {
+    public CrossObstacleThenShootCommand(Command obstacle) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         // addSequential(new Command2());
