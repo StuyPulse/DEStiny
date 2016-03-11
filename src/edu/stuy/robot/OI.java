@@ -13,9 +13,10 @@ import edu.stuy.robot.commands.HoodDownCommand;
 import edu.stuy.robot.commands.HoodUpCommand;
 import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.JionDriveCommand;
-import edu.stuy.robot.commands.ShooterSetOutWorksSpeed;
+import edu.stuy.robot.commands.ShooterBackwardsCommand;
 import edu.stuy.robot.commands.ShooterSetLayupCommand;
 import edu.stuy.robot.commands.ShooterSetMaxSpeed;
+import edu.stuy.robot.commands.ShooterSetOutWorksSpeed;
 import edu.stuy.robot.commands.ShooterStopCommand;
 import edu.stuy.robot.commands.auton.DropDownMoveToAngleCommand;
 import edu.stuy.util.Gamepad;
@@ -76,6 +77,8 @@ public class OI {
         operatorGamepad.getDPadRight().whenPressed(new ShooterSetMaxSpeed());
         operatorGamepad.getDPadDown().whenPressed(new ShooterStopCommand());
 
+        operatorGamepad.getLeftButton().whenPressed(new ShooterBackwardsCommand());
+        operatorGamepad.getLeftButton().whenReleased(new ShooterStopCommand());
         operatorGamepad.getTopButton().whenPressed(new HoodUpCommand());
         operatorGamepad.getRightButton().whenPressed(new HoodDownCommand());
 
