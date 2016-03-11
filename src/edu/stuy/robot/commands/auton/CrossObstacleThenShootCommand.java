@@ -1,8 +1,9 @@
 package edu.stuy.robot.commands.auton;
 
 import static edu.stuy.robot.RobotMap.DISTANCE_TO_WALL;
+
 import edu.stuy.robot.commands.HopperRunCommand;
-import edu.stuy.robot.commands.SetupforShotCommand;
+import edu.stuy.robot.commands.RotateToGoalCommand;
 import edu.stuy.robot.commands.ShooterSetCurrentSpeed;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -12,7 +13,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class CrossObstacleThenShootCommand extends CommandGroup {
 
-    public CrossObstacleThenShootCommand(Command obstacle, Integer position) {
+    public CrossObstacleThenShootCommand(Command obstacle) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         // addSequential(new Command2());
@@ -38,8 +39,8 @@ public class CrossObstacleThenShootCommand extends CommandGroup {
         addSequential(new SetDistanceFromWallCommand(DISTANCE_TO_WALL, 0.5));
         addSequential(new RotateDrivetrainCommand());
         // TODO: Fix RotateDrivetrainCommand to work once we have PID tuning
-        addSequential(new SetupforShotCommand());
         addSequential(new ShooterSetCurrentSpeed());
+        addSequential(new RotateToGoalCommand());
         addSequential(new HopperRunCommand(true));
     }
 }

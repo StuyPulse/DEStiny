@@ -3,6 +3,8 @@ package edu.stuy.robot;
 import static edu.stuy.robot.RobotMap.JONAH_ID;
 import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
 import static edu.stuy.robot.RobotMap.YUBIN_ID;
+
+import edu.stuy.robot.commands.auton.CrossObstacleThenShootCommand;
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
 import edu.stuy.robot.commands.auton.GoOverRockWallCommand;
@@ -16,8 +18,10 @@ import edu.stuy.robot.subsystems.DropDown;
 import edu.stuy.robot.subsystems.Flashlight;
 import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Hopper;
+import edu.stuy.robot.subsystems.RedSignalLight;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.stuy.robot.subsystems.Sonar;
+import edu.stuy.util.TegraSocketReader;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -43,6 +47,7 @@ public class Robot extends IterativeRobot {
     public static Shooter shooter;
     public static Hood hood;
     public static Sonar sonar;
+    public static RedSignalLight redSignalLight;
     public static Flashlight flashlight;
     public static OI oi;
 
@@ -53,6 +58,10 @@ public class Robot extends IterativeRobot {
     public static SendableChooser operatorChooser;
     public static SendableChooser autonPositionChooser;
 
+    public static boolean dontStartCommands;
+
+    private static TegraSocketReader tegraReader;
+    private static Thread tegraThread;
     private double autonStartTime;
     private boolean debugMode;
 
@@ -81,10 +90,13 @@ public class Robot extends IterativeRobot {
         shooter = new Shooter();
         hood = new Hood();
         sonar = new Sonar();
+        redSignalLight = new RedSignalLight();
         flashlight = new Flashlight();
+
         oi = new OI();
 
-        // Set CANTalon modes
+        dontStartCommands = false;
+
         drivetrain.setDrivetrainBrakeMode(true);
         shooter.setShooterBrakeMode(false);
         hopper.setHopperBrakeMode(true);
@@ -92,9 +104,56 @@ public class Robot extends IterativeRobot {
 
         SmartDashboard.putNumber(SHOOTER_SPEED_LABEL, 0.0);
 
+        // Auton Distances:
+        SmartDashboard.putNumber("Rock", 0);
+        SmartDashboard.putNumber("Moat", 0);
+        SmartDashboard.putNumber("Rough", 0);
+        SmartDashboard.putNumber("Ramparts", 0);
+        SmartDashboard.putNumber("Draw", 0); // complex
+        SmartDashboard.putNumber("Cheval", 0);
+        SmartDashboard.putNumber("Portcullis", 0); // complex
+
+        // Potentiometer
+        double initialVoltage = 93.5;
+        double finalVoltage = 170;
+        SmartDashboard.putNumber("Initial Voltage", initialVoltage);
+        SmartDashboard.putNumber("Final Voltage", finalVoltage);
+        SmartDashboard.putNumber("Conversion Factor", 90.0 / (finalVoltage - initialVoltage));
+
+        drivetrain.setDrivetrainBrakeMode(true);
+        shooter.setShooterBrakeMode(false);
+        hopper.setHopperBrakeMode(true);
+        dropdown.setDropDownBreakMode(true);
+
         // Set up the auton chooser
         setupAutonChooser();
         setupAutonPositionChooser();
+
+        // Set up Tegra reading thread
+        startTegraReadingThread();
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                if (tegraThread != null && tegraThread.isAlive()) {
+                    tegraThread.interrupt();
+                }
+            }
+        });
+        System.out.println("Added shutdown hook for Tegra thread interruption");
+    }
+
+    private void startTegraReadingThread() {
+        System.out.println("Initializing a TegraSocketReader");
+        tegraReader = new TegraSocketReader();
+        System.out.println("Setting up thread");
+        tegraThread = new Thread(tegraReader);
+        // Call .start(), rather than .run(), to run it in a separate thread
+        tegraThread.start();
+        System.out.println("Done!");
+    }
+
+    public static double[] readTegraVector() {
+        return tegraReader.getMostRecent();
     }
 
     /**
@@ -124,13 +183,13 @@ public class Robot extends IterativeRobot {
         autonChooser.addObject(
                 "1. Reach edge of obstacle but refrain from going over",
                 new ReachObstacleCommand());
-        autonChooser.addObject("2. Rock Wall", new GoOverRockWallCommand());
-        autonChooser.addObject("3. Moat", new GoOverMoatCommand());
+        autonChooser.addObject("2. Rock Wall", new CrossObstacleThenShootCommand(new GoOverRockWallCommand()));
+        autonChooser.addObject("3. Moat", new CrossObstacleThenShootCommand(new GoOverMoatCommand()));
         autonChooser.addObject("4. Rough Terrain",
                 new GoOverRoughTerrainCommand());
-        autonChooser.addObject("5. Ramparts", new GoOverRampartsCommand());
-        autonChooser.addObject("6. Cheval", new PassChevalCommand());
-        autonChooser.addObject("7. Portcullis", new PassPortcullisCommand());
+        autonChooser.addObject("5. Ramparts", new CrossObstacleThenShootCommand(new GoOverRampartsCommand()));
+        autonChooser.addObject("6. Cheval", new CrossObstacleThenShootCommand(new PassChevalCommand()));
+        autonChooser.addObject("7. Portcullis", new CrossObstacleThenShootCommand(new PassPortcullisCommand()));
         SmartDashboard.putData("Auton setting", autonChooser);
     }
 

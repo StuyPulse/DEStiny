@@ -57,8 +57,9 @@ public class Shooter extends Subsystem {
         setRPM(SHOOTER_ENCODER_MAXSPEED - 400.0);
     }
 
-    public void toggle() {
+    public boolean toggle() {
         changePosition(!on);
+        return !on;
     }
 
     public void changePosition(boolean turnOn) {
