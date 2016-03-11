@@ -16,7 +16,6 @@ public class ShooterSetLayupCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
         Robot.shooter.setSpeed(0.76);
-        Robot.shooter.currentSpeed = 0.76;
     }
 
     // Called repeatedly when this Command is scheduled to run
