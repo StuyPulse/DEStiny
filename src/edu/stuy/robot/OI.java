@@ -12,7 +12,7 @@ import edu.stuy.robot.commands.HoodDownCommand;
 import edu.stuy.robot.commands.HoodUpCommand;
 import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.JionDriveCommand;
-import edu.stuy.robot.commands.ShooterSetHighCommand;
+import edu.stuy.robot.commands.ShooterSetCurrentSpeed;
 import edu.stuy.robot.commands.ShooterSetLayupCommand;
 import edu.stuy.robot.commands.ShooterSetMaxSpeed;
 import edu.stuy.robot.commands.ShooterStopCommand;
@@ -70,7 +70,7 @@ public class OI {
         operatorGamepad.getRightTrigger().whileHeld(new AcquirerAcquireCommand());
         operatorGamepad.getRightBumper().whileHeld(new AcquirerDeacquireCommand());
 
-        operatorGamepad.getDPadUp().whenPressed(new ShooterSetHighCommand());
+        operatorGamepad.getDPadUp().whenPressed(new ShooterSetCurrentSpeed());
         operatorGamepad.getDPadLeft().whenPressed(new ShooterSetLayupCommand());
         operatorGamepad.getDPadRight().whenPressed(new ShooterSetMaxSpeed());
         operatorGamepad.getDPadDown().whenPressed(new ShooterStopCommand());
