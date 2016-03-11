@@ -93,13 +93,19 @@ public interface RobotMap {
     double SLOT_ANGLE_TO_GOAL_5 = -25.539;
 
     // CV
-    double MAX_DEGREES_OFF_AUTO_AIMING = 5;
+    double MAX_DEGREES_OFF_AUTO_AIMING = 2;
     int CAMERA_FRAME_PX_WIDTH = 1280;
     int CAMERA_FRAME_PX_HEIGHT = 720;
-    int CAMERA_VIEWING_ANGLE_X = 180; // This is most likely wrong
+    int CAMERA_VIEWING_ANGLE_X = 60;
+    double IDEAL_VERTICAL_OFFSET_AUTO_AIMING = 0;
+    double MAX_VERTICAL_PX_OFF_AUTO_AIMING = 20;
+
+    // Signal Lights
+    int SIGNAL_LIGHT_RED_PORT = 4;
+    int SIGNAL_LIGHT_YELLOW_PORT = 5;
+    int SIGNAL_LIGHT_BLUE_PORT = 6;
 
     // Operator IDs
     int JONAH_ID = 0;
     int YUBIN_ID = 1;
-
 }

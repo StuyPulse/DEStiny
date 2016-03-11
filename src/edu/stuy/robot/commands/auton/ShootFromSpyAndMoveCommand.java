@@ -1,7 +1,7 @@
 package edu.stuy.robot.commands.auton;
 
 import edu.stuy.robot.commands.HoodDownCommand;
-import edu.stuy.robot.commands.SetupforShotCommand;
+import edu.stuy.robot.commands.RotateToGoalCommand;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -26,7 +26,7 @@ public class ShootFromSpyAndMoveCommand extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-        addSequential(new SetupforShotCommand());
+        addSequential(new RotateToGoalCommand());
         addSequential(new ShootOuterworkCommand());
         addSequential(new HoodDownCommand());
         addSequential(new RotateDrivetrainCommand(60.0));
