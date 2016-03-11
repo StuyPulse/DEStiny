@@ -57,6 +57,7 @@ public class Robot extends IterativeRobot {
     public static SendableChooser autonChooser;
     public static SendableChooser operatorChooser;
     public static SendableChooser autonPositionChooser;
+    public static SendableChooser autonShootChooser;
 
     public static boolean dontStartCommands;
 
@@ -177,15 +178,20 @@ public class Robot extends IterativeRobot {
     }
 
     private void setupAutonChooser() {
+        autonShootChooser = new SendableChooser();
+        autonShootChooser.addDefault("No", false);
+        autonShootChooser.addObject("Yes", true);
+        SmartDashboard.putData("Shoot during auton?", autonShootChooser);
+
         autonChooser = new SendableChooser();
         autonChooser.addDefault("0. Do nothing", new CommandGroup());
         autonChooser.addObject("1. Reach edge of obstacle but refrain from going over", new ReachObstacleCommand());
-        autonChooser.addObject("2. Rock Wall", new CrossObstacleThenShootCommand(new GoOverRockWallCommand()));
-        autonChooser.addObject("3. Moat", new CrossObstacleThenShootCommand(new GoOverMoatCommand()));
+        autonChooser.addObject("2. Rock Wall", new GoOverRockWallCommand());
+        autonChooser.addObject("3. Moat", new GoOverMoatCommand());
         autonChooser.addObject("4. Rough Terrain", new GoOverRoughTerrainCommand());
-        autonChooser.addObject("5. Ramparts", new CrossObstacleThenShootCommand(new GoOverRampartsCommand()));
-        autonChooser.addObject("6. Cheval", new CrossObstacleThenShootCommand(new PassChevalCommand()));
-        autonChooser.addObject("7. Portcullis", new CrossObstacleThenShootCommand(new PassPortcullisCommand()));
+        autonChooser.addObject("5. Ramparts", new GoOverRampartsCommand());
+        autonChooser.addObject("6. Cheval", new PassChevalCommand());
+        autonChooser.addObject("7. Portcullis", new PassPortcullisCommand());
         SmartDashboard.putData("Auton setting", autonChooser);
     }
 
@@ -202,7 +208,11 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
         debugMode = (Boolean) debugChooser.getSelected();
-        autonomousCommand = (Command) autonChooser.getSelected();
+        Command selectedCommand = (Command) autonChooser.getSelected();
+        boolean shootAfter = (Boolean) autonShootChooser.getSelected();
+        autonomousCommand = shootAfter
+                ? new CrossObstacleThenShootCommand(selectedCommand)
+                : selectedCommand;
         autonomousCommand.start();
         Robot.drivetrain.resetEncoders();
         autonStartTime = Timer.getFPGATimestamp();

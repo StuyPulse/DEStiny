@@ -2,6 +2,7 @@ package edu.stuy.robot.commands.auton;
 
 import static edu.stuy.robot.RobotMap.DISTANCE_TO_WALL;
 
+import edu.stuy.robot.Robot;
 import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.RotateToGoalCommand;
 import edu.stuy.robot.commands.ShooterSetOutWorksSpeed;
@@ -30,17 +31,20 @@ public class CrossObstacleThenShootCommand extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-        
-        
+
         addSequential(obstacle);
-        //Turns robot to face wall
+        // Turns robot to face wall
         addSequential(new AlignWithWallCommand(0.5));
-        //Sets robot a specific distance away from the wall
+        // Sets robot a specific distance away from the wall
         addSequential(new SetDistanceFromWallCommand(DISTANCE_TO_WALL, 0.5));
         addSequential(new RotateDrivetrainCommand());
         // TODO: Fix RotateDrivetrainCommand to work once we have PID tuning
         addSequential(new ShooterSetOutWorksSpeed());
         addSequential(new RotateToGoalCommand());
         addSequential(new HopperRunCommand(true));
+    }
+
+    private boolean getSDBCondition() {
+        return (Boolean) Robot.autonShootChooser.getSelected();
     }
 }
