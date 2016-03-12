@@ -210,8 +210,9 @@ public class Robot extends IterativeRobot {
         debugMode = (Boolean) debugChooser.getSelected();
         Command selectedCommand = (Command) autonChooser.getSelected();
         boolean shootAfter = (Boolean) autonShootChooser.getSelected();
+        int autonPosition = (Integer) autonPositionChooser.getSelected();
         autonomousCommand = shootAfter
-                ? new CrossObstacleThenShootCommand(selectedCommand)
+                ? new CrossObstacleThenShootCommand(selectedCommand, autonPosition)
                 : selectedCommand;
         autonomousCommand.start();
         Robot.drivetrain.resetEncoders();

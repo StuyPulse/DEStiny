@@ -12,26 +12,29 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Incrementally rotate the drivetrain until a high goal
  * is centered in thecamera's frame
  */
-public class RotateToGoalCommand extends Command {
+public class RotateTillGoalInFrameCommand extends Command {
 
     private double[] currentReading;
     private boolean goalInFrame;
     private boolean forceStopped = false;
+    private boolean turnRight;
+    private static final double searchingSpeed = 0.3;
 
-    private static double pxOffsetToDegrees(double px) {
-        return CAMERA_VIEWING_ANGLE_X * px / CAMERA_FRAME_PX_WIDTH;
-    }
-
-    public RotateToGoalCommand() {
+    public RotateTillGoalInFrameCommand() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.drivetrain);
         requires(Robot.redSignalLight);
+        turnRight = true;
+    }
+    
+    public RotateTillGoalInFrameCommand(boolean turnRight) {
+        this.turnRight = turnRight;
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        goalInFrame = true; // Assume it is there until we see otherwise
+        goalInFrame = false; // Assume it is not there until we see otherwise
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -43,43 +46,31 @@ public class RotateToGoalCommand extends Command {
         if (!forceStopped) {
             currentReading = Robot.readTegraVector();
             SmartDashboard.putBoolean("CV| Goal in frame?", currentReading != null);
-            if (currentReading == null) {
-                goalInFrame = false;
+            if (currentReading != null) {
+                goalInFrame = true;
                 return;
             }
             SmartDashboard.putNumber("CV| vector X", currentReading[0]);
             SmartDashboard.putNumber("CV| vector Y", currentReading[1]);
             SmartDashboard.putNumber("CV| bounding rect angle", currentReading[2]);
-            double degsOff = pxOffsetToDegrees(currentReading[0]);
-            double rightWheelSpeed = clampWithinOne(-degsOff / (CAMERA_FRAME_PX_WIDTH / 2) * 50);
-            rightWheelSpeed = Math.signum(-rightWheelSpeed) * 0.3;
-            // Try with the following modification, or similar ones:
-            // rightWheelSpeed = Math.signum(rightWheelSpeed) * Math.pow(rightWheelSpeed, 2);
-            SmartDashboard.putNumber("CV| rightWheelSpeed to use", rightWheelSpeed);
 
-            Robot.drivetrain.tankDrive(-rightWheelSpeed, rightWheelSpeed);
+            if (turnRight) {
+                Robot.drivetrain.tankDrive(searchingSpeed, -searchingSpeed);
+            } else {
+                Robot.drivetrain.tankDrive(-searchingSpeed, searchingSpeed);
+            }
         }
-    }
-
-    private double clampWithinOne(double x) {
-        return Math.signum(x) * Math.min(Math.abs(x), 1);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        if (!goalInFrame || forceStopped) {
-            return true;
-        }
-        Robot.redSignalLight.setOn();
-        double degsOff = pxOffsetToDegrees(currentReading[0]);
-        return Math.abs(degsOff) < MAX_DEGREES_OFF_AUTO_AIMING;
+        return goalInFrame || forceStopped;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.redSignalLight.set(goalInFrame);
     }
 
     // Called when another command which requires one or more of the same

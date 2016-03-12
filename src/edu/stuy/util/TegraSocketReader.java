@@ -10,6 +10,8 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * Runnable for setting up a server socket and with it, reading data from a
  * client running on the Tegra
@@ -27,8 +29,10 @@ public class TegraSocketReader implements Runnable {
     private Socket tegra;
 
     // tegraHost IP determined by port used on the radio
-    private static final String tegraHost = "10.6.94.38";
+    private static final String expectedTegraIP = "10.6.94.81"; // TODO: CONFIRM AND FIX THIS
     private static final int tegraPort = 7123;
+
+    private String workingTegraIP;
 
     public TegraSocketReader() {
         latestData = new AtomicReference<double[]>();
@@ -37,16 +41,23 @@ public class TegraSocketReader implements Runnable {
     }
 
     /**
-     * Creates a socket representing the Tegra, at <code>tegraHost</code>:
+     * Creates a socket representing the Tegra, at <code>expectedTegraHost</code>:
      * <code>tegraPort</code>
      */
     private void setupSocket() {
+        setupSocketAt(expectedTegraIP);
+    }
+
+    private void setupSocketAt(String ip) {
         try {
-            tegra = new Socket(tegraHost, tegraPort);
+            tegra = new Socket(ip, tegraPort);
+            if (tegra == null) return;
+            workingTegraIP = ip;
+            SmartDashboard.putString("ip connected to tegra by", ip);
         } catch (ConnectException e) {
-            System.out.println("Failed to connect to " + tegraHost + ":" + tegraPort);
+            System.out.println("Failed to connect to " + expectedTegraIP + ":" + tegraPort);
         } catch (UnknownHostException e) {
-            System.out.println("Could not resolve host at " + tegraHost + ":" + tegraPort);
+            System.out.println("Could not resolve host at " + expectedTegraIP + ":" + tegraPort);
         } catch (IOException e) {
             System.out.println("An IOException has occurred. Message: " + e.getMessage());
         }
@@ -59,16 +70,22 @@ public class TegraSocketReader implements Runnable {
      */
     @Override
     public void run() {
+        int hostLastByte = 20;
+        while (tegra == null) {
+            hostLastByte = hostLastByte % 200;
+            // Failed to connect to the server
+            String a = "10.6.94.";
+            String b = "10.42.0.";
+            String ip = a + hostLastByte;
+            System.out.println("Will try to connect to: " + ip);
+            setupSocketAt(ip);
+            hostLastByte++;
+            //setupSocket();
+        }
         // The following while loop is for trying again and again when
         // connection fails, to make this robust to situations in which
         // the Tegra restarts or has not yet started.
         while (true) {
-            if (tegra == null) {
-                // Failed to connect to the server
-                System.out.println("Will try to reconnect");
-                setupSocket();
-                continue;
-            }
             try {
                 System.out.println("About to open input stream from Tegra socket");
                 // Open input stream and read data until thread is interrupted
