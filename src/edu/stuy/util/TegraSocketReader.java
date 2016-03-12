@@ -70,17 +70,17 @@ public class TegraSocketReader implements Runnable {
      */
     @Override
     public void run() {
-        int hostLastByte = 20;
+        //int hostLastByte = 20;
         while (tegra == null) {
-            hostLastByte = hostLastByte % 200;
+            /*hostLastByte = hostLastByte % 200;
             // Failed to connect to the server
             String a = "10.6.94.";
             String b = "10.42.0.";
             String ip = a + hostLastByte;
             System.out.println("Will try to connect to: " + ip);
             setupSocketAt(ip);
-            hostLastByte++;
-            //setupSocket();
+            hostLastByte++;*/
+            setupSocket();
         }
         // The following while loop is for trying again and again when
         // connection fails, to make this robust to situations in which
