@@ -211,9 +211,7 @@ public class Robot extends IterativeRobot {
         Command selectedCommand = (Command) autonChooser.getSelected();
         boolean shootAfter = (Boolean) autonShootChooser.getSelected();
         int autonPosition = (Integer) autonPositionChooser.getSelected();
-        autonomousCommand = shootAfter
-                ? new CrossObstacleThenShootCommand(selectedCommand, autonPosition)
-                : selectedCommand;
+        autonomousCommand = selectedCommand;
         autonomousCommand.start();
         Robot.drivetrain.resetEncoders();
         autonStartTime = Timer.getFPGATimestamp();
@@ -276,8 +274,11 @@ public class Robot extends IterativeRobot {
             }
             // Sonar:
             double[] sonarData = sonar.getData();
-            SmartDashboard.putNumber("Sonar L", sonarData[0]);
-            SmartDashboard.putNumber("Sonar R", sonarData[1]);
+            try {
+                SmartDashboard.putNumber("Sonar L", sonarData[0]);
+                SmartDashboard.putNumber("Sonar R", sonarData[1]);
+            } catch (Exception e) {
+            }
 
             // Solenoids:
             SmartDashboard.putBoolean("Hood piston", Robot.hood.getState());

@@ -50,10 +50,6 @@ public class RotateTillGoalInFrameCommand extends Command {
                 goalInFrame = true;
                 return;
             }
-            SmartDashboard.putNumber("CV| vector X", currentReading[0]);
-            SmartDashboard.putNumber("CV| vector Y", currentReading[1]);
-            SmartDashboard.putNumber("CV| bounding rect angle", currentReading[2]);
-
             if (turnRight) {
                 Robot.drivetrain.tankDrive(searchingSpeed, -searchingSpeed);
             } else {
