@@ -79,6 +79,7 @@ public class RotateToGoalCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.drivetrain.tankDrive(0.0, 0.0);
         Robot.redSignalLight.set(goalInFrame);
     }
 
