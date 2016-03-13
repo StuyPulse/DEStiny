@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import static edu.stuy.robot.RobotMap.ARM_CROSSING_OBSTACLE_ANGLE;
 
 /**
- *Lowers door and drives over moat
+ * Lowers door and drives over moat
  */
 public class GoOverMoatCommand extends CommandGroup {
 
@@ -31,10 +31,12 @@ public class GoOverMoatCommand extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
 
-        //Pushes door down
+        // Pushes door down
         addSequential(new DropDownMoveToAngleCommand(ARM_CROSSING_OBSTACLE_ANGLE));
+        addParallel(new DropDownMoveToAngleCommand(ARM_CROSSING_OBSTACLE_ANGLE));
         addParallel(new LowGearCommand());
         addSequential(new DriveForwardCommand(INITIAL_DISTANCE, INITIAL_TIME, INITIAL_SPEED));
-		addSequential(new DriveOverMoatCommand());
-	}
+        addParallel(new DropDownMoveToAngleCommand(ARM_CROSSING_OBSTACLE_ANGLE));
+        addSequential(new DriveOverMoatCommand());
+    }
 }
