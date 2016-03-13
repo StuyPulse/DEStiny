@@ -2,7 +2,6 @@ package edu.stuy.robot;
 
 import static edu.stuy.robot.RobotMap.DRIVER_GAMEPAD;
 import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
-
 import edu.stuy.robot.commands.AcquirerAcquireCommand;
 import edu.stuy.robot.commands.AcquirerDeacquireCommand;
 import edu.stuy.robot.commands.DisableAutoGearShiftCommand;
@@ -13,8 +12,6 @@ import edu.stuy.robot.commands.HoodDownCommand;
 import edu.stuy.robot.commands.HoodUpCommand;
 import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.JionDriveCommand;
-import edu.stuy.robot.commands.MoveIntoShotRangeCommand;
-import edu.stuy.robot.commands.RotateToGoalCommand;
 import edu.stuy.robot.commands.ShooterBackwardsCommand;
 import edu.stuy.robot.commands.ShooterSetLayupCommand;
 import edu.stuy.robot.commands.ShooterSetMaxSpeed;
@@ -69,9 +66,6 @@ public class OI {
         driverGamepad.getLeftTrigger().whenReleased(new HighGearCommand());
         driverGamepad.getRightBumper().whenPressed(new FlashlightToggleCommand());
         driverGamepad.getLeftBumper().whenPressed(new FlashlightToggleCommand());
-
-        driverGamepad.getBottomButton().whenPressed(new RotateToGoalCommand());
-        driverGamepad.getLeftButton().whenPressed(new MoveIntoShotRangeCommand());
 
         // OPERATOR BINDINGS
         operatorGamepad.getLeftTrigger().whileHeld(new HopperRunCommand(true));

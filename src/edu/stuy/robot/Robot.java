@@ -3,8 +3,6 @@ package edu.stuy.robot;
 import static edu.stuy.robot.RobotMap.JONAH_ID;
 import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
 import static edu.stuy.robot.RobotMap.YUBIN_ID;
-
-import edu.stuy.robot.commands.auton.CrossObstacleThenShootCommand;
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
 import edu.stuy.robot.commands.auton.GoOverRockWallCommand;
@@ -13,15 +11,14 @@ import edu.stuy.robot.commands.auton.PassChevalCommand;
 import edu.stuy.robot.commands.auton.PassPortcullisCommand;
 import edu.stuy.robot.commands.auton.ReachObstacleCommand;
 import edu.stuy.robot.subsystems.Acquirer;
+import edu.stuy.robot.subsystems.BlueSignalLight;
 import edu.stuy.robot.subsystems.Drivetrain;
 import edu.stuy.robot.subsystems.DropDown;
 import edu.stuy.robot.subsystems.Flashlight;
 import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Hopper;
-import edu.stuy.robot.subsystems.BlueSignalLight;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.stuy.robot.subsystems.Sonar;
-import edu.stuy.util.TegraSocketReader;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -57,12 +54,9 @@ public class Robot extends IterativeRobot {
     public static SendableChooser autonChooser;
     public static SendableChooser operatorChooser;
     public static SendableChooser autonPositionChooser;
-    public static SendableChooser autonShootChooser;
 
     public static boolean dontStartCommands;
 
-    private static TegraSocketReader tegraReader;
-    private static Thread tegraThread;
     private double autonStartTime;
     private boolean debugMode;
 
@@ -129,32 +123,6 @@ public class Robot extends IterativeRobot {
         // Set up the auton chooser
         setupAutonChooser();
         setupAutonPositionChooser();
-
-        // Set up Tegra reading thread
-        startTegraReadingThread();
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                if (tegraThread != null && tegraThread.isAlive()) {
-                    tegraThread.interrupt();
-                }
-            }
-        });
-        System.out.println("Added shutdown hook for Tegra thread interruption");
-    }
-
-    private void startTegraReadingThread() {
-        System.out.println("Initializing a TegraSocketReader");
-        tegraReader = new TegraSocketReader();
-        System.out.println("Setting up thread");
-        tegraThread = new Thread(tegraReader);
-        // Call .start(), rather than .run(), to run it in a separate thread
-        tegraThread.start();
-        System.out.println("Done!");
-    }
-
-    public static double[] readTegraVector() {
-        return tegraReader.getMostRecent();
     }
 
     /**
@@ -178,10 +146,6 @@ public class Robot extends IterativeRobot {
     }
 
     private void setupAutonChooser() {
-        autonShootChooser = new SendableChooser();
-        autonShootChooser.addDefault("Yes", true);
-        autonShootChooser.addObject("No", false);
-        SmartDashboard.putData("Shoot during auton?", autonShootChooser);
 
         autonChooser = new SendableChooser();
         autonChooser.addDefault("0. Do nothing", new CommandGroup());
@@ -209,11 +173,8 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         debugMode = (Boolean) debugChooser.getSelected();
         Command selectedCommand = (Command) autonChooser.getSelected();
-        boolean shootAfter = (Boolean) autonShootChooser.getSelected();
         int autonPosition = (Integer) autonPositionChooser.getSelected();
-        autonomousCommand = shootAfter
-                ? new CrossObstacleThenShootCommand(selectedCommand, autonPosition)
-                : selectedCommand;
+        autonomousCommand = selectedCommand;
         autonomousCommand.start();
         Robot.drivetrain.resetEncoders();
         autonStartTime = Timer.getFPGATimestamp();
