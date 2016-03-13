@@ -71,7 +71,6 @@ public class RotateToGoalCommand extends Command {
         if (!goalInFrame || forceStopped) {
             return true;
         }
-        Robot.redSignalLight.setOn();
         double degsOff = pxOffsetToDegrees(currentReading[0]);
         return Math.abs(degsOff) < MAX_DEGREES_OFF_AUTO_AIMING;
     }

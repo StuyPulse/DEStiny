@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class RotateTillGoalInFrameCommand extends Command {
 
-    private double[] currentReading;
     private boolean goalInFrame;
     private boolean forceStopped = false;
     private boolean turnRight;
@@ -19,7 +18,6 @@ public class RotateTillGoalInFrameCommand extends Command {
     public RotateTillGoalInFrameCommand() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.drivetrain);
-        requires(Robot.redSignalLight);
         turnRight = true;
     }
     
@@ -40,7 +38,7 @@ public class RotateTillGoalInFrameCommand extends Command {
             forceStopped = true;
         }
         if (!forceStopped) {
-            currentReading = Robot.readTegraVector();
+            double[] currentReading = Robot.readTegraVector();
             SmartDashboard.putBoolean("CV| Goal in frame?", currentReading != null);
             if (currentReading != null) {
                 goalInFrame = true;
@@ -63,7 +61,6 @@ public class RotateTillGoalInFrameCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.drivetrain.tankDrive(0.0, 0.0);
     }
 
     // Called when another command which requires one or more of the same
