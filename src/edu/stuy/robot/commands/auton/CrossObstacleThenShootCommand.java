@@ -31,13 +31,17 @@ public class CrossObstacleThenShootCommand extends CommandGroup {
         // arm.
 
         addSequential(obstacle);
+
         // Turns robot to face wall
         //addSequential(new AlignWithWallCommand(0.5));
         // Sets robot a specific distance away from the wall
         //addSequential(new SetDistanceFromWallCommand(DISTANCE_TO_WALL, 0.5));
-        //addSequential(new RotateDrivetrainCommand());
-        addSequential(new RotateTillGoalInFrameCommand(position > 3));
         // TODO: Fix RotateDrivetrainCommand to work once we have PID tuning
+        //addSequential(new RotateDrivetrainCommand());
+
+        // Rotate in a direction until goal is in frame, looking
+        // right if in positions 1, 2 or 3 and left for 4 and 5
+        addSequential(new RotateTillGoalInFrameCommand(position <= 3));
         addSequential(new ShooterSetOutWorksSpeed());
         addSequential(new RotateToGoalCommand());
         addSequential(new HopperRunCommand(true));
