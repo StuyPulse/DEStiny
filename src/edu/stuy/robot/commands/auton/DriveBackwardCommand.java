@@ -26,6 +26,10 @@ public class DriveBackwardCommand extends Command {
 	@Override
 	protected boolean isFinished() {
 		double distance = Robot.drivetrain.getDistance();
+		if (distance < 0) {
+		    // Both encoders are broken
+		    return true;
+		}
 		//Stop the robot if it runs too long
 		if (Timer.getFPGATimestamp() - startTime > maxTimeInSeconds) {
 			return true;

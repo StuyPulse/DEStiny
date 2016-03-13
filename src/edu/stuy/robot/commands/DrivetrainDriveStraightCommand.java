@@ -30,7 +30,12 @@ public class DrivetrainDriveStraightCommand extends Command {
     protected void execute() {
         leftDist = Robot.drivetrain.getLeftEncoder();
         rightDist = Robot.drivetrain.getRightEncoder();
-        if (leftDist - rightDist > 3.0f) {
+        if (encodersBroken()) {
+            return;
+        }
+        if (leftDist < 0 || rightDist < 0) {
+            Robot.drivetrain.tankDrive(speed, speed);
+        } else if (leftDist - rightDist > 3.0f) {
             Robot.drivetrain.tankDrive(speed * getSpeedMultiplier(), speed);
         } else if (rightDist - leftDist > 3.0f) {
             Robot.drivetrain.tankDrive(speed, speed * getSpeedMultiplier());
@@ -39,9 +44,13 @@ public class DrivetrainDriveStraightCommand extends Command {
         }
     }
 
+    private boolean encodersBroken() {
+        return leftDist < 0 && rightDist < 0;
+    }
+
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.drivetrain.getDistance() >= distance;
+        return encodersBroken() || Robot.drivetrain.getDistance() >= distance;
     }
 
     // Called once after isFinished returns true
