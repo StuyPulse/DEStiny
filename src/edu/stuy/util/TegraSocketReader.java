@@ -46,6 +46,11 @@ public class TegraSocketReader implements Runnable {
         setupSocketAt(expectedTegraIP);
     }
 
+    /**
+     * Creates a socket representing the Tegra, at <code>ip</code>:
+     * <code>tegraPort</code>
+     * @param ip IP to attempt to connect to
+     */
     private void setupSocketAt(String ip) {
         try {
             tegra = new Socket(ip, tegraPort);
@@ -57,6 +62,8 @@ public class TegraSocketReader implements Runnable {
             System.out.println("Could not resolve host at " + expectedTegraIP + ":" + tegraPort);
         } catch (IOException e) {
             System.out.println("An IOException has occurred. Message: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Caught general exception in setupSocketAt: " + e);
         }
     }
 
@@ -99,6 +106,9 @@ public class TegraSocketReader implements Runnable {
                 // Create new socket and, via the while loop, try again
             } catch (IOException e) {
                 System.out.println("Will try to reconnect");
+                setupSocket();
+            } catch (Exception e) {
+                System.out.println("General exception caught in loop of run(): " + e);
                 setupSocket();
             }
         }
