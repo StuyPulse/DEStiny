@@ -52,7 +52,7 @@ public class RotateToGoalCommand extends Command {
             SmartDashboard.putNumber("CV| bounding rect angle", currentReading[2]);
             double degsOff = pxOffsetToDegrees(currentReading[0]);
             double rightWheelSpeed = clampWithinOne(-degsOff / (CAMERA_FRAME_PX_WIDTH / 2) * 50);
-            rightWheelSpeed = Math.signum(-rightWheelSpeed) * 0.3;
+            rightWheelSpeed = Math.signum(rightWheelSpeed) * 0.3;
             // Try with the following modification, or similar ones:
             // rightWheelSpeed = Math.signum(rightWheelSpeed) * Math.pow(rightWheelSpeed, 2);
             SmartDashboard.putNumber("CV| rightWheelSpeed to use", rightWheelSpeed);
