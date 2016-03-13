@@ -25,7 +25,7 @@ public class RotateToGoalCommand extends Command {
     public RotateToGoalCommand() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.drivetrain);
-        requires(Robot.redSignalLight);
+        requires(Robot.cvSignalLight);
     }
 
     // Called just before this Command runs the first time
@@ -79,7 +79,7 @@ public class RotateToGoalCommand extends Command {
     @Override
     protected void end() {
         Robot.drivetrain.tankDrive(0.0, 0.0);
-        Robot.redSignalLight.set(goalInFrame);
+        Robot.cvSignalLight.set(goalInFrame);
     }
 
     // Called when another command which requires one or more of the same

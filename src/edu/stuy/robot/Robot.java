@@ -47,7 +47,7 @@ public class Robot extends IterativeRobot {
     public static Shooter shooter;
     public static Hood hood;
     public static Sonar sonar;
-    public static BlueSignalLight redSignalLight;
+    public static BlueSignalLight cvSignalLight;
     public static Flashlight flashlight;
     public static OI oi;
 
@@ -92,7 +92,7 @@ public class Robot extends IterativeRobot {
             shooter = new Shooter();
             hood = new Hood();
             sonar = new Sonar();
-            redSignalLight = new BlueSignalLight();
+            cvSignalLight = new BlueSignalLight();
             flashlight = new Flashlight();
 
             oi = new OI();
