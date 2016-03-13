@@ -28,6 +28,7 @@ public class GoOverRoughTerrainCommand extends CommandGroup {
 		// arm.
 		addSequential(new DropDownMoveToAngleCommand(ARM_CROSSING_OBSTACLE_ANGLE));
 		addParallel(new LowGearCommand());
+        addParallel(new DropDownMoveToAngleCommand(ARM_CROSSING_OBSTACLE_ANGLE));
 		addSequential(new DriveOverRoughTerrainCommand());
 	}
 }

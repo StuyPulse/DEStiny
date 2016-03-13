@@ -34,7 +34,9 @@ public class GoOverMoatCommand extends CommandGroup {
         //Pushes door down
         addSequential(new DropDownMoveToAngleCommand(ARM_CROSSING_OBSTACLE_ANGLE));
         addParallel(new LowGearCommand());
+        addParallel(new DropDownMoveToAngleCommand(ARM_CROSSING_OBSTACLE_ANGLE));
         addSequential(new DriveForwardCommand(INITIAL_DISTANCE, INITIAL_TIME, INITIAL_SPEED));
+        addParallel(new DropDownMoveToAngleCommand(ARM_CROSSING_OBSTACLE_ANGLE));
 		addSequential(new DriveOverMoatCommand());
 	}
 }
