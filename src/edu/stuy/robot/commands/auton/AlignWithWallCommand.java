@@ -1,7 +1,6 @@
 package edu.stuy.robot.commands.auton;
 
 import edu.stuy.robot.Robot;
-import edu.stuy.robot.subsystems.Sonar;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
