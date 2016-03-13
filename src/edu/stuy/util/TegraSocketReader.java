@@ -29,10 +29,8 @@ public class TegraSocketReader implements Runnable {
     private Socket tegra;
 
     // tegraHost IP determined by port used on the radio
-    private static final String expectedTegraIP = "10.6.94.81"; // TODO: CONFIRM AND FIX THIS
+    private static final String expectedTegraIP = "10.6.94.19";
     private static final int tegraPort = 7123;
-
-    private String workingTegraIP;
 
     public TegraSocketReader() {
         latestData = new AtomicReference<double[]>();
@@ -52,7 +50,6 @@ public class TegraSocketReader implements Runnable {
         try {
             tegra = new Socket(ip, tegraPort);
             if (tegra == null) return;
-            workingTegraIP = ip;
             SmartDashboard.putString("ip connected to tegra by", ip);
         } catch (ConnectException e) {
             System.out.println("Failed to connect to " + expectedTegraIP + ":" + tegraPort);
@@ -70,16 +67,8 @@ public class TegraSocketReader implements Runnable {
      */
     @Override
     public void run() {
-        //int hostLastByte = 20;
+        // Ensure tegra is connected to
         while (tegra == null) {
-            /*hostLastByte = hostLastByte % 200;
-            // Failed to connect to the server
-            String a = "10.6.94.";
-            String b = "10.42.0.";
-            String ip = a + hostLastByte;
-            System.out.println("Will try to connect to: " + ip);
-            setupSocketAt(ip);
-            hostLastByte++;*/
             setupSocket();
         }
         // The following while loop is for trying again and again when
