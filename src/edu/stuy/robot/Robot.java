@@ -158,7 +158,7 @@ public class Robot extends IterativeRobot {
         System.out.println("Done!");
     }
 
-    public static double[] readTegraVector() {
+    public static double[] getLatestTegraVector() {
         return tegraReader.getMostRecent();
     }
 

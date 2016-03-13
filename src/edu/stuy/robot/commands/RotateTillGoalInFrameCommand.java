@@ -38,7 +38,7 @@ public class RotateTillGoalInFrameCommand extends Command {
             forceStopped = true;
         }
         if (!forceStopped) {
-            goalInFrame = Robot.readTegraVector() != null;
+            goalInFrame = Robot.getLatestTegraVector() != null;
             SmartDashboard.putBoolean("CV| Goal in frame?", goalInFrame);
             if (!goalInFrame) {
                 if (turnRight) {

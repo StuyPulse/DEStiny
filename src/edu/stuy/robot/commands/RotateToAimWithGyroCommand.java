@@ -36,7 +36,7 @@ public class RotateToAimWithGyroCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
         Robot.drivetrain.resetGyro();
-        double[] reading = Robot.readTegraVector();
+        double[] reading = Robot.getLatestTegraVector();
         if (reading == null) {
             goalInFrame = false;
         } else {
