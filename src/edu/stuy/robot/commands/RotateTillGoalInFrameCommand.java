@@ -38,16 +38,14 @@ public class RotateTillGoalInFrameCommand extends Command {
             forceStopped = true;
         }
         if (!forceStopped) {
-            double[] currentReading = Robot.readTegraVector();
-            SmartDashboard.putBoolean("CV| Goal in frame?", currentReading != null);
-            if (currentReading != null) {
-                goalInFrame = true;
-                return;
-            }
-            if (turnRight) {
-                Robot.drivetrain.tankDrive(searchingSpeed, -searchingSpeed);
-            } else {
-                Robot.drivetrain.tankDrive(-searchingSpeed, searchingSpeed);
+            goalInFrame = Robot.readTegraVector() != null;
+            SmartDashboard.putBoolean("CV| Goal in frame?", goalInFrame);
+            if (!goalInFrame) {
+                if (turnRight) {
+                    Robot.drivetrain.tankDrive(searchingSpeed, -searchingSpeed);
+                } else {
+                    Robot.drivetrain.tankDrive(-searchingSpeed, searchingSpeed);
+                }
             }
         }
     }
