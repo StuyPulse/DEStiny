@@ -102,10 +102,17 @@ public class Drivetrain extends Subsystem {
     }
 
     /*
-     * Does not work, TODO: FIX public double getGyroAngle() { drifts[counter %
-     * 8] = currentAngle - gyro.getAngle(); currentAngle = gyro.getAngle(); if
-     * (counter > 9) { double avg = 0.0; for (double d : drifts) { avg += d; } }
-     * counter++; return gyro.getAngle(); }
+     Does not work, TODO: FIX
+         public double getGyroAngle() { 
+             drifts[counter % 8] = currentAngle - gyro.getAngle();
+             currentAngle = gyro.getAngle();
+             if (counter > 9) {
+                 double avg = 0.0;
+                 for (double d : drifts) { avg += d; }
+             }
+             counter++;
+             return gyro.getAngle();
+         }
      */
 
     public double getLeftEncoder() {
