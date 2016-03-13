@@ -54,7 +54,7 @@ public class DropDown extends Subsystem {
         double conversionFactor = 90.0 / (finalVoltage - initialVoltage);
         return (x - initialVoltage) * conversionFactor;
     }
-    
+
     /**
      * Use in auton to lower acquirer to driving position
      */
@@ -68,10 +68,12 @@ public class DropDown extends Subsystem {
 
     /**
      * Returns any number and its absolute value less than 0.1, to zero.
-     * @param speed - The speed of the dropdown
+     * 
+     * @param speed
+     *            - The speed of the dropdown
      * @return Any number and its absolute value less than 0.1, to zero.
      */
-    
+
     public boolean deadband(double speed) {
         return Math.abs(speed) < DROP_DOWN_DEADBAND;
     }

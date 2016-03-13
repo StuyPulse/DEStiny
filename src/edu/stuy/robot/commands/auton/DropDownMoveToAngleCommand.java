@@ -37,7 +37,7 @@ public class DropDownMoveToAngleCommand extends Command {
     @Override
     protected boolean isFinished() {
         return Robot.dropdown.getAngle() < -20.0 ||
-                !is420Working() ||
+                !isPotentiometerWorking() ||
                 Math.abs(Robot.dropdown.getAngle() - desiredAngle) < 4.0;
     }
 
@@ -51,7 +51,7 @@ public class DropDownMoveToAngleCommand extends Command {
     protected void interrupted() {
     }
 
-    private boolean is420Working() {
+    private boolean isPotentiometerWorking() {
         if (Timer.getFPGATimestamp() - timeStart < 1.0) {
             return true;
         } else {
