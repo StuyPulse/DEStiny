@@ -189,8 +189,8 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData("Shoot during auton?", autonShootChooser);
 
         autonChooser = new SendableChooser();
-        autonChooser.addDefault("0. Reach auton", new ReachObstacleCommand());
-        autonChooser.addObject("1. Reach edge of obstacle but refrain from going over", new ReachObstacleCommand());
+        autonChooser.addDefault("0. Reach edge of obstacle but refrain from going over", new ReachObstacleCommand());
+        autonChooser.addObject("1. Do nothing", new CommandGroup());
         autonChooser.addObject("2. Rock Wall", new GoOverRockWallCommand());
         autonChooser.addObject("3. Moat", new GoOverMoatCommand());
         autonChooser.addObject("4. Rough Terrain", new GoOverRoughTerrainCommand());
