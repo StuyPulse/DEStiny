@@ -162,6 +162,10 @@ public class Robot extends IterativeRobot {
         return tegraReader.getMostRecent();
     }
 
+    public static boolean tegraIsConnected() {
+        return tegraReader.isConnected();
+    }
+
     /**
      * Maps the relative locations of the obstacles
      */

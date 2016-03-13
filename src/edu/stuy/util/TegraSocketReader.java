@@ -27,6 +27,7 @@ public class TegraSocketReader implements Runnable {
     private AtomicReference<double[]> latestData;
 
     private Socket tegra;
+    private boolean connected;
 
     // tegraHost IP determined by port used on the radio
     private static final String expectedTegraIP = "10.6.94.19";
@@ -53,8 +54,10 @@ public class TegraSocketReader implements Runnable {
      */
     private void setupSocketAt(String ip) {
         try {
+            connected = false;
             tegra = new Socket(ip, tegraPort);
             if (tegra == null) return;
+            connected = true;
             SmartDashboard.putString("ip connected to tegra by", ip);
         } catch (ConnectException e) {
             System.out.println("Failed to connect to " + expectedTegraIP + ":" + tegraPort);
@@ -147,6 +150,14 @@ public class TegraSocketReader implements Runnable {
      */
     public double[] getMostRecent() {
         return latestData.get();
+    }
+
+    /**
+     * Returns whether the tegra can be read from.
+     * @return
+     */
+    public boolean isConnected() {
+        return connected;
     }
 
     // Only run during testing

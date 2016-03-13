@@ -15,6 +15,8 @@ public class RotateTillGoalInFrameCommand extends Command {
     private boolean turnRight;
     private static final double searchingSpeed = 0.3;
 
+    private long disconnectedSince; // zero if never was disconnected
+
     public RotateTillGoalInFrameCommand() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.drivetrain);
@@ -38,6 +40,15 @@ public class RotateTillGoalInFrameCommand extends Command {
             forceStopped = true;
         }
         if (!forceStopped) {
+            if (disconnectedSince != 0 && Robot.tegraIsConnected()) {
+                disconnectedSince = 0;
+            }
+            if (!Robot.tegraIsConnected()) {
+                if (disconnectedSince == 0) {
+                    disconnectedSince = System.currentTimeMillis();
+                }
+                return;
+            }
             goalInFrame = Robot.getLatestTegraVector() != null;
             SmartDashboard.putBoolean("CV| Goal in frame?", goalInFrame);
             if (!goalInFrame) {
@@ -53,6 +64,10 @@ public class RotateTillGoalInFrameCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
+        if (disconnectedSince != 0 &&
+                System.currentTimeMillis() - disconnectedSince > 5000) {
+            return true; // Time out, it took too long
+        }
         return goalInFrame || forceStopped;
     }
 
