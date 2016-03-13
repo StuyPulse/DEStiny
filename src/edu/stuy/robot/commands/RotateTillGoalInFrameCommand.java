@@ -1,16 +1,12 @@
 package edu.stuy.robot.commands;
 
-import static edu.stuy.robot.RobotMap.CAMERA_FRAME_PX_WIDTH;
-import static edu.stuy.robot.RobotMap.CAMERA_VIEWING_ANGLE_X;
-import static edu.stuy.robot.RobotMap.MAX_DEGREES_OFF_AUTO_AIMING;
-
 import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Incrementally rotate the drivetrain until a high goal
- * is centered in thecamera's frame
+ * Incrementally rotate the drivetrain in a given direction
+ * until a goal is in the frame.
  */
 public class RotateTillGoalInFrameCommand extends Command {
 
