@@ -37,6 +37,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
+    /*
+     * Subsystems
+     */
     public static Hopper hopper;
     public static Drivetrain drivetrain;
     public static Acquirer acquirer;
@@ -44,10 +47,17 @@ public class Robot extends IterativeRobot {
     public static Shooter shooter;
     public static Hood hood;
     public static Sonar sonar;
-    public static BlueSignalLight redSignalLight;
+    public static BlueSignalLight cvSignalLight;
     public static Flashlight flashlight;
+
+    /*
+     * Operator Interface
+     */
     public static OI oi;
 
+    /*
+     * Autonomous Variables
+     */
     Command autonomousCommand;
 
     public static SendableChooser debugChooser;
@@ -66,6 +76,8 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 
+        // Setup debug chooser and build the SmartDashboard layout based on the
+        // chosen option
         setupDebugChooser();
         debugMode = (Boolean) debugChooser.getSelected();
 
@@ -85,7 +97,7 @@ public class Robot extends IterativeRobot {
         shooter = new Shooter();
         hood = new Hood();
         sonar = new Sonar();
-        redSignalLight = new BlueSignalLight();
+        cvSignalLight = new BlueSignalLight();
         flashlight = new Flashlight();
 
         oi = new OI();
@@ -98,27 +110,6 @@ public class Robot extends IterativeRobot {
         dropdown.setDropDownBreakMode(true);
 
         SmartDashboard.putNumber(SHOOTER_SPEED_LABEL, 0.0);
-
-        // Auton Distances:
-        SmartDashboard.putNumber("Rock", 0);
-        SmartDashboard.putNumber("Moat", 0);
-        SmartDashboard.putNumber("Rough", 0);
-        SmartDashboard.putNumber("Ramparts", 0);
-        SmartDashboard.putNumber("Draw", 0); // complex
-        SmartDashboard.putNumber("Cheval", 0);
-        SmartDashboard.putNumber("Portcullis", 0); // complex
-
-        // Potentiometer
-        double initialVoltage = 93.5;
-        double finalVoltage = 170;
-        SmartDashboard.putNumber("Initial Voltage", initialVoltage);
-        SmartDashboard.putNumber("Final Voltage", finalVoltage);
-        SmartDashboard.putNumber("Conversion Factor", 90.0 / (finalVoltage - initialVoltage));
-
-        drivetrain.setDrivetrainBrakeMode(true);
-        shooter.setShooterBrakeMode(false);
-        hopper.setHopperBrakeMode(true);
-        dropdown.setDropDownBreakMode(true);
 
         // Set up the auton chooser
         setupAutonChooser();
