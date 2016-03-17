@@ -40,8 +40,10 @@ public class Drivetrain extends Subsystem {
     private double[] currents;
 
     public boolean gearUp; // Stores the state of the gear shift
-    public boolean overrideAutoGearShifting; // True if automatic gear shifting is not being used
-    public boolean autoGearShiftingState; // True if automatic gear shifting was disabled and never re-enabled
+    public boolean overrideAutoGearShifting; // True if automatic gear shifting
+                                             // is not being used
+    public boolean autoGearShiftingState; // True if automatic gear shifting was
+                                          // disabled and never re-enabled
 
     private int gearCounter = 0;
     private double[] drifts = new double[8];
@@ -61,13 +63,10 @@ public class Drivetrain extends Subsystem {
         rightFrontMotor.setInverted(true);
         leftRearMotor.setInverted(true);
         rightRearMotor.setInverted(true);
-        robotDrive = new RobotDrive(leftFrontMotor, leftRearMotor,
-                rightFrontMotor, rightRearMotor);
+        robotDrive = new RobotDrive(leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor);
 
-        rightEncoder = new Encoder(RIGHT_ENCODER_CHANNEL_A,
-                RIGHT_ENCODER_CHANNEL_B);
-        leftEncoder = new Encoder(LEFT_ENCODER_CHANNEL_A,
-                LEFT_ENCODER_CHANNEL_B);
+        rightEncoder = new Encoder(RIGHT_ENCODER_CHANNEL_A, RIGHT_ENCODER_CHANNEL_B);
+        leftEncoder = new Encoder(LEFT_ENCODER_CHANNEL_A, LEFT_ENCODER_CHANNEL_B);
 
         gearUp = false;
         overrideAutoGearShifting = false;
@@ -75,8 +74,7 @@ public class Drivetrain extends Subsystem {
 
         out = new TankDriveOutput(robotDrive);
         gyro = new ADXRS450_Gyro();
-        pid = new PIDController(SmartDashboard.getNumber("Gyro P"),
-                SmartDashboard.getNumber("Gyro I"),
+        pid = new PIDController(SmartDashboard.getNumber("Gyro P"), SmartDashboard.getNumber("Gyro I"),
                 SmartDashboard.getNumber("Gyro D"), gyro, out);
         drifts[0] = 0.0;
 
@@ -140,8 +138,11 @@ public class Drivetrain extends Subsystem {
     }
 
     /**
-     * Changes from high gear to low gear or low gear to high gear automatically when the current spikes
-     * @return Changes from high gear to low gear or low gear to high gear automatically when the current spikes
+     * Changes from high gear to low gear or low gear to high gear automatically
+     * when the current spikes
+     * 
+     * @return Changes from high gear to low gear or low gear to high gear
+     *         automatically when the current spikes
      */
     public void autoGearShift() {
         if (overrideAutoGearShifting) {
@@ -154,8 +155,7 @@ public class Drivetrain extends Subsystem {
             for (int i = 0; i < currents.length; i++) {
                 sum += currents[i];
             }
-            gearUp = sum / currents.length > SmartDashboard
-                    .getNumber("Gear Shifting Threshold");
+            gearUp = sum / currents.length > SmartDashboard.getNumber("Gear Shifting Threshold");
             gearShift.set(gearUp);
             gearCounter = 0;
         } else {
@@ -187,13 +187,12 @@ public class Drivetrain extends Subsystem {
     }
 
     /**
-     * @return The average currents from all 4 motors to help with automatic gear shifting.
+     * @return The average currents from all 4 motors to help with automatic
+     *         gear shifting.
      */
     public double getAverageCurrent() {
-        return (leftRearMotor.getOutputCurrent()
-                + rightRearMotor.getOutputCurrent()
-                + leftFrontMotor.getOutputCurrent() + rightFrontMotor
-                    .getOutputCurrent()) / 4;
+        return (leftRearMotor.getOutputCurrent() + rightRearMotor.getOutputCurrent() + leftFrontMotor.getOutputCurrent()
+                + rightFrontMotor.getOutputCurrent()) / 4;
     }
 
     public void setDrivetrainBrakeMode(boolean on) {

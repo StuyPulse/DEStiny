@@ -2,6 +2,7 @@ package edu.stuy.robot;
 
 import static edu.stuy.robot.RobotMap.DRIVER_GAMEPAD;
 import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
+
 import edu.stuy.robot.commands.AcquirerAcquireCommand;
 import edu.stuy.robot.commands.AcquirerDeacquireCommand;
 import edu.stuy.robot.commands.DisableAutoGearShiftCommand;
@@ -58,6 +59,10 @@ public class OI {
     public OI() {
         driverGamepad = new Gamepad(DRIVER_GAMEPAD);
         operatorGamepad = new Gamepad(OPERATOR_GAMEPAD);
+
+        // Set up the invertedness of the gamepads
+        driverGamepad.setAnalogYInverted(true);
+        operatorGamepad.setAnalogYInverted(true);
 
         // DRIVER BINDINGS
         driverGamepad.getStartButton().whenPressed(new EnableAutoGearShiftCommand());

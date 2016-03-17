@@ -22,7 +22,7 @@ public class DrivetrainTankDriveCommand extends Command {
     protected void execute() {
         double left = Robot.drivetrain.inputSquared(Robot.oi.driverGamepad.getLeftY());
         double right = Robot.drivetrain.inputSquared(Robot.oi.driverGamepad.getRightY());
-        Robot.drivetrain.tankDrive(-left, -right);
+        Robot.drivetrain.tankDrive(left, right);
     }
 
     // Make this return true when this Command no longer needs to run execute()
