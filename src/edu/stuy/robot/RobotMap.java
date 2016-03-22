@@ -108,4 +108,5 @@ public interface RobotMap {
     // Operator IDs
     int JONAH_ID = 0;
     int YUBIN_ID = 1;
+    String LOG_FILE_NAME = "log.txt";
 }

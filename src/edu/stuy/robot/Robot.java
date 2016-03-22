@@ -3,6 +3,7 @@ package edu.stuy.robot;
 import static edu.stuy.robot.RobotMap.JONAH_ID;
 import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
 import static edu.stuy.robot.RobotMap.YUBIN_ID;
+
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
 import edu.stuy.robot.commands.auton.GoOverRockWallCommand;
@@ -10,6 +11,7 @@ import edu.stuy.robot.commands.auton.GoOverRoughTerrainCommand;
 import edu.stuy.robot.commands.auton.PassChevalCommand;
 import edu.stuy.robot.commands.auton.PassPortcullisCommand;
 import edu.stuy.robot.commands.auton.ReachObstacleCommand;
+import edu.stuy.robot.commands.auton.RunLogFileCommand;
 import edu.stuy.robot.subsystems.Acquirer;
 import edu.stuy.robot.subsystems.BlueSignalLight;
 import edu.stuy.robot.subsystems.Drivetrain;
@@ -19,6 +21,8 @@ import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Hopper;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.stuy.robot.subsystems.Sonar;
+import edu.stuy.util.LogData;
+import edu.stuy.util.Recorder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -50,6 +54,8 @@ public class Robot extends IterativeRobot {
     public static BlueSignalLight cvSignalLight;
     public static Flashlight flashlight;
 
+    public static boolean recording = false;
+    public static Recorder recorder;
     /*
      * Operator Interface
      */
@@ -101,6 +107,8 @@ public class Robot extends IterativeRobot {
         flashlight = new Flashlight();
 
         oi = new OI();
+        
+        recorder = new Recorder();
 
         dontStartCommands = false;
 
@@ -108,6 +116,7 @@ public class Robot extends IterativeRobot {
         shooter.setShooterBrakeMode(false);
         hopper.setHopperBrakeMode(true);
         dropdown.setDropDownBreakMode(true);
+        
 
         SmartDashboard.putNumber(SHOOTER_SPEED_LABEL, 0.0);
 
@@ -147,6 +156,7 @@ public class Robot extends IterativeRobot {
         autonChooser.addObject("5. Ramparts", new GoOverRampartsCommand());
         autonChooser.addObject("6. Cheval", new PassChevalCommand());
         autonChooser.addObject("7. Portcullis", new PassPortcullisCommand());
+        autonChooser.addObject("-1: Run Log File", new RunLogFileCommand());
         SmartDashboard.putData("Auton setting", autonChooser);
     }
 
@@ -213,6 +223,11 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+
+    	if (recording) {
+    		recorder.update();
+    	}
+
         Scheduler.getInstance().run();
         if (debugMode) {
             // SmartDashboard.putNumber("gyro",

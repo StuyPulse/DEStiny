@@ -7,6 +7,7 @@ import edu.stuy.robot.commands.AcquirerAcquireCommand;
 import edu.stuy.robot.commands.AcquirerDeacquireCommand;
 import edu.stuy.robot.commands.DisableAutoGearShiftCommand;
 import edu.stuy.robot.commands.EnableAutoGearShiftCommand;
+import edu.stuy.robot.commands.EndRecordingCommand;
 import edu.stuy.robot.commands.FlashlightToggleCommand;
 import edu.stuy.robot.commands.HighGearCommand;
 import edu.stuy.robot.commands.HoodDownCommand;
@@ -18,6 +19,7 @@ import edu.stuy.robot.commands.ShooterSetLayupCommand;
 import edu.stuy.robot.commands.ShooterSetMaxSpeed;
 import edu.stuy.robot.commands.ShooterSetOutWorksSpeed;
 import edu.stuy.robot.commands.ShooterStopCommand;
+import edu.stuy.robot.commands.StartRecordingCommand;
 import edu.stuy.robot.commands.auton.DropDownMoveToAngleCommand;
 import edu.stuy.util.Gamepad;
 
@@ -71,6 +73,9 @@ public class OI {
         driverGamepad.getLeftTrigger().whenReleased(new HighGearCommand());
         driverGamepad.getRightBumper().whenPressed(new FlashlightToggleCommand());
         driverGamepad.getLeftBumper().whenPressed(new FlashlightToggleCommand());
+        //driverGamePad.BUTTON_HERE.whenPressed(new StartRecordingCommand());
+        //driverGamepad.BUTTON_HERE.whenPressed(new EndRecordingCommand());
+        // TODO: ASSIGN BUTTONS.
 
         // OPERATOR BINDINGS
         operatorGamepad.getLeftTrigger().whileHeld(new HopperRunCommand(true));
