@@ -3,6 +3,7 @@ package edu.stuy.robot.commands;
 import static edu.stuy.robot.RobotMap.JONAH_ID;
 import static java.lang.Math.PI;
 import static java.lang.Math.sin;
+
 import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -22,12 +23,14 @@ public class DropDownMoveCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        speed = Robot.oi.operatorGamepad.getRightY() * speedFactor;
         int operator = (Integer) Robot.operatorChooser.getSelected();
         if (operator == JONAH_ID) {
             // Jonah plays Flight Simulators so pulling up goes down
-            speed *= -1;
+            Robot.oi.operatorGamepad.setAnalogYInverted(false);
+        } else {
+            Robot.oi.operatorGamepad.setAnalogYInverted(true);
         }
+        speed = Robot.oi.operatorGamepad.getRightY() * speedFactor;
         if (Robot.dropdown.deadband(speed)) {
             Robot.dropdown.move(0.0);
         } else if (speed < 0) {
