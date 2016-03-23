@@ -18,6 +18,8 @@ public class RunLogFileCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        // No need for try-catching because Recorder deals with that by
+        // setting log to have only one LogData with all data set to 0.
         Robot.recorder.readFromFile(RobotMap.LOG_FILE_NAME);
         increment = 0;
     }

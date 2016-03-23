@@ -81,7 +81,6 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-
         // Setup debug chooser and build the SmartDashboard layout based on the
         // chosen option
         setupDebugChooser();
@@ -107,7 +106,7 @@ public class Robot extends IterativeRobot {
         flashlight = new Flashlight();
 
         oi = new OI();
-        
+
         recorder = new Recorder();
 
         dontStartCommands = false;
@@ -116,7 +115,6 @@ public class Robot extends IterativeRobot {
         shooter.setShooterBrakeMode(false);
         hopper.setHopperBrakeMode(true);
         dropdown.setDropDownBreakMode(true);
-        
 
         SmartDashboard.putNumber(SHOOTER_SPEED_LABEL, 0.0);
 
@@ -223,10 +221,21 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-
-    	if (recording) {
-    		recorder.update();
-    	}
+        /// HANDLE RECORDER
+        if (oi.operatorGamepad.getDPadLeft().get()) {
+            //TODO: Find buttons that work.
+            recording = true;
+        }
+        if (oi.operatorGamepad.getDPadRight().get()) {
+            //TODO: Find buttons that work.
+            if (recording) {
+                recorder.writeToFile(RobotMap.LOG_FILE_NAME);
+            }
+            recording = false;
+        } 
+        if (recording) {
+            recorder.update();
+        }
 
         Scheduler.getInstance().run();
         if (debugMode) {
