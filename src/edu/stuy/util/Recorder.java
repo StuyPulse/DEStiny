@@ -30,6 +30,12 @@ public class Recorder {
     public void reset() {
         log.clear();
     }
+    public int logLength() {
+        return log.size();
+    }
+    public LogData getData(int n) {
+        return log.get(n);
+    }
 
     public void writeToFile(String name) {
         try {
