@@ -4,6 +4,7 @@ import static edu.stuy.robot.RobotMap.JONAH_ID;
 import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
 import static edu.stuy.robot.RobotMap.YUBIN_ID;
 
+import edu.stuy.robot.commands.ShooterSetOutWorksSpeed;
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
 import edu.stuy.robot.commands.auton.GoOverRockWallCommand;
@@ -12,6 +13,7 @@ import edu.stuy.robot.commands.auton.PassChevalCommand;
 import edu.stuy.robot.commands.auton.PassPortcullisCommand;
 import edu.stuy.robot.commands.auton.ReachObstacleCommand;
 import edu.stuy.robot.commands.auton.RunLogFileCommand;
+import edu.stuy.robot.commands.auton.ShootOuterworkCommand;
 import edu.stuy.robot.subsystems.Acquirer;
 import edu.stuy.robot.subsystems.BlueSignalLight;
 import edu.stuy.robot.subsystems.Drivetrain;
@@ -70,6 +72,7 @@ public class Robot extends IterativeRobot {
     public static SendableChooser autonChooser;
     public static SendableChooser operatorChooser;
     public static SendableChooser autonPositionChooser;
+    public static SendableChooser autonShootChooser;
 
     public static boolean dontStartCommands;
 
@@ -135,6 +138,13 @@ public class Robot extends IterativeRobot {
         autonPositionChooser.addObject("5", 5);
         SmartDashboard.putData("Auton Position", autonPositionChooser);
     }
+    
+    private void shouldShootAfterCross() {
+        autonShootChooser = new SendableChooser();
+        autonShootChooser.addDefault("No", false);
+        autonShootChooser.addObject("Yes", true);
+        SmartDashboard.putData("Should shoot after cross?", autonShootChooser);
+    }
 
     private void chooseOperator() {
         operatorChooser = new SendableChooser();
@@ -173,8 +183,13 @@ public class Robot extends IterativeRobot {
         debugMode = (Boolean) debugChooser.getSelected();
         Command selectedCommand = (Command) autonChooser.getSelected();
         int autonPosition = (Integer) autonPositionChooser.getSelected();
+        Boolean autonShoot = (Boolean) autonShootChooser.getSelected();
         autonomousCommand = selectedCommand;
-        autonomousCommand.start();
+        if (autonShoot) {
+            new ShootOuterworkCommand(autonomousCommand).start();
+        } else {
+            autonomousCommand.start();
+        }
         Robot.drivetrain.resetEncoders();
         autonStartTime = Timer.getFPGATimestamp();
     }
