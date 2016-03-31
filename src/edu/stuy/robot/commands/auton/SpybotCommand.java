@@ -5,6 +5,7 @@ import edu.stuy.robot.commands.HoodUpCommand;
 import edu.stuy.robot.commands.HopperStopCommand;
 import edu.stuy.robot.commands.ShooterSetMaxSpeed;
 import edu.stuy.robot.commands.ShooterStopCommand;
+import edu.stuy.robot.commands.DropDownMoveToAngleCommand;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -31,6 +32,7 @@ public class SpybotCommand extends CommandGroup {
         // arm.
         
         addSequential(new HoodUpCommand());
+        addSequential(new DropDownMoveToAngleCommand(0);
         addParallel(new ShooterSetMaxSpeed(), 4);
         addSequential(new AutonHopperCommand(4.0));
         addParallel(new ShooterStopCommand());
