@@ -4,7 +4,6 @@ import static edu.stuy.robot.RobotMap.JONAH_ID;
 import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
 import static edu.stuy.robot.RobotMap.YUBIN_ID;
 
-import edu.stuy.robot.commands.ShooterSetOutWorksSpeed;
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
 import edu.stuy.robot.commands.auton.GoOverRockWallCommand;
@@ -15,7 +14,6 @@ import edu.stuy.robot.commands.auton.ReachObstacleCommand;
 import edu.stuy.robot.commands.auton.RunLogFileCommand;
 import edu.stuy.robot.commands.auton.ShootOuterworkCommand;
 import edu.stuy.robot.subsystems.Acquirer;
-import edu.stuy.robot.subsystems.BlueSignalLight;
 import edu.stuy.robot.subsystems.Drivetrain;
 import edu.stuy.robot.subsystems.DropDown;
 import edu.stuy.robot.subsystems.Flashlight;
@@ -23,8 +21,9 @@ import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Hopper;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.stuy.robot.subsystems.Sonar;
-import edu.stuy.util.LogData;
+import edu.stuy.util.BlueSignalLight;
 import edu.stuy.util.Recorder;
+import edu.stuy.util.TegraSocketReader;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -53,11 +52,14 @@ public class Robot extends IterativeRobot {
     public static Shooter shooter;
     public static Hood hood;
     public static Sonar sonar;
-    public static BlueSignalLight cvSignalLight;
     public static Flashlight flashlight;
 
+    public static BlueSignalLight cvSignalLight;
     public static boolean recording = false;
     public static Recorder recorder;
+
+    private static TegraSocketReader tegraReader;
+    private static Thread tegraThread;
     /*
      * Operator Interface
      */
@@ -94,6 +96,11 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Gyro I", 0);
         SmartDashboard.putNumber("Gyro D", 0);
 
+        // CV
+        SmartDashboard.putNumber("maxCV", 1.0);
+        SmartDashboard.putNumber("minCV", 0.5);
+        SmartDashboard.putBoolean("printTegraData", false);
+
         // Start the operator chooser before anything else
         chooseOperator();
 
@@ -124,6 +131,16 @@ public class Robot extends IterativeRobot {
         // Set up the auton chooser
         setupAutonChooser();
         setupAutonPositionChooser();
+
+        // Ensure on runtime ending, CV thread ends
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                if (tegraThread != null && tegraThread.isAlive()) {
+                    tegraThread.interrupt();
+                }
+            }
+        });
     }
 
     /**
@@ -192,6 +209,8 @@ public class Robot extends IterativeRobot {
         }
         Robot.drivetrain.resetEncoders();
         autonStartTime = Timer.getFPGATimestamp();
+        // Set up Thread to connect to and read from Tegra
+        ensureTegraThreadRunning();
     }
 
     public void autonomousPeriodic() {
@@ -221,6 +240,12 @@ public class Robot extends IterativeRobot {
         }
         debugMode = (Boolean) debugChooser.getSelected();
         Robot.drivetrain.resetEncoders();
+        // Set up Tegra reading thread
+
+        // Set up CV
+        ensureTegraThreadRunning();
+        System.out.println("Added shutdown hook for Tegra thread interruption");
+
         // This is here and also in autonomus periodic as a safety measure
         Robot.shooter.stop();
     }
@@ -230,6 +255,7 @@ public class Robot extends IterativeRobot {
      * to reset subsystems before shutting down.
      */
     public void disabledInit() {
+        dontReadFromTegra();
     }
 
     /**
@@ -287,5 +313,39 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
         LiveWindow.run();
+    }
+
+    // CV Methods
+    private void ensureTegraThreadRunning() {
+        if (tegraThread != null) {
+            return;
+        }
+        System.out.println("Initializing a TegraSocketReader");
+        tegraReader = new TegraSocketReader();
+        System.out.println("Setting up thread");
+        tegraThread = new Thread(tegraReader);
+        // Call .start(), rather than .run(), to run it in a separate thread
+        tegraThread.start();
+        System.out.println("Tegra thread started");
+    }
+
+    private void dontReadFromTegra() {
+        if (tegraThread != null && tegraThread.isAlive()) {
+            tegraThread.interrupt();
+        }
+        tegraReader = null;
+        tegraThread = null;
+    }
+
+    public static double[] getLatestTegraVector() {
+        if (tegraReader == null) {
+            System.out.println("TEGRAREADER IS NULL, THOUGH DATA WAS REQUESTED");
+            return null;
+        }
+        return tegraReader.getMostRecent();
+    }
+
+    public static boolean tegraIsConnected() {
+        return tegraReader != null && tegraReader.isConnected();
     }
 }
