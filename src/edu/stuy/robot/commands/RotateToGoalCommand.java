@@ -1,6 +1,6 @@
 package edu.stuy.robot.commands;
 
-import static edu.stuy.robot.RobotMap.CAMERA_FRAME_PX_WIDTH;
+import static edu.stuy.robot.RobotMap.CAMERA_RESOLUTION_X;
 import static edu.stuy.robot.RobotMap.CAMERA_VIEWING_ANGLE_X;
 import static edu.stuy.robot.RobotMap.MAX_DEGREES_OFF_AUTO_AIMING;
 
@@ -20,7 +20,7 @@ public class RotateToGoalCommand extends Command {
     private boolean priorGearShiftState;
 
     private static double pxOffsetToDegrees(double px) {
-        return CAMERA_VIEWING_ANGLE_X * px / CAMERA_FRAME_PX_WIDTH;
+        return CAMERA_VIEWING_ANGLE_X * px / CAMERA_RESOLUTION_X; // TODO: use CAMERA_FRAME_PX_WIDTH
     }
 
     public RotateToGoalCommand() {
@@ -55,7 +55,7 @@ public class RotateToGoalCommand extends Command {
             SmartDashboard.putNumber("CV| vector Y", currentReading[1]);
             SmartDashboard.putNumber("CV| bounding rect angle", currentReading[2]);
             double degsOff = pxOffsetToDegrees(currentReading[0]);
-            double rightWheelSpeed = clampMagnitude(degsOff / (CAMERA_FRAME_PX_WIDTH / 2) * 50, SmartDashboard.getNumber("minCV"), SmartDashboard.getNumber("maxCV"));
+            double rightWheelSpeed = clampMagnitude(degsOff / (CAMERA_RESOLUTION_X / 2) * 50, SmartDashboard.getNumber("minCV"), SmartDashboard.getNumber("maxCV"));
             //rightWheelSpeed = Math.signum(rightWheelSpeed) * 0.7;
             // Try with the following modification, or similar ones:
             // rightWheelSpeed = Math.signum(rightWheelSpeed) * Math.pow(rightWheelSpeed, 2);

@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static edu.stuy.robot.RobotMap.IDEAL_VERTICAL_OFFSET_AUTO_AIMING;
 import static edu.stuy.robot.RobotMap.MAX_VERTICAL_PX_OFF_AUTO_AIMING;
-import static edu.stuy.robot.RobotMap.CAMERA_FRAME_PX_HEIGHT;
+import static edu.stuy.robot.RobotMap.CAMERA_RESOLUTION_Y;
 
 /**
  *
@@ -56,7 +56,7 @@ public class MoveIntoShotRangeCommand extends Command {
                 return;
             }
             // Set wheelSpeed to ratio of how much off to how much could possibly be off
-            double wheelSpeed = offsetFromIdeal / (CAMERA_FRAME_PX_HEIGHT / 2 + IDEAL_VERTICAL_OFFSET_AUTO_AIMING);
+            double wheelSpeed = offsetFromIdeal / (CAMERA_RESOLUTION_Y / 2 + IDEAL_VERTICAL_OFFSET_AUTO_AIMING);
             SmartDashboard.putNumber("CV| wheelSpeed to use", wheelSpeed);
             System.out.println("MISRC: speed to use: " + wheelSpeed);
             Robot.drivetrain.tankDrive(wheelSpeed, wheelSpeed);

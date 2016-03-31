@@ -1,6 +1,6 @@
 package edu.stuy.robot.commands;
 
-import static edu.stuy.robot.RobotMap.CAMERA_FRAME_PX_WIDTH;
+import static edu.stuy.robot.RobotMap.CAMERA_RESOLUTION_X;
 import static edu.stuy.robot.RobotMap.CAMERA_VIEWING_ANGLE_X;
 import static edu.stuy.robot.RobotMap.MAX_DEGREES_OFF_AUTO_AIMING;
 
@@ -22,7 +22,7 @@ public class RotateToAimWithGyroCommand extends Command {
     private int angle;
 
     private static int pxOffsetToDegrees(double px) {
-        return (int) (CAMERA_VIEWING_ANGLE_X * px / CAMERA_FRAME_PX_WIDTH);
+        return (int) (CAMERA_VIEWING_ANGLE_X * px / CAMERA_RESOLUTION_X);
     }
 
     public RotateToAimWithGyroCommand() {

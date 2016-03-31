@@ -3,6 +3,11 @@ package edu.stuy.robot;
 import static edu.stuy.robot.RobotMap.JONAH_ID;
 import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
 import static edu.stuy.robot.RobotMap.YUBIN_ID;
+import static edu.stuy.robot.RobotMap.CAMERA_FRAME_PX_HEIGHT;
+import static edu.stuy.robot.RobotMap.CAMERA_HEIGHT_FROM_GROUND;
+import static edu.stuy.robot.RobotMap.CAMERA_VIEWING_ANGLE_Y;
+import static edu.stuy.robot.RobotMap.CAMERA_TILT_ANGLE;
+import static edu.stuy.robot.RobotMap.HIGH_GOAL_HEIGHT;
 
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
@@ -21,9 +26,9 @@ import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Hopper;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.stuy.robot.subsystems.Sonar;
-import edu.stuy.util.YellowSignalLight;
 import edu.stuy.util.Recorder;
 import edu.stuy.util.TegraSocketReader;
+import edu.stuy.util.YellowSignalLight;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -132,15 +137,7 @@ public class Robot extends IterativeRobot {
         setupAutonChooser();
         setupAutonPositionChooser();
 
-        // Ensure on runtime ending, CV thread ends
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                if (tegraThread != null && tegraThread.isAlive()) {
-                    tegraThread.interrupt();
-                }
-            }
-        });
+        /**/
     }
 
     /**
@@ -241,6 +238,15 @@ public class Robot extends IterativeRobot {
         debugMode = (Boolean) debugChooser.getSelected();
         Robot.drivetrain.resetEncoders();
         // Set up Tegra reading thread
+        // Ensure on runtime ending, CV thread ends
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                if (tegraThread != null && tegraThread.isAlive()) {
+                    tegraThread.interrupt();
+                }
+            }
+        });
 
         // Set up CV
         ensureTegraThreadRunning();
@@ -266,6 +272,7 @@ public class Robot extends IterativeRobot {
         if (oi.operatorGamepad.getDPadLeft().get()) {
             //TODO: Find buttons that work.
             recording = true;
+            System.out.println(distanceFromGoal());
         }
         if (oi.operatorGamepad.getDPadRight().get()) {
             //TODO: Find buttons that work.
@@ -347,5 +354,23 @@ public class Robot extends IterativeRobot {
 
     public static boolean tegraIsConnected() {
         return tegraReader != null && tegraReader.isConnected();
+    }
+
+    private static double frameYPxToDegrees(double dy) {
+        return dy / CAMERA_FRAME_PX_HEIGHT * CAMERA_VIEWING_ANGLE_Y;
+    }
+
+    private static double heightInFrameToDegreesFromGround(double height) {
+        return CAMERA_TILT_ANGLE - frameYPxToDegrees(height);
+    }
+
+    // return distance from goal in inches, or -1 if cannot get Tegra data
+    public static double distanceFromGoal() {
+        double[] vec = getLatestTegraVector();
+        if (vec == null) {
+            return -1;
+        }
+        double angle = heightInFrameToDegreesFromGround(vec[1]);
+        return (HIGH_GOAL_HEIGHT - CAMERA_HEIGHT_FROM_GROUND) / Math.atan(angle);
     }
 }

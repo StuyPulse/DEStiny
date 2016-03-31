@@ -96,11 +96,20 @@ public interface RobotMap {
 
     // CV
     double MAX_DEGREES_OFF_AUTO_AIMING = 1;
-    int CAMERA_FRAME_PX_WIDTH = 1280;
-    int CAMERA_FRAME_PX_HEIGHT = 720;
-    int CAMERA_VIEWING_ANGLE_X = 60;
+    int CAMERA_RESOLUTION_X = 1280;
+    int CAMERA_RESOLUTION_Y = 720;
+    int CAMERA_FRAME_PX_HEIGHT = 202;
+    int CAMERA_FRAME_PX_WIDTH = 360;
+    double CAMERA_TILT_ANGLE = 32;
+
+    double CAMERA_VIEWING_ANGLE_X = 61;
+    double CAMERA_VIEWING_ANGLE_Y = 34.3;
     double IDEAL_VERTICAL_OFFSET_AUTO_AIMING = 70;
+    double IDEAL_FAR_SHOOTING_DISTANCE = 14.0 * 12.0; // Confirm with driveteam
     double MAX_VERTICAL_PX_OFF_AUTO_AIMING = 20;
+
+    double HIGH_GOAL_HEIGHT = 89; // inches to center of goal from floor (measured)
+    double CAMERA_HEIGHT_FROM_GROUND = 30; // inches
 
     // Signal Lights
     int SIGNAL_LIGHT_RED_PORT = 4;
