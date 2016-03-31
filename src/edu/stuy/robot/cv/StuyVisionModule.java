@@ -189,20 +189,19 @@ public class StuyVisionModule {
      * <code>cs</code>
      * 
      * @param cs
-     *            The CaptureSource from which to read frames
+     *     The CaptureSource from which to read frames
      * @param iters
-     *            The number of frames to read from <code>cs</code> and to
-     *            process and time
+     *     The number of frames to read from <code>cs</code> and to
+     *     process and time
      * @return The average time taken by <code>hsvThresholding</code> to process
-     *         one of the frames
+     *     one of the frames
      */
     public double testProcessingTime(CaptureSource cs, int iters) {
         int total = 0;
+        double[] vec;
         for (int i = 0; i < iters; i++) {
-            Mat frame = new Mat();
-            cs.readFrame(frame);
             long start = System.currentTimeMillis();
-            hsvThresholding(frame);
+            vec = processImage();
             total += (int) (System.currentTimeMillis() - start);
         }
         return total / (double) iters;
