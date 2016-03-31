@@ -21,7 +21,7 @@ import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Hopper;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.stuy.robot.subsystems.Sonar;
-import edu.stuy.util.BlueSignalLight;
+import edu.stuy.util.YellowSignalLight;
 import edu.stuy.util.Recorder;
 import edu.stuy.util.TegraSocketReader;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -54,7 +54,7 @@ public class Robot extends IterativeRobot {
     public static Sonar sonar;
     public static Flashlight flashlight;
 
-    public static BlueSignalLight cvSignalLight;
+    public static YellowSignalLight cvSignalLight;
     public static boolean recording = false;
     public static Recorder recorder;
 
@@ -112,7 +112,7 @@ public class Robot extends IterativeRobot {
         shooter = new Shooter();
         hood = new Hood();
         sonar = new Sonar();
-        cvSignalLight = new BlueSignalLight();
+        cvSignalLight = new YellowSignalLight();
         flashlight = new Flashlight();
 
         oi = new OI();
