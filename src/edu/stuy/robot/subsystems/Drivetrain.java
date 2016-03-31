@@ -44,9 +44,6 @@ public class Drivetrain extends Subsystem {
     public boolean autoGearShiftingState; // True if automatic gear shifting was disabled and never re-enabled
 
     private int gearCounter = 0;
-    private double[] drifts = new double[8];
-    private int counter = 0;
-    private double currentAngle = 0.0;
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -78,7 +75,6 @@ public class Drivetrain extends Subsystem {
         pid = new PIDController(SmartDashboard.getNumber("Gyro P"),
                 SmartDashboard.getNumber("Gyro I"),
                 SmartDashboard.getNumber("Gyro D"), gyro, out);
-        drifts[0] = 0.0;
 
         // pid.setInputRange(0, 360);
         // pid.setContinuous();
@@ -99,22 +95,9 @@ public class Drivetrain extends Subsystem {
         robotDrive.tankDrive(left, right);
     }
 
-    
-    /*
-     * Does not work, TODO: FIX
      public double getGyroAngle() {
-        drifts[counter % 8] = currentAngle - gyro.getAngle();
-        currentAngle = gyro.getAngle();
-        if (counter > 9) {
-            double avg = 0.0;
-            for (double d : drifts) {
-                avg += d;
-            }
-        }
-        counter++;
         return gyro.getAngle();
     }
-    */
 
     public double getLeftEncoder() {
         return Math.abs(leftEncoder.getDistance());
@@ -170,7 +153,7 @@ public class Drivetrain extends Subsystem {
      */
     public void manualGearShift(boolean on) {
         gearShift.set(on);
-        gearUp = on; 
+        gearUp = on;
     }
 
     /**
@@ -192,8 +175,8 @@ public class Drivetrain extends Subsystem {
     public double getAverageCurrent() {
         return (leftRearMotor.getOutputCurrent()
                 + rightRearMotor.getOutputCurrent()
-                + leftFrontMotor.getOutputCurrent() + rightFrontMotor
-                    .getOutputCurrent()) / 4;
+                + leftFrontMotor.getOutputCurrent()
+                + rightFrontMotor.getOutputCurrent()) / 4;
     }
 
     public void setDrivetrainBrakeMode(boolean on) {

@@ -3,6 +3,7 @@ package edu.stuy.robot;
 import static edu.stuy.robot.RobotMap.JONAH_ID;
 import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
 import static edu.stuy.robot.RobotMap.YUBIN_ID;
+
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
 import edu.stuy.robot.commands.auton.GoOverRockWallCommand;
@@ -10,8 +11,8 @@ import edu.stuy.robot.commands.auton.GoOverRoughTerrainCommand;
 import edu.stuy.robot.commands.auton.PassChevalCommand;
 import edu.stuy.robot.commands.auton.PassPortcullisCommand;
 import edu.stuy.robot.commands.auton.ReachObstacleCommand;
+import edu.stuy.robot.cv.StuyVisionModule;
 import edu.stuy.robot.subsystems.Acquirer;
-import edu.stuy.robot.subsystems.BlueSignalLight;
 import edu.stuy.robot.subsystems.Drivetrain;
 import edu.stuy.robot.subsystems.DropDown;
 import edu.stuy.robot.subsystems.Flashlight;
@@ -19,6 +20,7 @@ import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Hopper;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.stuy.robot.subsystems.Sonar;
+import edu.stuy.util.BlueSignalLight;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -44,7 +46,7 @@ public class Robot extends IterativeRobot {
     public static Shooter shooter;
     public static Hood hood;
     public static Sonar sonar;
-    public static BlueSignalLight redSignalLight;
+    public static BlueSignalLight cvSignalLight;
     public static Flashlight flashlight;
     public static OI oi;
 
@@ -59,6 +61,8 @@ public class Robot extends IterativeRobot {
 
     private double autonStartTime;
     private boolean debugMode;
+
+    public static StuyVisionModule vision;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -85,10 +89,11 @@ public class Robot extends IterativeRobot {
         shooter = new Shooter();
         hood = new Hood();
         sonar = new Sonar();
-        redSignalLight = new BlueSignalLight();
+        cvSignalLight = new BlueSignalLight();
         flashlight = new Flashlight();
 
         oi = new OI();
+        vision = new StuyVisionModule();
 
         dontStartCommands = false;
 
