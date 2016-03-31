@@ -17,6 +17,7 @@ public class RotateToGoalCommand extends Command {
     private double[] currentReading;
     private boolean goalInFrame;
     private boolean forceStopped = false;
+    private boolean priorGearShiftState;
 
     private static double pxOffsetToDegrees(double px) {
         return CAMERA_VIEWING_ANGLE_X * px / CAMERA_FRAME_PX_WIDTH;
@@ -32,6 +33,8 @@ public class RotateToGoalCommand extends Command {
     protected void initialize() {
         goalInFrame = true; // Assume it is there until we see otherwise
         forceStopped = false;
+        priorGearShiftState = Robot.drivetrain.gearUp;
+        Robot.drivetrain.manualGearShift(true);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -88,6 +91,8 @@ public class RotateToGoalCommand extends Command {
     @Override
     protected void end() {
         Robot.drivetrain.tankDrive(0.0, 0.0);
+        // Set drivetrain gearshift to how it was before aiming
+        Robot.drivetrain.manualGearShift(priorGearShiftState);
     }
 
     // Called when another command which requires one or more of the same

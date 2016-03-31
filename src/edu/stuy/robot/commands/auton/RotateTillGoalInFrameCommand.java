@@ -1,4 +1,4 @@
-package edu.stuy.robot.commands;
+package edu.stuy.robot.commands.auton;
 
 import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -31,6 +31,7 @@ public class RotateTillGoalInFrameCommand extends Command {
     @Override
     protected void initialize() {
         goalInFrame = false; // Assume it is not there until we see otherwise
+        // Expect that drivetrain is in low gear.
     }
 
     // Called repeatedly when this Command is scheduled to run

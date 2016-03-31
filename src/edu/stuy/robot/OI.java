@@ -78,6 +78,8 @@ public class OI {
         // CV Controls:
         driverGamepad.getBottomButton().whenPressed(new RotateToGoalCommand());
         driverGamepad.getLeftButton().whenPressed(new MoveIntoShotRangeCommand());
+        // driveGamepad's RightButton is used for force-stopping CV movement commands
+
         //driverGamePad.BUTTON_HERE.whenPressed(new StartRecordingCommand());
         //driverGamepad.BUTTON_HERE.whenPressed(new EndRecordingCommand());
         // TODO: ASSIGN BUTTONS.

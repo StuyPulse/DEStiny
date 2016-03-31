@@ -17,6 +17,7 @@ public class MoveIntoShotRangeCommand extends Command {
     private boolean forceStopped;
     private boolean goalLeftFrame;
     private boolean readyForShot;
+    private boolean priorGearShiftState;
 
     public MoveIntoShotRangeCommand() {
         // Use requires() here to declare subsystem dependencies
@@ -29,6 +30,8 @@ public class MoveIntoShotRangeCommand extends Command {
         // Goal should be in frame at start
         goalLeftFrame = false;
         readyForShot = false;
+        priorGearShiftState = Robot.drivetrain.gearUp;
+        Robot.drivetrain.manualGearShift(true);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -67,6 +70,7 @@ public class MoveIntoShotRangeCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+        Robot.drivetrain.manualGearShift(priorGearShiftState);
     }
 
     // Called when another command which requires one or more of the same
