@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class GoOverRockWallCommand extends CommandGroup {
 
     private static final double INITIAL_DISTANCE = 72.0;
-    private static final double INITIAL_TIME = 2.0;
+    private static final double INITIAL_TIME = 1.0;
     private static final double INITIAL_SPEED = 0.7;
 
     public GoOverRockWallCommand() {
@@ -33,7 +33,7 @@ public class GoOverRockWallCommand extends CommandGroup {
         addSequential(new DropDownMoveToAngleCommand(ARM_CROSSING_OBSTACLE_ANGLE));
         addParallel(new LowGearCommand());
         addParallel(new DropDownMoveToAngleCommand(ARM_CROSSING_OBSTACLE_ANGLE));
-        addSequential(new DriveForwardCommand(INITIAL_DISTANCE, INITIAL_TIME, INITIAL_SPEED));
+        addSequential(new DriveForwardCommand(INITIAL_DISTANCE, INITIAL_TIME, INITIAL_SPEED), 1);
         addParallel(new DropDownMoveToAngleCommand(ARM_CROSSING_OBSTACLE_ANGLE));
         addSequential(new DriveOverRockWallCommand());
     }
