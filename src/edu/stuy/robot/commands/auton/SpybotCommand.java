@@ -5,7 +5,7 @@ import edu.stuy.robot.commands.HoodUpCommand;
 import edu.stuy.robot.commands.HopperStopCommand;
 import edu.stuy.robot.commands.ShooterSetMaxSpeed;
 import edu.stuy.robot.commands.ShooterStopCommand;
-import edu.stuy.robot.commands.DropDownMoveToAngleCommand;
+import edu.stuy.robot.commands.auton.DropDownMoveToAngleCommand;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
