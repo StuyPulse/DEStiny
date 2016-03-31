@@ -81,8 +81,6 @@ public class Robot extends IterativeRobot {
     public static SendableChooser autonPositionChooser;
     public static SendableChooser autonShootChooser;
 
-    public static boolean dontStartCommands;
-
     private double autonStartTime;
     private boolean debugMode;
 
@@ -123,8 +121,6 @@ public class Robot extends IterativeRobot {
         oi = new OI();
 
         recorder = new Recorder();
-
-        dontStartCommands = false;
 
         drivetrain.setDrivetrainBrakeMode(true);
         shooter.setShooterBrakeMode(false);
