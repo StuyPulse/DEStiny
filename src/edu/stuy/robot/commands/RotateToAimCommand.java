@@ -91,6 +91,8 @@ public class RotateToAimCommand extends Command {
         return Math.abs(angleMoved() / (CAMERA_VIEWING_ANGLE_X / 2));
     }
 
+    // In some sense, what percent of the way off are we? 100% = 1.0 would be
+    // the goal is at left/right edge of the frame; 0% = 0.0 would be on target.
     private double howMuchWeHaveToGo() {
         return Math.abs(degreesToMove() / (CAMERA_VIEWING_ANGLE_X / 2));
     }
@@ -105,11 +107,12 @@ public class RotateToAimCommand extends Command {
             if (!forceStopped) {
                 //double speed = 0.9 - 0.5 * howFarHaveWeCome();
                 double speed = 0.4 + howMuchWeHaveToGo();
-                System.out.println("\n\n\n\nSpeed to use: " + speed);
-                System.out.println("direct gyro angle: " + Robot.drivetrain.getGyroAngle());
-                System.out.println("measured gyro ang(): " + angleMoved());
-                System.out.println("desired angle: " + desiredAngle);
-                System.out.println("original distance: " + StuyVisionModule.findDistanceToGoal(cvReading));
+                System.out.println("\n\n\n\nSpeed to use:\t" + speed);
+                System.out.println("getGyroAngle():\t" + Robot.drivetrain.getGyroAngle());
+                System.out.println("angleMoved():\t" + angleMoved());
+                System.out.println("desiredAngle:\t" + desiredAngle);
+                System.out.println("degreesToMove():\t" + degreesToMove());
+                System.out.println("original distance:\t" + StuyVisionModule.findDistanceToGoal(cvReading));
                 // right is negative when turning right
                 if (desiredAngle < 0) {
                     System.out.println("Moving left, as desiredAngle=" + desiredAngle + " < 0");
