@@ -77,6 +77,9 @@ public class RotateToAimCommand extends Command {
     private double howFarHaveWeCome() {
         return Math.abs(angleMoved() / (CAMERA_VIEWING_ANGLE_X / 2));
     }
+    private double howMuchWeHaveToGo() {
+        return Math.abs((desiredAngle - angleMoved()) / (CAMERA_VIEWING_ANGLE_X / 2));
+    }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
@@ -86,7 +89,8 @@ public class RotateToAimCommand extends Command {
                 return;
             }
             if (!forceStopped) {
-                double speed = 0.9 - 0.5 * howFarHaveWeCome();
+                //double speed = 0.9 - 0.5 * howFarHaveWeCome();
+                double speed = 0.4 + howMuchWeHaveToGo();
                 System.out.println("\n\n\n\nSpeed to use: " + speed);
                 System.out.println("direct gyro angle: " + Robot.drivetrain.getGyroAngle());
                 System.out.println("measured gyro ang(): " + angleMoved());
@@ -112,7 +116,7 @@ public class RotateToAimCommand extends Command {
     protected boolean isFinished() {
         try {
             // When no more can or should be done:
-            if (forceStopped || abort || !goalInFrame || Math.abs(desiredAngle) < 0.001) {
+            if (forceStopped || abort || !goalInFrame || Math.abs(desiredAngle) < 0.001) { // last condition for cases when it is zero
                 Robot.cvSignalLight.setOff();
                 System.out.println("\n\n\n\n\n\n\nforce stopped: " + forceStopped + "\ngoalInFrame: " + goalInFrame + "\ndesiredAngle: " + desiredAngle);
                 return true;
