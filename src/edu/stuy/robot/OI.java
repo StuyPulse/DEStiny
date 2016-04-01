@@ -2,17 +2,21 @@ package edu.stuy.robot;
 
 import static edu.stuy.robot.RobotMap.DRIVER_GAMEPAD;
 import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
+
 import edu.stuy.robot.commands.AcquirerAcquireCommand;
 import edu.stuy.robot.commands.AcquirerDeacquireCommand;
 import edu.stuy.robot.commands.DisableAutoGearShiftCommand;
 import edu.stuy.robot.commands.EnableAutoGearShiftCommand;
-import edu.stuy.robot.commands.FlashlightToggleCommand;
+import edu.stuy.robot.commands.FlashlightOffCommand;
+import edu.stuy.robot.commands.FlashlightOnCommand;
 import edu.stuy.robot.commands.HighGearCommand;
 import edu.stuy.robot.commands.HoodDownCommand;
 import edu.stuy.robot.commands.HoodUpCommand;
 import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.JionDriveCommand;
-import edu.stuy.robot.commands.ShooterBackwardsCommand;
+import edu.stuy.robot.commands.RotateToAimCommand;
+import edu.stuy.robot.commands.ShooterHopperBackwardsCommand;
+import edu.stuy.robot.commands.ShooterHopperStopCommand;
 import edu.stuy.robot.commands.ShooterSetLayupCommand;
 import edu.stuy.robot.commands.ShooterSetMaxSpeed;
 import edu.stuy.robot.commands.ShooterSetOutWorksSpeed;
@@ -64,8 +68,11 @@ public class OI {
         driverGamepad.getSelectButton().whenPressed(new DisableAutoGearShiftCommand());
         driverGamepad.getLeftTrigger().whileHeld(new JionDriveCommand());
         driverGamepad.getLeftTrigger().whenReleased(new HighGearCommand());
-        driverGamepad.getRightBumper().whenPressed(new FlashlightToggleCommand());
-        driverGamepad.getLeftBumper().whenPressed(new FlashlightToggleCommand());
+        driverGamepad.getRightBumper().whenPressed(new FlashlightOnCommand());
+        driverGamepad.getRightBumper().whenReleased(new FlashlightOffCommand());
+        driverGamepad.getLeftBumper().whenPressed(new FlashlightOnCommand());
+        driverGamepad.getLeftBumper().whenReleased(new FlashlightOffCommand());
+        driverGamepad.getBottomButton().whenPressed(new RotateToAimCommand());
 
         // OPERATOR BINDINGS
         operatorGamepad.getLeftTrigger().whileHeld(new HopperRunCommand(true));
@@ -78,8 +85,8 @@ public class OI {
         operatorGamepad.getDPadRight().whenPressed(new ShooterSetMaxSpeed());
         operatorGamepad.getDPadDown().whenPressed(new ShooterStopCommand());
 
-        operatorGamepad.getLeftButton().whenPressed(new ShooterBackwardsCommand());
-        operatorGamepad.getLeftButton().whenReleased(new ShooterStopCommand());
+        operatorGamepad.getLeftButton().whenPressed(new ShooterHopperBackwardsCommand());
+        operatorGamepad.getLeftButton().whenReleased(new ShooterHopperStopCommand());
         operatorGamepad.getTopButton().whenPressed(new HoodUpCommand());
         operatorGamepad.getRightButton().whenPressed(new HoodDownCommand());
 
