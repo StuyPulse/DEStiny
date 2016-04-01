@@ -62,7 +62,7 @@ public class StuyVisionModule {
             camera = new DeviceCaptureSource(cameraPort);
             System.out.println("Made camera");
         } catch (Exception e) {
-            System.out.println("Failed to create camera at " + cameraPort + ", will reattempt later. Error was: " + e);
+            System.out.println("Failed to create camera at " + cameraPort + ". Error was: " + e);
         }
     }
 
