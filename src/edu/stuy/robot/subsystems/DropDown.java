@@ -48,8 +48,8 @@ public class DropDown extends Subsystem {
 
     public double getAngle() {
         double x = getVoltage();
-        double initialVoltage = 212.0;
-        double finalVoltage = 288.0;
+        double initialVoltage = 227.0;
+        double finalVoltage = 302.0;
         double conversionFactor = 90.0 / (finalVoltage - initialVoltage);
         return (x - initialVoltage) * conversionFactor;
     }
