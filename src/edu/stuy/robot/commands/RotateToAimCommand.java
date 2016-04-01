@@ -1,6 +1,5 @@
 package edu.stuy.robot.commands;
 
-import static edu.stuy.robot.RobotMap.CAMERA_FRAME_PX_HEIGHT;
 import static edu.stuy.robot.RobotMap.CAMERA_VIEWING_ANGLE_X;
 import static edu.stuy.robot.RobotMap.MAX_DEGREES_OFF_AUTO_AIMING;
 
@@ -17,20 +16,16 @@ public class RotateToAimCommand extends Command {
     private boolean forceStopped;
     private boolean abort;
 
-    private double desiredAngle;
     private boolean priorGearShiftState;
 
-    private static final long timeout = 5000;
-    private double[] initialReading;
+    private static final long timeout = 5000; // currently not in use
+    private double[] cvReading;
+    private double desiredAngle;
     private long timeStart;
 
     private static final int maxSprints = 2;
     private int sprintsDone;
     // A sprint is reading CV and then rotating until "on target"
-
-    private static double pxOffsetToDegrees(double px) {
-        return CAMERA_VIEWING_ANGLE_X * px / CAMERA_FRAME_PX_HEIGHT;
-    }
 
     public RotateToAimCommand() {
         // Use requires() here to declare subsystem dependencies
@@ -38,30 +33,39 @@ public class RotateToAimCommand extends Command {
         requires(Robot.drivetrain);
     }
 
+    private void initialSetup() {
+        forceStopped = false;
+        abort = false;
+        sprintsDone = 0;
+        timeStart = System.currentTimeMillis();
+        priorGearShiftState = Robot.drivetrain.gearUp;
+        Robot.drivetrain.manualGearShift(true);
+    }
+
+    private void sprintSetup() {
+        Robot.drivetrain.resetGyro();
+
+        long start = System.currentTimeMillis();
+        cvReading = Robot.vision.processImage();
+        System.out.println("Image processing took " + (System.currentTimeMillis() - start) + "ms");
+
+        goalInFrame = cvReading != null;
+        if (goalInFrame) {
+            desiredAngle = StuyVisionModule.frameXPxToDegrees(cvReading[0]);
+            System.out.println("Reading was: " + Arrays.toString(cvReading));
+            System.out.println("Desired Angle Delta: " + desiredAngle);
+        } else {
+            System.out.println("Reading was NULL");
+        }
+    }
+
     // Called just before this Command runs the first time
     protected void initialize() {
         try {
-            Robot.drivetrain.resetGyro();
-            forceStopped = false;
-            abort = false;
-            sprintsDone = 0;
-
-            timeStart = System.currentTimeMillis();
-            initialReading = Robot.vision.processImage();
-            System.out.println("Image processing took " + (System.currentTimeMillis() - timeStart) + "ms");
-
-            goalInFrame = initialReading != null;
-            if (goalInFrame) {
-                desiredAngle = pxOffsetToDegrees(initialReading[0]);
-                System.out.println("Reading was: " + Arrays.toString(initialReading));
-                System.out.println("Desired Angle Delta: " + desiredAngle);
-            } else {
-                System.out.println("Reading was NULL");
-            }
-            priorGearShiftState = Robot.drivetrain.gearUp;
-            Robot.drivetrain.manualGearShift(true);
+            initialSetup();
+            sprintSetup();
         } catch (Exception e) {
-            System.out.println("Error in intialize in rotatetoaim:");
+            System.out.println("Error in intialize in RotateToAimCommand:");
             e.printStackTrace();
             abort = true;
         }
@@ -100,7 +104,7 @@ public class RotateToAimCommand extends Command {
                 System.out.println("direct gyro angle: " + Robot.drivetrain.getGyroAngle());
                 System.out.println("measured gyro ang(): " + angleMoved());
                 System.out.println("desired angle: " + desiredAngle);
-                System.out.println("original distance: " + StuyVisionModule.findDistanceToGoal(initialReading));
+                System.out.println("original distance: " + StuyVisionModule.findDistanceToGoal(cvReading));
                 // right is negative when turning right
                 if (desiredAngle < 0) {
                     System.out.println("Moving left, as desiredAngle=" + desiredAngle + " < 0");
@@ -111,9 +115,9 @@ public class RotateToAimCommand extends Command {
                 }
             }
         } catch (Exception e) {
-            System.out.println("\n\n\n\n\nError in execute in rotatetoaim:");
+            System.out.println("\n\n\n\n\nError in execute in RotateToAimCommand:");
             e.printStackTrace();
-            forceStopped = true; // abort command
+            abort = true; // abort command
         }
     }
 
@@ -141,17 +145,14 @@ public class RotateToAimCommand extends Command {
             //}
 
             if (sprintsDone < maxSprints - 1) {
-                int tmp = sprintsDone;
-                boolean gs = priorGearShiftState;
-                initialize();
-                sprintsDone = tmp + 1;
-                System.out.println("\n\n\n\n\nENTERING SPRINT i" + sprintsDone + "!\n\n");
-                priorGearShiftState = gs;
+                sprintSetup();
+                sprintsDone += 1;
+                System.out.println("\n\n\n\n\nENTERING SPRINT index " + sprintsDone + "!\n\n");
                 return false;
             }
             return onTarget;
         } catch (Exception e) {
-            System.out.println("Error in isFinished in rotatetoaim:");
+            System.out.println("Error in isFinished in RotateToAimCommand:");
             e.printStackTrace();
             return true; // abort
         }
