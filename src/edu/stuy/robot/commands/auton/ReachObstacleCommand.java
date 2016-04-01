@@ -7,7 +7,7 @@ import edu.stuy.robot.Robot;
  */
 public class ReachObstacleCommand extends DriveForwardCommand {
 
-	private static final int MAX_DISTANCE_IN_INCHES = 2;
+	private static final int MAX_DISTANCE_IN_INCHES = 60;
 	private static final int MAX_TIME_IN_SECONDS = 2;
 	private static final double SPEED = 0.5;
 	
