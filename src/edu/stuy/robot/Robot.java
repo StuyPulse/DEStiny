@@ -4,6 +4,7 @@ import static edu.stuy.robot.RobotMap.JONAH_ID;
 import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
 import static edu.stuy.robot.RobotMap.YUBIN_ID;
 
+import edu.stuy.robot.commands.auton.CrossObstacleThenShootCommand;
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
 import edu.stuy.robot.commands.auton.GoOverRockWallCommand;
@@ -56,6 +57,7 @@ public class Robot extends IterativeRobot {
     public static SendableChooser autonChooser;
     public static SendableChooser operatorChooser;
     public static SendableChooser autonPositionChooser;
+    public static SendableChooser autonShootChooser;
 
     public static boolean dontStartCommands;
 
@@ -128,6 +130,7 @@ public class Robot extends IterativeRobot {
         // Set up the auton chooser
         setupAutonChooser();
         setupAutonPositionChooser();
+        setupShootChooser();
     }
 
     /**
@@ -171,6 +174,13 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData("SmartDashboard Mode", debugChooser);
     }
 
+    private void setupShootChooser() {
+        autonShootChooser = new SendableChooser();
+        autonShootChooser.addDefault("Do not shoot in auton", false);
+        autonShootChooser.addObject("Do shoot in auton", true);
+        SmartDashboard.putData("Auton Shooting", autonShootChooser);
+    }
+
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
     }
@@ -180,6 +190,10 @@ public class Robot extends IterativeRobot {
         Command selectedCommand = (Command) autonChooser.getSelected();
         int autonPosition = (Integer) autonPositionChooser.getSelected();
         autonomousCommand = selectedCommand;
+        boolean shoot = (Boolean) autonShootChooser.getSelected();
+        if (shoot) {
+            autonomousCommand = new CrossObstacleThenShootCommand(autonomousCommand, autonPosition);
+        }
         autonomousCommand.start();
         Robot.drivetrain.resetEncoders();
         autonStartTime = Timer.getFPGATimestamp();
