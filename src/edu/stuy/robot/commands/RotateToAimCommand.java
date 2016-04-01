@@ -48,9 +48,9 @@ public class RotateToAimCommand extends Command {
 
     private double howFarHaveWeCome() {
         if (desiredAngle < 0) {
-            return (360 - Robot.drivetrain.getGyroAngle()) / desiredAngle;
+            return Math.abs((360 - Robot.drivetrain.getGyroAngle()) / desiredAngle);
         }
-        return Robot.drivetrain.getGyroAngle() / desiredAngle;
+        return Math.abs(Robot.drivetrain.getGyroAngle() / desiredAngle);
     }
 
     // Called repeatedly when this Command is scheduled to run
