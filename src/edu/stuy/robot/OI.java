@@ -5,6 +5,7 @@ import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
 
 import edu.stuy.robot.commands.AcquirerAcquireCommand;
 import edu.stuy.robot.commands.AcquirerDeacquireCommand;
+import edu.stuy.robot.commands.CVReadAndPrintCommand;
 import edu.stuy.robot.commands.DisableAutoGearShiftCommand;
 import edu.stuy.robot.commands.EnableAutoGearShiftCommand;
 import edu.stuy.robot.commands.FlashlightOffCommand;
@@ -72,7 +73,11 @@ public class OI {
         driverGamepad.getRightBumper().whenReleased(new FlashlightOffCommand());
         driverGamepad.getLeftBumper().whenPressed(new FlashlightOnCommand());
         driverGamepad.getLeftBumper().whenReleased(new FlashlightOffCommand());
+
+        // CV controls:
         driverGamepad.getBottomButton().whenPressed(new RotateToAimCommand());
+        driverGamepad.getTopButton().whenPressed(new CVReadAndPrintCommand());
+        // driverGamepad's right button (B) is force stop CV command
 
         // OPERATOR BINDINGS
         operatorGamepad.getLeftTrigger().whileHeld(new HopperRunCommand(true));
