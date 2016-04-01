@@ -1,5 +1,7 @@
 package edu.stuy.robot.cv;
 
+import static edu.stuy.robot.RobotMap.*;
+
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -230,5 +232,25 @@ public class StuyVisionModule {
             total += (int) (System.currentTimeMillis() - start);
         }
         return total / (double) iters;
+    }
+
+    public static double frameYPxToDegrees(double dy) {
+        return dy / CAMERA_FRAME_PX_HEIGHT * CAMERA_VIEWING_ANGLE_Y;
+    }
+
+    public static double yInFrameToDegreesFromHorizon(double height) {
+        return CAMERA_TILT_ANGLE - frameYPxToDegrees(height);
+    }
+
+    public static double findDistanceToGoal(double frameY) {
+        double angle = yInFrameToDegreesFromHorizon(frameY);
+        return (HIGH_GOAL_HEIGHT - CAMERA_HEIGHT_FROM_GROUND) / Math.tan(angle);
+    }
+
+    public static double findDistanceToGoal(double[] vec) {
+        if (vec == null) {
+            return -1;
+        }
+        return findDistanceToGoal(vec[1]);
     }
 }
