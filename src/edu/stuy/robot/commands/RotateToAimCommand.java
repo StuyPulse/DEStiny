@@ -24,6 +24,10 @@ public class RotateToAimCommand extends Command {
     private double[] initialReading;
     private long timeStart;
 
+    private static final int maxSprints = 2;
+    private int sprintsDone;
+    // A sprint is reading CV and then rotating until "on target"
+
     private static double pxOffsetToDegrees(double px) {
         return CAMERA_VIEWING_ANGLE_X * px / CAMERA_FRAME_PX_HEIGHT;
     }
@@ -40,6 +44,7 @@ public class RotateToAimCommand extends Command {
             Robot.drivetrain.resetGyro();
             forceStopped = false;
             abort = false;
+            sprintsDone = 0;
 
             timeStart = System.currentTimeMillis();
             initialReading = Robot.vision.processImage();
@@ -135,6 +140,15 @@ public class RotateToAimCommand extends Command {
             //    return true;
             //}
 
+            if (sprintsDone < maxSprints - 1) {
+                int tmp = sprintsDone;
+                boolean gs = priorGearShiftState;
+                initialize();
+                sprintsDone = tmp + 1;
+                System.out.println("\n\n\n\n\nENTERING SPRINT i" + sprintsDone + "!\n\n");
+                priorGearShiftState = gs;
+                return false;
+            }
             return onTarget;
         } catch (Exception e) {
             System.out.println("Error in isFinished in rotatetoaim:");
