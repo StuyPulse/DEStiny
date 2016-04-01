@@ -3,24 +3,7 @@ package edu.stuy.robot;
 import static edu.stuy.robot.RobotMap.DRIVER_GAMEPAD;
 import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
 
-import edu.stuy.robot.commands.AcquirerAcquireCommand;
-import edu.stuy.robot.commands.AcquirerDeacquireCommand;
-import edu.stuy.robot.commands.DisableAutoGearShiftCommand;
-import edu.stuy.robot.commands.EnableAutoGearShiftCommand;
-import edu.stuy.robot.commands.EndRecordingCommand;
-import edu.stuy.robot.commands.FlashlightToggleCommand;
-import edu.stuy.robot.commands.HighGearCommand;
-import edu.stuy.robot.commands.HoodDownCommand;
-import edu.stuy.robot.commands.HoodUpCommand;
-import edu.stuy.robot.commands.HopperRunCommand;
-import edu.stuy.robot.commands.JionDriveCommand;
-import edu.stuy.robot.commands.ShooterBackwardsCommand;
-import edu.stuy.robot.commands.ShooterSetLayupCommand;
-import edu.stuy.robot.commands.ShooterSetMaxSpeed;
-import edu.stuy.robot.commands.ShooterSetOutWorksSpeed;
-import edu.stuy.robot.commands.ShooterStopCommand;
-import edu.stuy.robot.commands.StartRecordingCommand;
-import edu.stuy.robot.commands.auton.DropDownMoveToAngleCommand;
+import edu.stuy.robot.commands.*;
 import edu.stuy.util.Gamepad;
 
 /**
