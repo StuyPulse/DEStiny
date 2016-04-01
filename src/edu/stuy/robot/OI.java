@@ -97,4 +97,12 @@ public class OI {
 
         operatorGamepad.getRightAnalogButton().whenPressed(new DropDownMoveToAngleCommand(40));
     }
+
+    public boolean driverIsOverriding() {
+        double max = Math.max(Math.abs(driverGamepad.getLeftY()),
+                Math.max(Math.abs(driverGamepad.getLeftX()),
+                        Math.max(Math.abs(driverGamepad.getRightY()),
+                                Math.abs(driverGamepad.getRightX()))));
+        return max > 0.1 || Robot.oi.driverGamepad.getRightButton().get();
+    }
 }

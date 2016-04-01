@@ -81,13 +81,14 @@ public class RotateToAimCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         try {
-            if (Robot.oi.driverGamepad.getRightButton().get()) {
+            if (Robot.oi.driverIsOverriding()) {
                 forceStopped = true;
                 return;
             }
             if (!forceStopped) {
                 double speed = 0.9 - 0.5 * howFarHaveWeCome();
-                System.out.println("\n\n\n\n\nSpeed to use: " + speed);
+                System.out.println("\n\n\n\nSpeed to use: " + speed);
+                System.out.println("direct gyro angle: " + Robot.drivetrain.getGyroAngle());
                 System.out.println("measured gyro ang(): " + angleMoved());
                 System.out.println("desired angle: " + desiredAngle);
                 System.out.println("original distance: " + StuyVisionModule.findDistanceToGoal(initialReading));
