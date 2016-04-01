@@ -201,7 +201,12 @@ public class StuyVisionModule {
             System.out.println("Camera object is uninitialized!");
             return null;
         }
-        return hsvThresholding(camera.read());
+        Mat frame = camera.read();
+        if (frame == null) {
+            System.out.println("FRAME WAS NULL");
+            return null;
+        }
+        return hsvThresholding(frame);
     }
 
     /**
