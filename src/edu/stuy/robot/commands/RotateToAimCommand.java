@@ -46,12 +46,14 @@ public class RotateToAimCommand extends Command {
         Robot.drivetrain.resetGyro();
 
         long start = System.currentTimeMillis();
-        cvReading = Robot.vision.processImage();
+        //cvReading = Robot.vision.processImage();
         System.out.println("Image processing took " + (System.currentTimeMillis() - start) + "ms");
 
-        goalInFrame = cvReading != null;
+        //goalInFrame = cvReading != null;
+        goalInFrame = true;
         if (goalInFrame) {
-            desiredAngle = StuyVisionModule.frameXPxToDegrees(cvReading[0]);
+            //desiredAngle = StuyVisionModule.frameXPxToDegrees(cvReading[0]);
+            desiredAngle = 90.0;
             System.out.println("Reading was: " + Arrays.toString(cvReading));
             System.out.println("Desired Angle Delta: " + desiredAngle);
         } else {
@@ -84,7 +86,7 @@ public class RotateToAimCommand extends Command {
     }
 
     private double degreesToMove() {
-        return desiredAngle - angleMoved();
+        return -(desiredAngle - angleMoved());
     }
 
     private double howFarHaveWeCome() {
