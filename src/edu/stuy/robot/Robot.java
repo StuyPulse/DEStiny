@@ -186,48 +186,66 @@ public class Robot extends IterativeRobot {
     }
 
     public void autonomousInit() {
-        debugMode = (Boolean) debugChooser.getSelected();
-        Command selectedCommand = (Command) autonChooser.getSelected();
-        int autonPosition = (Integer) autonPositionChooser.getSelected();
-        autonomousCommand = selectedCommand;
-        boolean shoot = (Boolean) autonShootChooser.getSelected();
-        if (shoot) {
-            autonomousCommand = new CrossObstacleThenShootCommand(autonomousCommand, autonPosition);
+        try {
+            debugMode = (Boolean) debugChooser.getSelected();
+            Command selectedCommand = (Command) autonChooser.getSelected();
+            int autonPosition = (Integer) autonPositionChooser.getSelected();
+            autonomousCommand = selectedCommand;
+            boolean shoot = (Boolean) autonShootChooser.getSelected();
+            if (shoot) {
+                autonomousCommand = new CrossObstacleThenShootCommand(autonomousCommand, autonPosition);
+            }
+            autonomousCommand.start();
+            Robot.drivetrain.resetEncoders();
+            autonStartTime = Timer.getFPGATimestamp();
+        } catch (Exception e) {
+            System.err.println("\n\n\n\n\nTOP-LEVEL CATCH in autonomousInit. Exception was:");
+            e.printStackTrace();
+            System.err.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         }
-        autonomousCommand.start();
-        Robot.drivetrain.resetEncoders();
-        autonStartTime = Timer.getFPGATimestamp();
     }
 
     public void autonomousPeriodic() {
-        Scheduler.getInstance().run();
-        if (debugMode) {
-            SmartDashboard.putNumber("drivetrain left encoder", Robot.drivetrain.getLeftEncoder());
-            SmartDashboard.putNumber("drivetrain right encoder", Robot.drivetrain.getRightEncoder());
-            SmartDashboard.putNumber("Max distance of drivetrain encoders", Robot.drivetrain.getDistance());
-            SmartDashboard.putNumber("potentiometer", Robot.dropdown.getAngle());
-            SmartDashboard.putNumber("Potentiometer voltage", Robot.dropdown.getVoltage());
-        }
-        // This block is here instead of teleop init to save battery voltage
-        // because teleop init does not run immediately after auton disables
-        if (Timer.getFPGATimestamp() - autonStartTime > 14) {
-            Robot.shooter.stop();
-            Robot.hopper.stop();
+        try {
+            Scheduler.getInstance().run();
+            if (debugMode) {
+                SmartDashboard.putNumber("drivetrain left encoder", Robot.drivetrain.getLeftEncoder());
+                SmartDashboard.putNumber("drivetrain right encoder", Robot.drivetrain.getRightEncoder());
+                SmartDashboard.putNumber("Max distance of drivetrain encoders", Robot.drivetrain.getDistance());
+                SmartDashboard.putNumber("potentiometer", Robot.dropdown.getAngle());
+                SmartDashboard.putNumber("Potentiometer voltage", Robot.dropdown.getVoltage());
+            }
+            // This block is here instead of teleop init to save battery voltage
+            // because teleop init does not run immediately after auton disables
+            if (Timer.getFPGATimestamp() - autonStartTime > 14) {
+                Robot.shooter.stop();
+                Robot.hopper.stop();
+            }
+        } catch (Exception e) {
+            System.err.println("\n\n\n\n\nTOP-LEVEL CATCH in autonomousPeriodic. Exception was:");
+            e.printStackTrace();
+            System.err.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         }
     }
 
     public void teleopInit() {
-        // This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
-        if (autonomousCommand != null) {
-            autonomousCommand.cancel();
+        try {
+            // This makes sure that the autonomous stops running when
+            // teleop starts running. If you want the autonomous to
+            // continue until interrupted by another command, remove
+            // this line or comment it out.
+            if (autonomousCommand != null) {
+                autonomousCommand.cancel();
+            }
+            debugMode = (Boolean) debugChooser.getSelected();
+            Robot.drivetrain.resetEncoders();
+            // This is here and also in autonomus periodic as a safety measure
+            Robot.shooter.stop();
+        } catch (Exception e) {
+            System.err.println("\n\n\n\n\nTOP-LEVEL CATCH in telopInit. Exception was:");
+            e.printStackTrace();
+            System.err.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         }
-        debugMode = (Boolean) debugChooser.getSelected();
-        Robot.drivetrain.resetEncoders();
-        // This is here and also in autonomus periodic as a safety measure
-        Robot.shooter.stop();
     }
 
     /**
@@ -241,34 +259,39 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        Scheduler.getInstance().run();
-        if (debugMode) {
-            // SmartDashboard.putNumber("gyro",
-            // Robot.drivetrain.getGyroAngle());
-            SmartDashboard.putNumber("Current Shooter Motor Speed:", Robot.shooter.getCurrentMotorSpeedInRPM());
-            SmartDashboard.putNumber("drivetrain left encoder", Robot.drivetrain.getLeftEncoder());
-            SmartDashboard.putNumber("drivetrain right encoder", Robot.drivetrain.getRightEncoder());
-            SmartDashboard.putBoolean("Gear shift override", drivetrain.overrideAutoGearShifting);
-            try {
-                SmartDashboard.putNumber("Hopper Sensor", Robot.hopper.getDistance());
-            } catch (Exception e) {
-                SmartDashboard.putNumber("Hopper Sensor", -1.0);
+        try {
+            Scheduler.getInstance().run();
+            if (debugMode) {
+                // SmartDashboard.putNumber("gyro",
+                // Robot.drivetrain.getGyroAngle());
+                SmartDashboard.putNumber("Current Shooter Motor Speed:", Robot.shooter.getCurrentMotorSpeedInRPM());
+                SmartDashboard.putNumber("drivetrain left encoder", Robot.drivetrain.getLeftEncoder());
+                SmartDashboard.putNumber("drivetrain right encoder", Robot.drivetrain.getRightEncoder());
+                SmartDashboard.putBoolean("Gear shift override", drivetrain.overrideAutoGearShifting);
+                try {
+                    SmartDashboard.putNumber("Hopper Sensor", Robot.hopper.getDistance());
+                } catch (Exception e) {
+                    SmartDashboard.putNumber("Hopper Sensor", -1.0);
+                }
+                // Sonar:
+                double[] sonarData = sonar.getData();
+                SmartDashboard.putNumber("Sonar L", sonarData[0]);
+                SmartDashboard.putNumber("Sonar R", sonarData[1]);
+
+                // Solenoids:
+                SmartDashboard.putBoolean("Hood piston", Robot.hood.getState());
+                SmartDashboard.putBoolean("Gear shift solenoid", Robot.drivetrain.gearUp);
+
+                // Thresholds:
+                SmartDashboard.putNumber("Gear Shifting Threshold", 40);
             }
-            // Sonar:
-            double[] sonarData = sonar.getData();
-            SmartDashboard.putNumber("Sonar L", sonarData[0]);
-            SmartDashboard.putNumber("Sonar R", sonarData[1]);
-
-            // Solenoids:
-            SmartDashboard.putBoolean("Hood piston", Robot.hood.getState());
-            SmartDashboard.putBoolean("Gear shift solenoid", Robot.drivetrain.gearUp);
-
-            // Thresholds:
-            SmartDashboard.putNumber("Gear Shifting Threshold", 40);
+            SmartDashboard.putNumber("potentiometer", Robot.dropdown.getAngle());
+            SmartDashboard.putNumber("Potentiometer voltage", Robot.dropdown.getVoltage());
+        } catch (Exception e) {
+            System.err.println("\n\n\n\n\nTOP-LEVEL CATCH in teleopPeriodic. Exception was:");
+            e.printStackTrace();
+            System.err.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         }
-        SmartDashboard.putNumber("potentiometer", Robot.dropdown.getAngle());
-        SmartDashboard.putNumber("Potentiometer voltage", Robot.dropdown.getVoltage());
-
     }
 
     /**
