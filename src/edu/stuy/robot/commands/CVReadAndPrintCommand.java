@@ -21,7 +21,7 @@ public class CVReadAndPrintCommand extends Command {
             long start = System.currentTimeMillis();
             double[] vec = Robot.vision.processImage();
             System.out.println("processImage took " + (System.currentTimeMillis() - start) + "ms");
-            System.out.println("Reading is: " + Arrays.toString(vec)); // Arrays.toString returns "null" is vec is null
+            System.out.println("\n\n\n\n\n\n\n\n\n\nReading is: " + Arrays.toString(vec)); // Arrays.toString returns "null" is vec is null
         } catch (Exception e) {
             System.err.println("\n\n\n\nGeneric exception caught in CVReadAndPrintCommand:");
             e.printStackTrace();

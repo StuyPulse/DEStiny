@@ -244,7 +244,7 @@ public class StuyVisionModule {
 
     public static double findDistanceToGoal(double frameY) {
         double angle = yInFrameToDegreesFromHorizon(frameY);
-        return (HIGH_GOAL_HEIGHT - CAMERA_HEIGHT_FROM_GROUND) / Math.tan(angle);
+        return (HIGH_GOAL_HEIGHT - CAMERA_HEIGHT_FROM_GROUND) / Math.tan(Math.toRadians(angle));
     }
 
     public static double findDistanceToGoal(double[] vec) {

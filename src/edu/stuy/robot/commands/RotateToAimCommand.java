@@ -7,6 +7,7 @@ import static edu.stuy.robot.RobotMap.MAX_DEGREES_OFF_AUTO_AIMING;
 import java.util.Arrays;
 
 import edu.stuy.robot.Robot;
+import edu.stuy.robot.cv.StuyVisionModule;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -19,6 +20,7 @@ public class RotateToAimCommand extends Command {
     private boolean priorGearShiftState;
 
     private static final long timeout = 5000;
+    private double[] initialReading;
     private long timeStart;
 
     private static double pxOffsetToDegrees(double px) {
@@ -36,14 +38,15 @@ public class RotateToAimCommand extends Command {
         try {
             Robot.drivetrain.resetGyro();
             timeStart = System.currentTimeMillis();
-            double[] reading = Robot.vision.processImage();
+            initialReading = Robot.vision.processImage();
             System.out.println("Image processing took " + (System.currentTimeMillis() - timeStart) + "ms");
-            if (reading == null) {
+            if (initialReading == null) {
                 goalInFrame = false;
                 System.out.println("Reading was NULL");
             } else {
-                desiredAngle = pxOffsetToDegrees(reading[0]);
-                System.out.println("Reading was: " + Arrays.toString(reading));
+                goalInFrame=true;
+                desiredAngle = pxOffsetToDegrees(initialReading[0]);
+                System.out.println("Reading was: " + Arrays.toString(initialReading));
                 System.out.println("Desired Angle Delta: " + desiredAngle);;
             }
             priorGearShiftState = Robot.drivetrain.gearUp;
@@ -54,12 +57,17 @@ public class RotateToAimCommand extends Command {
             forceStopped = true; // abort command
         }
     }
+    
+    private double ang() {
+        double gyro = Robot.drivetrain.getGyroAngle();
+        if (gyro > 180) {//desiredAngle < 0) {
+            return gyro - 360;
+        }
+        return gyro;
+    }
 
     private double howFarHaveWeCome() {
-        if (desiredAngle < 0) {
-            return Math.abs((360 - Robot.drivetrain.getGyroAngle()) / desiredAngle);
-        }
-        return Math.abs(Robot.drivetrain.getGyroAngle() / desiredAngle);
+        return Math.abs(ang() / (CAMERA_VIEWING_ANGLE_X / 2));
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -72,15 +80,21 @@ public class RotateToAimCommand extends Command {
             if (!forceStopped) {
                 // Simplicity: double speed = 0.5;
                 double speed = 0.9 - 0.5 * howFarHaveWeCome();
+                System.out.println("\n\n\n\n\nSpeed to use: " + speed);
+                System.out.println("measured gyro ang(): " + ang());
+                System.out.println("desired angle: " + desiredAngle);
+                System.out.println("original distance: " + StuyVisionModule.findDistanceToGoal(initialReading));
                 // right is negative when turning right
                 if (desiredAngle < 0) {
+                    System.out.println("Moving left, as desiredAngle=" + desiredAngle + " < 0");
                     Robot.drivetrain.tankDrive(-speed, speed);
                 } else {
+                    System.out.println("Moving RIGHT, as desiredAngle=" + desiredAngle + " > 0");
                     Robot.drivetrain.tankDrive(speed, -speed);
                 }
             }
         } catch (Exception e) {
-            System.out.println("Error in execute in rotatetoaim:");
+            System.out.println("\n\n\n\n\nError in execute in rotatetoaim:");
             e.printStackTrace();
             forceStopped = true; // abort command
         }
@@ -90,27 +104,24 @@ public class RotateToAimCommand extends Command {
     protected boolean isFinished() {
         try {
             // When no more can or should be done:
-            if (forceStopped || !goalInFrame) {
+            if (forceStopped || !goalInFrame || Math.abs(desiredAngle) < 0.001) {
                 Robot.cvSignalLight.setOff();
+                System.out.println("\n\n\n\n\n\n\nforce stopped: " + forceStopped + "\ngoalInFrame: " + goalInFrame + "\ndesiredAngle: " + desiredAngle);
                 return true;
             }
 
             // Judgement of success:
-            double degsOff;
-            if (desiredAngle < 0) {
-                degsOff = Robot.drivetrain.getGyroAngle() - (360 + desiredAngle);
-            } else {
-                degsOff = Robot.drivetrain.getGyroAngle() - desiredAngle;
-            }
+            double degsOff = ang() - desiredAngle;
             SmartDashboard.putNumber("CV degrees off", degsOff);
 
             boolean onTarget = Math.abs(degsOff) < MAX_DEGREES_OFF_AUTO_AIMING;
+            System.out.println("degsOff: " + degsOff + "\nonTarget: " + onTarget);
             Robot.cvSignalLight.set(onTarget);
 
-            if (System.currentTimeMillis() - timeStart > timeout) {
-                System.out.println("RotateToAimCommand timed out after " + timeout + "ms");
-                return true;
-            }
+            //if (System.currentTimeMillis() - timeStart > timeout) {
+            //    System.out.println("RotateToAimCommand timed out after " + timeout + "ms");
+            //    return true;
+            //}
 
             return onTarget;
         } catch (Exception e) {
@@ -123,6 +134,7 @@ public class RotateToAimCommand extends Command {
     // Called once after isFinished returns true
     protected void end() {
         Robot.drivetrain.tankDrive(0.0, 0.0);
+        System.out.println("ENDED");
         // Set drivetrain gearshift to how it was before aiming
         Robot.drivetrain.manualGearShift(priorGearShiftState);
     }
