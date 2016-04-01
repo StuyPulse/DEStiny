@@ -14,7 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class RotateToAimCommand extends Command {
 
     private boolean goalInFrame;
-    private boolean forceStopped = false;
+    private boolean forceStopped;
+    private boolean abort;
 
     private double desiredAngle;
     private boolean priorGearShiftState;
@@ -37,37 +38,44 @@ public class RotateToAimCommand extends Command {
     protected void initialize() {
         try {
             Robot.drivetrain.resetGyro();
+            forceStopped = false;
+            abort = false;
+
             timeStart = System.currentTimeMillis();
             initialReading = Robot.vision.processImage();
             System.out.println("Image processing took " + (System.currentTimeMillis() - timeStart) + "ms");
-            if (initialReading == null) {
-                goalInFrame = false;
-                System.out.println("Reading was NULL");
-            } else {
-                goalInFrame=true;
+
+            goalInFrame = initialReading != null;
+            if (goalInFrame) {
                 desiredAngle = pxOffsetToDegrees(initialReading[0]);
                 System.out.println("Reading was: " + Arrays.toString(initialReading));
-                System.out.println("Desired Angle Delta: " + desiredAngle);;
+                System.out.println("Desired Angle Delta: " + desiredAngle);
+            } else {
+                System.out.println("Reading was NULL");
             }
             priorGearShiftState = Robot.drivetrain.gearUp;
             Robot.drivetrain.manualGearShift(true);
         } catch (Exception e) {
             System.out.println("Error in intialize in rotatetoaim:");
             e.printStackTrace();
-            forceStopped = true; // abort command
+            abort = true;
         }
     }
-    
-    private double ang() {
+
+    // INCREASE these if it is OVERshooting
+    // DECREASE these if it is UNDERshooting
+    private double TUNE_FACTOR = 0.7;
+    private double TUNE_OFFSET = 0.0;
+    private double angleMoved() {
         double gyro = Robot.drivetrain.getGyroAngle();
-        if (gyro > 180) {//desiredAngle < 0) {
+        if (gyro > 180) {
             return gyro - 360;
         }
-        return gyro;
+        return gyro * TUNE_FACTOR + TUNE_OFFSET;
     }
 
     private double howFarHaveWeCome() {
-        return Math.abs(ang() / (CAMERA_VIEWING_ANGLE_X / 2));
+        return Math.abs(angleMoved() / (CAMERA_VIEWING_ANGLE_X / 2));
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -78,10 +86,9 @@ public class RotateToAimCommand extends Command {
                 return;
             }
             if (!forceStopped) {
-                // Simplicity: double speed = 0.5;
                 double speed = 0.9 - 0.5 * howFarHaveWeCome();
                 System.out.println("\n\n\n\n\nSpeed to use: " + speed);
-                System.out.println("measured gyro ang(): " + ang());
+                System.out.println("measured gyro ang(): " + angleMoved());
                 System.out.println("desired angle: " + desiredAngle);
                 System.out.println("original distance: " + StuyVisionModule.findDistanceToGoal(initialReading));
                 // right is negative when turning right
@@ -104,14 +111,14 @@ public class RotateToAimCommand extends Command {
     protected boolean isFinished() {
         try {
             // When no more can or should be done:
-            if (forceStopped || !goalInFrame || Math.abs(desiredAngle) < 0.001) {
+            if (forceStopped || abort || !goalInFrame || Math.abs(desiredAngle) < 0.001) {
                 Robot.cvSignalLight.setOff();
                 System.out.println("\n\n\n\n\n\n\nforce stopped: " + forceStopped + "\ngoalInFrame: " + goalInFrame + "\ndesiredAngle: " + desiredAngle);
                 return true;
             }
 
             // Judgement of success:
-            double degsOff = ang() - desiredAngle;
+            double degsOff = angleMoved() - desiredAngle;
             SmartDashboard.putNumber("CV degrees off", degsOff);
 
             boolean onTarget = Math.abs(degsOff) < MAX_DEGREES_OFF_AUTO_AIMING;
