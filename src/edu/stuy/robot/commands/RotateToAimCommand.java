@@ -83,11 +83,16 @@ public class RotateToAimCommand extends Command {
         return gyro * TUNE_FACTOR + TUNE_OFFSET;
     }
 
+    private double degreesToMove() {
+        return desiredAngle - angleMoved();
+    }
+
     private double howFarHaveWeCome() {
         return Math.abs(angleMoved() / (CAMERA_VIEWING_ANGLE_X / 2));
     }
+
     private double howMuchWeHaveToGo() {
-        return Math.abs((desiredAngle - angleMoved()) / (CAMERA_VIEWING_ANGLE_X / 2));
+        return Math.abs(degreesToMove() / (CAMERA_VIEWING_ANGLE_X / 2));
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -132,7 +137,7 @@ public class RotateToAimCommand extends Command {
             }
 
             // Judgement of success:
-            double degsOff = angleMoved() - desiredAngle;
+            double degsOff = degreesToMove();
             SmartDashboard.putNumber("CV degrees off", degsOff);
 
             boolean onTarget = Math.abs(degsOff) < MAX_DEGREES_OFF_AUTO_AIMING;
