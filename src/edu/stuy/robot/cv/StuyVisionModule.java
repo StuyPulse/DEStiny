@@ -11,9 +11,11 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.Point;
 import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import edu.stuy.robot.cv.sources.CaptureSource;
@@ -97,7 +99,7 @@ public class StuyVisionModule {
                 || (1 / maxRatioThreshold < ratio && ratio < 1 / minRatioThreshold);
     }
 
-    private double[] getLargestGoal(Mat originalFrame, Mat filteredImage) {
+    private double[] getLargestGoal(Mat originalFrame, Mat filteredImage, boolean drawVector) {
         ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
         Imgproc.findContours(filteredImage, contours, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
         double largestArea = 0.0;
@@ -130,7 +132,15 @@ public class StuyVisionModule {
         vector[1] = largestRect.center.y - originalFrame.height() / 2.0;
         vector[2] = largestRect.angle;
 
+        if (drawVector) {
+            Imgproc.circle(originalFrame, largestRect.center, 5, new Scalar(255, 0, 0));
+        }
+
         return vector;
+    }
+
+    public double[] getLargestGoal(Mat orig, Mat f) {
+        return getLargestGoal(orig, f, false);
     }
 
     /**
@@ -163,7 +173,7 @@ public class StuyVisionModule {
      *         is tilted
      *     </p>
      */
-    public double[] hsvThresholding(Mat frame) {
+    public double[] hsvThresholding(Mat frame, boolean drawVector) {
         // Convert BGR camera image to HSV for processing
         Mat hsv = new Mat();
         Imgproc.cvtColor(frame, hsv, Imgproc.COLOR_BGR2HSV);
@@ -189,13 +199,17 @@ public class StuyVisionModule {
         Imgproc.erode(greenFiltered, greenFiltered, erodeKernel);
         Imgproc.dilate(greenFiltered, greenFiltered, dilateKernel);
 
-        double[] output = getLargestGoal(frame, greenFiltered);
+        double[] output = getLargestGoal(frame, greenFiltered, drawVector);
         try {
             logWriter.println("Vector calculated: " + Arrays.toString(output));
             logWriter.flush();
         } catch (Exception e) {
         }
         return output;
+    }
+
+    public double[] hsvThresholding(Mat frame) {
+        return hsvThresholding(frame, false);
     }
 
     public double[] processImage() {
@@ -209,6 +223,21 @@ public class StuyVisionModule {
             return null;
         }
         return hsvThresholding(frame);
+    }
+
+    public double[] processImageAndSave(String path) {
+        if (camera == null) {
+            System.out.println("Camera object is uninitialized!");
+            return null;
+        }
+        Mat frame = camera.read();
+        if (frame == null) {
+            System.out.println("FRAME WAS NULL");
+            return null;
+        }
+        double[] result = hsvThresholding(frame);
+        Imgcodecs.imwrite(path, frame);
+        return result;
     }
 
     /**

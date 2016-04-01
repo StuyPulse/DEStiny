@@ -19,7 +19,7 @@ public class CVReadAndPrintCommand extends Command {
     protected void initialize() {
         try {
             long start = System.currentTimeMillis();
-            double[] vec = Robot.vision.processImage();
+            double[] vec = Robot.vision.processImageAndSave("/test-image");
             System.out.println("processImage took " + (System.currentTimeMillis() - start) + "ms");
             System.out.println("\n\n\n\n\n\n\n\n\n\nReading is: " + Arrays.toString(vec)); // Arrays.toString returns "null" is vec is null
         } catch (Exception e) {

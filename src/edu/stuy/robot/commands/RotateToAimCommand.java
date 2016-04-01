@@ -64,7 +64,7 @@ public class RotateToAimCommand extends Command {
 
     // INCREASE these if it is OVERshooting
     // DECREASE these if it is UNDERshooting
-    private double TUNE_FACTOR = 0.7;
+    private double TUNE_FACTOR = 0.9;
     private double TUNE_OFFSET = 0.0;
     private double angleMoved() {
         double gyro = Robot.drivetrain.getGyroAngle();
