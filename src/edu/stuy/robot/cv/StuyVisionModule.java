@@ -35,6 +35,8 @@ public class StuyVisionModule {
     public double minRatioThreshold = 1.1;
     public double maxRatioThreshold = 3.0;
 
+    private static final int outerUSBPort = 0;
+    private int cameraPort;
     private CaptureSource camera;
 
     private static PrintWriter logWriter;
@@ -45,7 +47,8 @@ public class StuyVisionModule {
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
             System.load(dir + "..\\lib\\opencv-3.0.0\\build\\lib\\opencv_java300.dll");
         } else {
-            System.load(dir + "../lib/opencv-3.0.0/build/lib/libopencv_java300.so");
+            // This is the .so's location on the roboRio
+            System.load("/usr/local/share/OpenCV/java/libopencv_java310.so");
         }
         try {
             logWriter = new PrintWriter("logs.txt");
@@ -54,15 +57,28 @@ public class StuyVisionModule {
     }
 
     public StuyVisionModule() {
-        camera = new DeviceCaptureSource(0);
+        try {
+            cameraPort = outerUSBPort;
+            camera = new DeviceCaptureSource(cameraPort);
+            System.out.println("Made camera");
+        } catch (Exception e) {
+            System.out.println("Failed to create camera at " + cameraPort + ", will reattempt later. Error was: " + e);
+        }
     }
 
     public StuyVisionModule(CaptureSource camera) {
+        cameraPort = outerUSBPort;
         this.camera = camera;
     }
 
     public StuyVisionModule(int i) {
-        camera = new DeviceCaptureSource(i);
+        try {
+            cameraPort = i;
+            camera = new DeviceCaptureSource(i);
+            System.out.println("Made camera");
+        } catch (Exception e) {
+            System.out.println("Failed to create camera at " + i + ", will reattempt later. Error was: " + e);
+        }
     }
 
     /**
@@ -181,6 +197,10 @@ public class StuyVisionModule {
     }
 
     public double[] processImage() {
+        if (camera == null) {
+            System.out.println("Camera object is uninitialized!");
+            return null;
+        }
         return hsvThresholding(camera.read());
     }
 
