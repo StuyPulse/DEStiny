@@ -4,6 +4,8 @@ import static edu.stuy.robot.RobotMap.CAMERA_FRAME_PX_HEIGHT;
 import static edu.stuy.robot.RobotMap.CAMERA_VIEWING_ANGLE_X;
 import static edu.stuy.robot.RobotMap.MAX_DEGREES_OFF_AUTO_AIMING;
 
+import java.util.Arrays;
+
 import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,14 +31,26 @@ public class RotateToAimCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
         Robot.drivetrain.resetGyro();
+        long start = System.currentTimeMillis();
         double[] reading = Robot.vision.processImage();
+        System.out.println("Image processing took " + (System.currentTimeMillis() - start) + "ms");
         if (reading == null) {
             goalInFrame = false;
+            System.out.println("Reading was NULL");
         } else {
             desiredAngle = pxOffsetToDegrees(reading[0]);
+            System.out.println("Reading was: " + Arrays.toString(reading));
+            System.out.println("Desired Angle Delta: " + desiredAngle);;
         }
         priorGearShiftState = Robot.drivetrain.gearUp;
         Robot.drivetrain.manualGearShift(true);
+    }
+
+    private double howFarHaveWeCome() {
+        if (desiredAngle < 0) {
+            return (360 - Robot.drivetrain.getGyroAngle()) / desiredAngle;
+        }
+        return Robot.drivetrain.getGyroAngle() / desiredAngle;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -47,7 +61,7 @@ public class RotateToAimCommand extends Command {
         }
 
         // Simplicity: double speed = 0.5;
-        double speed = 0.9 - 0.5 * Robot.drivetrain.getGyroAngle() / desiredAngle;
+        double speed = 0.9 - 0.5 * howFarHaveWeCome();
         // right is negative when turning right
         if (desiredAngle < 0) {
             Robot.drivetrain.tankDrive(-speed, speed);
