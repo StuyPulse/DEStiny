@@ -16,7 +16,7 @@ public class Hood extends Subsystem {
 	// here. Call these from Commands.
 	public Hood() {
 		hoodSolenoid = new Solenoid(0, HOOD_SOLENOID_CHANNEL);
-		up = false;
+		up = true;
 	}
 
 	public void initDefaultCommand() {

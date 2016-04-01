@@ -35,8 +35,8 @@ public interface RobotMap {
     double DROP_DOWN_DEADBAND = 0.01;
 
     // Hood Constants
-    boolean HOOD_UP_POSITION = false;
-    boolean HOOD_DOWN_POSITION = true;
+    boolean HOOD_UP_POSITION = true;
+    boolean HOOD_DOWN_POSITION = false;
 
     // Hopper Constants
     double HOPPER_SENSOR_THRESHOLD = 1.25;

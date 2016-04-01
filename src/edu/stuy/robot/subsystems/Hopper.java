@@ -3,6 +3,8 @@ package edu.stuy.robot.subsystems;
 import static edu.stuy.robot.RobotMap.HOPPER_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.HOPPER_SENSOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.HOPPER_SENSOR_THRESHOLD;
+import static edu.stuy.robot.RobotMap.SIGNAL_LIGHT_BLUE_PORT;
+
 import edu.stuy.robot.commands.HopperStopCommand;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANTalon;
@@ -23,7 +25,7 @@ public class Hopper extends Subsystem {
         hopperMotor = new CANTalon(HOPPER_MOTOR_CHANNEL);
         hopperMotor.setInverted(true);
         distanceSensor = new AnalogInput(HOPPER_SENSOR_CHANNEL);
-        yellowStrip = new DigitalOutput(5);
+        yellowStrip = new DigitalOutput(SIGNAL_LIGHT_BLUE_PORT);
     }
 
     public void initDefaultCommand() {

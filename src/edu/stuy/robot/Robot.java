@@ -20,7 +20,7 @@ import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Hopper;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.stuy.robot.subsystems.Sonar;
-import edu.stuy.util.BlueSignalLight;
+import edu.stuy.util.YellowSignalLight;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -46,7 +46,7 @@ public class Robot extends IterativeRobot {
     public static Shooter shooter;
     public static Hood hood;
     public static Sonar sonar;
-    public static BlueSignalLight cvSignalLight;
+    public static YellowSignalLight cvSignalLight;
     public static Flashlight flashlight;
     public static OI oi;
 
@@ -89,7 +89,7 @@ public class Robot extends IterativeRobot {
         shooter = new Shooter();
         hood = new Hood();
         sonar = new Sonar();
-        cvSignalLight = new BlueSignalLight();
+        cvSignalLight = new YellowSignalLight();
         flashlight = new Flashlight();
 
         oi = new OI();
