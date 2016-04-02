@@ -264,7 +264,7 @@ public class StuyVisionModule {
     }
 
     public static double frameXPxToDegrees(double px) {
-        return CAMERA_VIEWING_ANGLE_X * px / CAMERA_FRAME_PX_HEIGHT;
+        return CAMERA_VIEWING_ANGLE_X * px / CAMERA_FRAME_PX_WIDTH;
     }
 
     public static double frameYPxToDegrees(double dy) {
