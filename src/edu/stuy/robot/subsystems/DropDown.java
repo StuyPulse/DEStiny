@@ -17,6 +17,7 @@ public class DropDown extends Subsystem {
     private CANTalon dropDownMotor;
     private Potentiometer potentiometer;
     public double currentAngle;
+    private double finalVoltage;
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -27,6 +28,12 @@ public class DropDown extends Subsystem {
         potentiometer = new AnalogPotentiometer(ACQUIRER_POTENTIOMETER_CHANNEL,
                 300, 0);
         currentAngle = getAngle();
+        //if (potentiometer.get() < 320 && potentiometer.get() > 250) {
+        //    finalVoltage = potentiometer.get();
+        //} else {
+        //    System.out.println("Potentiometer voltage out of range :" + potentiometer.get());
+        //    finalVoltage = 290;
+        //}
     }
 
     public void initDefaultCommand() {
@@ -48,9 +55,9 @@ public class DropDown extends Subsystem {
 
     public double getAngle() {
         double x = getVoltage();
-        double initialVoltage = 227.0;
-        double finalVoltage = 302.0;
-        double conversionFactor = 90.0 / (finalVoltage - initialVoltage);
+        double voltage = 301;
+        double initialVoltage = 225;
+        double conversionFactor = 90.0 / (voltage - initialVoltage);
         return (x - initialVoltage) * conversionFactor;
     }
     

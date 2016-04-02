@@ -16,9 +16,9 @@ public class PassPortcullisCommand extends CommandGroup {
 	    // drive forward
 	    // raise arm 45
 	    // forward fast and raise to 70
-	    addSequential(new DropDownMoveToAngleCommand(10));
+	    addSequential(new DropDownMoveToAngleCommand(10), 3.0);
 	    addSequential(new DriveForwardCommand(INITIAL_DISTANCE_FORWARD_IN_INCHES, INITIAL_TIME_FORWARD_IN_SECONDS, INITIAL_SPEED), INITIAL_TIME_FORWARD_IN_SECONDS);
 	    addParallel(new DriveForwardCommand(SECOND_DISTANCE_FORWARD_IN_INCHES, SECOND_TIME_FORWARD_IN_SECONDS, SECOND_SPEED));
-	    addSequential(new DropDownMoveToAngleCommand(70));
+	    addSequential(new DropDownMoveToAngleCommand(70), 3.0);
 	}
 }

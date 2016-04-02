@@ -36,6 +36,11 @@ public class DropDownMoveToAngleCommand extends Command {
 
     @Override
     protected boolean isFinished() {
+        // In case the potentiometer spikes
+        if (Robot.dropdown.getAngle() > 1000) {
+            System.out.println("POTENTIOMETER SPIKE DURING DROPDOWNMOVETOANGLE");
+            return false;
+        }
         return Robot.dropdown.getAngle() < -20.0 ||
                 !is420Working() ||
                 Math.abs(Robot.dropdown.getAngle() - desiredAngle) < 4.0;
