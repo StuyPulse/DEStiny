@@ -11,9 +11,13 @@ public class RotateDegreesPIDCommand extends Command {
 
     private static final PIDController pid = Robot.drivetrain.pid;
 
-    private double targetAngle;
+    protected double targetAngle;
     private boolean forceStopped;
     private boolean abort;
+
+    public RotateDegreesPIDCommand() {
+        requires(Robot.drivetrain);
+    }
 
     public RotateDegreesPIDCommand(double ang) {
         // Use requires() here to declare subsystem dependencies

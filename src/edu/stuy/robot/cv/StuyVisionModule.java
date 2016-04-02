@@ -236,7 +236,9 @@ public class StuyVisionModule {
             return null;
         }
         double[] result = hsvThresholding(frame);
-        Imgcodecs.imwrite(path, frame);
+        try{
+            Imgcodecs.imwrite(path, frame);
+        }catch(Exception e) {e.printStackTrace();}
         return result;
     }
 

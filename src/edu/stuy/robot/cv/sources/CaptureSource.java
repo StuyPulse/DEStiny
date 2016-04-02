@@ -6,6 +6,8 @@ import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public abstract class CaptureSource {
 
     private int width = CAMERA_FRAME_PX_WIDTH;
@@ -29,6 +31,10 @@ public abstract class CaptureSource {
             Mat resizedFrame = new Mat();
             Imgproc.resize(frame, resizedFrame, desiredSize, 0, 0, Imgproc.INTER_CUBIC);
             System.out.println("\n\n\n\nCS| init frame dims: (" + frameWidth + ", " + frameHeight + ").\nRatio: " + resizeRatio + ".\nNew dims: (" + resizedFrame.width() + ", " + resizedFrame.height() + ")\n\n\n");
+            SmartDashboard.putNumber("Camera init frame width", frameWidth);
+            SmartDashboard.putNumber("Camera init frame height", frameHeight);
+            SmartDashboard.putNumber("Camera frame width", resizedFrame.width());
+            SmartDashboard.putNumber("Camera frame height", resizedFrame.height());
             return resizedFrame;
         } else {
             return null;

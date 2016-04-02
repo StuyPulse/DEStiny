@@ -43,18 +43,24 @@ public class RotateToAimCommand extends Command {
     }
 
     private void sprintSetup() {
+        desiredAngle=0.0;
         Robot.drivetrain.resetGyro();
 
         long start = System.currentTimeMillis();
         cvReading = Robot.vision.processImage();
         System.out.println("Image processing took " + (System.currentTimeMillis() - start) + "ms");
 
+        //goalInFrame = true;
+        //desiredAngle = -90;//SmartDashboard.getNumber("cv-angle");
         goalInFrame = cvReading != null;
         if (goalInFrame) {
             desiredAngle = StuyVisionModule.frameXPxToDegrees(cvReading[0]);
+            SmartDashboard.putNumber("cv-angle", desiredAngle);
+            SmartDashboard.putBoolean("cv-visible",true);
             System.out.println("Reading was: " + Arrays.toString(cvReading) + "-----------------------------");
             System.out.println("Desired Angle Delta: " + desiredAngle);
         } else {
+            SmartDashboard.putBoolean("cv-visible",false);
             System.out.println("Reading was NULL------------------------------------------------------------");
         }
     }
@@ -101,20 +107,20 @@ public class RotateToAimCommand extends Command {
                 return;
             }
             if (!forceStopped) {
-                double speed = 0.4 + 0.6 * howMuchWeHaveToGo();
-                System.out.println("\n\n\n\nSpeed to use:\t" + speed);
+                double speed = 0.4 + 0.4 * howMuchWeHaveToGo();
+                //System.out.println("\n\n\n\nSpeed to use:\t" + speed);
                 System.out.println("getGyroAngle():\t" + Robot.drivetrain.getGyroAngle());
                 System.out.println("angleMoved():\t" + angleMoved());
                 System.out.println("desiredAngle:\t" + desiredAngle);
                 System.out.println("degreesToMove():\t" + degreesToMove());
-                System.out.println("original distance:\t" + StuyVisionModule.findDistanceToGoal(cvReading));
+                //System.out.println("original distance:\t" + StuyVisionModule.findDistanceToGoal(cvReading));
                 // right is negative when turning right
                 if (degreesToMove() < 0) {
-                    System.out.println("\nMoving left, as desiredAngle=" + desiredAngle + " < 0");
+                    System.out.println("\nMoving left, as degreesToMove()=" + desiredAngle + " < 0");
                     System.out.println("So: tankDrive(" + -speed + ", " + speed + ")\n");
                     Robot.drivetrain.tankDrive(-speed, speed);
                 } else {
-                    System.out.println("\nMoving RIGHT, as desiredAngle=" + desiredAngle + " > 0");
+                    System.out.println("\nMoving RIGHT, as degreesToMove()=" + desiredAngle + " > 0");
                     System.out.println("So: tankDrive(" + speed + ", " + -speed + ")\n");
                     Robot.drivetrain.tankDrive(speed, -speed);
                 }
@@ -149,12 +155,12 @@ public class RotateToAimCommand extends Command {
             //    return true;
             //}
 
-            if (sprintsDone < maxSprints - 1) {
+            /*if (sprintsDone < maxSprints - 1) {
                 sprintSetup();
                 sprintsDone += 1;
                 System.out.println("\n\n\n\n\nENTERING SPRINT index " + sprintsDone + "!\n\n");
                 return false;
-            }
+            }*/
             return onTarget;
         } catch (Exception e) {
             System.out.println("Error in isFinished in RotateToAimCommand:");

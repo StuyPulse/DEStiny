@@ -234,6 +234,7 @@ public class Robot extends IterativeRobot {
                 autonomousCommand.cancel();
             }
             debugMode = (Boolean) debugChooser.getSelected();
+            SmartDashboard.putNumber("cv-angle",90);
             Robot.drivetrain.resetEncoders();
             // This is here and also in autonomus periodic as a safety measure
             Robot.shooter.stop();
