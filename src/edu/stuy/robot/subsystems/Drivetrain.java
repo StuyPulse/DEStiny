@@ -6,10 +6,12 @@ import static edu.stuy.robot.RobotMap.FRONT_RIGHT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.GEAR_SHIFT_CHANNEL;
 import static edu.stuy.robot.RobotMap.LEFT_ENCODER_CHANNEL_A;
 import static edu.stuy.robot.RobotMap.LEFT_ENCODER_CHANNEL_B;
+import static edu.stuy.robot.RobotMap.MAX_DEGREES_OFF_AUTO_AIMING;
 import static edu.stuy.robot.RobotMap.REAR_LEFT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.REAR_RIGHT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_A;
 import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_B;
+
 import edu.stuy.robot.commands.DrivetrainTankDriveCommand;
 import edu.stuy.util.TankDriveOutput;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -34,10 +36,11 @@ public class Drivetrain extends Subsystem {
     private CANTalon rightRearMotor;
     private RobotDrive robotDrive;
     private ADXRS450_Gyro gyro;
-    private PIDController pid;
     private TankDriveOutput out;
     private Solenoid gearShift;
     private double[] currents;
+
+    public final PIDController pid;
 
     public boolean gearUp; // Stores the state of the gear shift
     public boolean overrideAutoGearShifting; // True if automatic gear shifting is not being used
@@ -70,14 +73,16 @@ public class Drivetrain extends Subsystem {
         overrideAutoGearShifting = false;
         autoGearShiftingState = true;
 
+        // Setup PIDController for auto-rotation and aiming
         out = new TankDriveOutput(robotDrive);
         gyro = new ADXRS450_Gyro();
         pid = new PIDController(SmartDashboard.getNumber("Gyro P"),
                 SmartDashboard.getNumber("Gyro I"),
                 SmartDashboard.getNumber("Gyro D"), gyro, out);
+        pid.setInputRange(0, 360);
+        pid.setContinuous(); // Tell `pid' that 0deg = 360deg
+        pid.setAbsoluteTolerance(MAX_DEGREES_OFF_AUTO_AIMING);
 
-        // pid.setInputRange(0, 360);
-        // pid.setContinuous();
         leftEncoder.setDistancePerPulse(DRIVETRAIN_ENCODER_INCHES_PER_PULSE);
         rightEncoder.setDistancePerPulse(DRIVETRAIN_ENCODER_INCHES_PER_PULSE);
         gyro.reset();
