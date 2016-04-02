@@ -79,7 +79,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Gyro D", 0);
 
         // Angle to move in gyro predetermined-angle (non-CV) auto-rotation
-        SmartDashboard.putNumber("cv-angle", 90);
+        SmartDashboard.putNumber("gyro-rotate-degs", 90);
 
         // Start the operator chooser before anything else
         chooseOperator();

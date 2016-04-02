@@ -15,8 +15,8 @@ import edu.stuy.robot.commands.HoodDownCommand;
 import edu.stuy.robot.commands.HoodUpCommand;
 import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.JionDriveCommand;
+import edu.stuy.robot.commands.RotateDegreesGyroCommand;
 import edu.stuy.robot.commands.RotateToAimCommand;
-import edu.stuy.robot.commands.RotateToAimPIDCommand;
 import edu.stuy.robot.commands.ShooterHopperBackwardsCommand;
 import edu.stuy.robot.commands.ShooterHopperStopCommand;
 import edu.stuy.robot.commands.ShooterSetLayupCommand;
@@ -76,9 +76,9 @@ public class OI {
         driverGamepad.getLeftBumper().whenReleased(new FlashlightOffCommand());
 
         // CV controls:
-        //driverGamepad.getBottomButton().whenPressed(new RotateToAimCommand());
+        driverGamepad.getBottomButton().whenPressed(new RotateToAimCommand());
         driverGamepad.getTopButton().whenPressed(new CVReadAndPrintCommand());
-        driverGamepad.getLeftButton().whenPressed(new RotateToAimPIDCommand());
+        driverGamepad.getLeftButton().whenPressed(new RotateDegreesGyroCommand());
         // driverGamepad's right button (B) is force stop CV command
 
         // OPERATOR BINDINGS
