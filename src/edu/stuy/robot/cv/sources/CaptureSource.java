@@ -35,6 +35,7 @@ public abstract class CaptureSource {
             SmartDashboard.putNumber("Camera init frame height", frameHeight);
             SmartDashboard.putNumber("Camera frame width", resizedFrame.width());
             SmartDashboard.putNumber("Camera frame height", resizedFrame.height());
+            SmartDashboard.putBoolean("Camera isOpened", isOpened());
             return resizedFrame;
         } else {
             return null;
