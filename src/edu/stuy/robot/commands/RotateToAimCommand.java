@@ -53,16 +53,16 @@ public class RotateToAimCommand extends Command {
         //goalInFrame = true;
         //desiredAngle = -90;//SmartDashboard.getNumber("cv-angle");
         goalInFrame = cvReading != null;
+        SmartDashboard.putString("cv-reading", Arrays.toString(cvReading));
         if (goalInFrame) {
             desiredAngle = StuyVisionModule.frameXPxToDegrees(cvReading[0]);
             SmartDashboard.putNumber("cv-angle", desiredAngle);
-            SmartDashboard.putBoolean("cv-visible",true);
             System.out.println("Reading was: " + Arrays.toString(cvReading) + "-----------------------------");
             System.out.println("Desired Angle Delta: " + desiredAngle);
         } else {
-            SmartDashboard.putBoolean("cv-visible",false);
             System.out.println("Reading was NULL------------------------------------------------------------");
         }
+        SmartDashboard.putBoolean("cv-visible", goalInFrame);
     }
 
     // Called just before this Command runs the first time
