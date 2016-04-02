@@ -4,6 +4,7 @@ import static edu.stuy.robot.RobotMap.SLOT_ANGLE_TO_GOAL_2;
 import static edu.stuy.robot.RobotMap.SLOT_ANGLE_TO_GOAL_3;
 import static edu.stuy.robot.RobotMap.SLOT_ANGLE_TO_GOAL_4;
 import static edu.stuy.robot.RobotMap.SLOT_ANGLE_TO_GOAL_5;
+
 import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -45,13 +46,13 @@ public class RotateDrivetrainCommand extends Command {
         }
     }
 
+    private double angleMoved() {
+        return Robot.drivetrain.getGyroAngle() * 1.1;
+    }
+
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        if (angle < 0) {
-            return true; // Math.abs(Robot.drivetrain.getGyroAngle() - (360 + angle)) < 1.0;
-        } else {
-            return true; // Math.abs(Robot.drivetrain.getGyroAngle() - angle) < 1.0;
-        }
+        return Math.abs(angleMoved() - angle) < 1.0;
     }
 
     // Called once after isFinished returns true
