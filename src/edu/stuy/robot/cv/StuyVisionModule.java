@@ -60,11 +60,15 @@ public class StuyVisionModule {
         }
     }
 
+    private void initializeCamera() {
+        camera = new DeviceCaptureSource(cameraPort);
+        System.out.println("Made camera");
+    }
+
     public StuyVisionModule() {
         try {
-            cameraPort = outerUSBPort;
-            camera = new DeviceCaptureSource(cameraPort);
-            System.out.println("Made camera");
+            cameraPort = 1;//outerUSBPort;
+            initializeCamera();
         } catch (Exception e) {
             System.out.println("Failed to create camera at " + cameraPort + ". Error was: " + e);
         }
@@ -78,8 +82,7 @@ public class StuyVisionModule {
     public StuyVisionModule(int i) {
         try {
             cameraPort = i;
-            camera = new DeviceCaptureSource(i);
-            System.out.println("Made camera");
+            initializeCamera();
         } catch (Exception e) {
             System.out.println("Failed to create camera at " + i + ", will reattempt later. Error was: " + e);
         }

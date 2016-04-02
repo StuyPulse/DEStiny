@@ -50,9 +50,9 @@ public class RotateToAimCommand extends Command {
         cvReading = Robot.vision.processImage();
         System.out.println("Image processing took " + (System.currentTimeMillis() - start) + "ms");
 
-        //goalInFrame = true;
-        //desiredAngle = -90;//SmartDashboard.getNumber("cv-angle");
-        goalInFrame = cvReading != null;
+        goalInFrame = true;
+        desiredAngle = SmartDashboard.getNumber("cv-angle");
+        /*goalInFrame = cvReading != null;
         SmartDashboard.putString("cv-reading", Arrays.toString(cvReading));
         if (goalInFrame) {
             desiredAngle = StuyVisionModule.frameXPxToDegrees(cvReading[0]);
@@ -62,7 +62,7 @@ public class RotateToAimCommand extends Command {
         } else {
             System.out.println("Reading was NULL------------------------------------------------------------");
         }
-        SmartDashboard.putBoolean("cv-visible", goalInFrame);
+        SmartDashboard.putBoolean("cv-visible", goalInFrame);*/
     }
 
     // Called just before this Command runs the first time
@@ -107,7 +107,7 @@ public class RotateToAimCommand extends Command {
                 return;
             }
             if (!forceStopped) {
-                double speed = 0.4 + 0.4 * howMuchWeHaveToGo();
+                double speed = 0.45 + 0.35 * Math.pow(howMuchWeHaveToGo(), 2);
                 //System.out.println("\n\n\n\nSpeed to use:\t" + speed);
                 System.out.println("getGyroAngle():\t" + Robot.drivetrain.getGyroAngle());
                 System.out.println("angleMoved():\t" + angleMoved());
