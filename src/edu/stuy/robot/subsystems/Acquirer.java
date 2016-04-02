@@ -25,7 +25,7 @@ public class Acquirer extends Subsystem {
 	}
 
 	public void acquire() {
-		acquirerMotor.set(1.0);
+		acquirerMotor.set(-1.0);
 	}
 
 	public void stop() {
@@ -33,6 +33,6 @@ public class Acquirer extends Subsystem {
 	}
 
 	public void deacquire() {
-		acquirerMotor.set(-1.0);
+		acquirerMotor.set(1.0);
 	}
 }
