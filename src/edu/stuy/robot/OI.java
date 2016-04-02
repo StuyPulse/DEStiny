@@ -76,7 +76,7 @@ public class OI {
         driverGamepad.getLeftBumper().whenReleased(new FlashlightOffCommand());
 
         // CV controls:
-        driverGamepad.getBottomButton().whenPressed(new RotateToAimCommand());
+        //driverGamepad.getBottomButton().whenPressed(new RotateToAimCommand());
         driverGamepad.getTopButton().whenPressed(new CVReadAndPrintCommand());
         driverGamepad.getLeftButton().whenPressed(new RotateToAimPIDCommand());
         // driverGamepad's right button (B) is force stop CV command

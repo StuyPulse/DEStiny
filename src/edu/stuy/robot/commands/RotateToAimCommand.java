@@ -10,22 +10,19 @@ import edu.stuy.robot.cv.StuyVisionModule;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class RotateToAimCommand extends Command {
+public abstract class RotateToAimCommand extends Command {
 
-    private boolean goalInFrame;
-    private boolean forceStopped;
-    private boolean abort;
+    protected double desiredAngle;
+    protected boolean canProceed; // E.g., whether goal is in frame
+
+    private boolean forceStopped; // When operator force stops
+    private boolean abort; // When there is an error in a method
 
     private boolean priorGearShiftState;
 
     private static final long timeout = 5000; // currently not in use
     private double[] cvReading;
-    private double desiredAngle;
     private long timeStart;
-
-    private static final int maxSprints = 2;
-    private int sprintsDone;
-    // A sprint is reading CV and then rotating until "on target"
 
     public RotateToAimCommand() {
         // Use requires() here to declare subsystem dependencies
@@ -36,33 +33,19 @@ public class RotateToAimCommand extends Command {
     private void initialSetup() {
         forceStopped = false;
         abort = false;
-        sprintsDone = 0;
         timeStart = System.currentTimeMillis();
         priorGearShiftState = Robot.drivetrain.gearUp;
         Robot.drivetrain.manualGearShift(true);
     }
 
+    protected abstract void setDesiredAngle();
+
     private void sprintSetup() {
         desiredAngle=0.0;
         Robot.drivetrain.resetGyro();
 
-        long start = System.currentTimeMillis();
-        cvReading = Robot.vision.processImage();
-        System.out.println("Image processing took " + (System.currentTimeMillis() - start) + "ms");
-
-        goalInFrame = true;
-        desiredAngle = SmartDashboard.getNumber("cv-angle");
-        /*goalInFrame = cvReading != null;
-        SmartDashboard.putString("cv-reading", Arrays.toString(cvReading));
-        if (goalInFrame) {
-            desiredAngle = StuyVisionModule.frameXPxToDegrees(cvReading[0]);
-            SmartDashboard.putNumber("cv-angle", desiredAngle);
-            System.out.println("Reading was: " + Arrays.toString(cvReading) + "-----------------------------");
-            System.out.println("Desired Angle Delta: " + desiredAngle);
-        } else {
-            System.out.println("Reading was NULL------------------------------------------------------------");
-        }
-        SmartDashboard.putBoolean("cv-visible", goalInFrame);*/
+        canProceed = true; // default
+        setDesiredAngle();
     }
 
     // Called just before this Command runs the first time
@@ -136,9 +119,9 @@ public class RotateToAimCommand extends Command {
     protected boolean isFinished() {
         try {
             // When no more can or should be done:
-            if (forceStopped || abort || !goalInFrame || Math.abs(desiredAngle) < 0.001) { // last condition for cases when it is zero
+            if (forceStopped || abort || !canProceed || Math.abs(desiredAngle) < 0.001) { // last condition for cases when it is zero
                 Robot.cvSignalLight.setOff();
-                System.out.println("\n\n\n\n\n\n\nforce stopped: " + forceStopped + "\ngoalInFrame: " + goalInFrame + "\ndesiredAngle: " + desiredAngle);
+                System.out.println("\n\n\n\n\n\n\nforce stopped: " + forceStopped + "\ngoalInFrame: " + canProceed + "\ndesiredAngle: " + desiredAngle);
                 return true;
             }
 
@@ -154,13 +137,6 @@ public class RotateToAimCommand extends Command {
             //    System.out.println("RotateToAimCommand timed out after " + timeout + "ms");
             //    return true;
             //}
-
-            /*if (sprintsDone < maxSprints - 1) {
-                sprintSetup();
-                sprintsDone += 1;
-                System.out.println("\n\n\n\n\nENTERING SPRINT index " + sprintsDone + "!\n\n");
-                return false;
-            }*/
             return onTarget;
         } catch (Exception e) {
             System.out.println("Error in isFinished in RotateToAimCommand:");
