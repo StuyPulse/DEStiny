@@ -78,6 +78,9 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Gyro I", 0);
         SmartDashboard.putNumber("Gyro D", 0);
 
+        // Angle to move in gyro predetermined-angle (non-CV) auto-rotation
+        SmartDashboard.putNumber("cv-angle", 90);
+
         // Start the operator chooser before anything else
         chooseOperator();
 
@@ -235,7 +238,6 @@ public class Robot extends IterativeRobot {
             }
             debugMode = (Boolean) debugChooser.getSelected();
 
-            SmartDashboard.putNumber("cv-angle",90);
             Robot.drivetrain.resetEncoders();
             // This is here and also in autonomus periodic as a safety measure
             Robot.shooter.stop();
