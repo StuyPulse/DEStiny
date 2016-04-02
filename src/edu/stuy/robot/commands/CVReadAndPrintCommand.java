@@ -3,6 +3,7 @@ package edu.stuy.robot.commands;
 import java.util.Arrays;
 
 import edu.stuy.robot.Robot;
+import edu.stuy.robot.cv.StuyVisionModule;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -19,9 +20,15 @@ public class CVReadAndPrintCommand extends Command {
     protected void initialize() {
         try {
             long start = System.currentTimeMillis();
-            double[] vec = Robot.vision.processImageAndSave("/test-image");
-            System.out.println("processImage took " + (System.currentTimeMillis() - start) + "ms");
-            System.out.println("\n\n\n\n\n\n\n\n\n\nReading is: " + Arrays.toString(vec)); // Arrays.toString returns "null" is vec is null
+            double[] vec = Robot.vision.processImage();
+            System.out.println("\n\n\n\n\n\n\n\n\n\nprocessImage took " + (System.currentTimeMillis() - start) + "ms");
+            System.out.println("Reading is: " + Arrays.toString(vec)); // Arrays.toString returns "null" is vec is null
+            System.out.println("Distance is: " + StuyVisionModule.findDistanceToGoal(vec));
+            if (vec != null) {
+                System.out.println("Angle X is: " + StuyVisionModule.frameXPxToDegrees(vec[0]));
+                System.out.println("Angle Y is: " + StuyVisionModule.frameYPxToDegrees(vec[1]));
+                System.out.println("Y to horiz: " + StuyVisionModule.yInFrameToDegreesFromHorizon(vec[1]));
+            }
         } catch (Exception e) {
             System.err.println("\n\n\n\nGeneric exception caught in CVReadAndPrintCommand:");
             e.printStackTrace();
