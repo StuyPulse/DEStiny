@@ -52,10 +52,10 @@ public class RotateToAimCommand extends Command {
         goalInFrame = cvReading != null;
         if (goalInFrame) {
             desiredAngle = StuyVisionModule.frameXPxToDegrees(cvReading[0]);
-            System.out.println("Reading was: " + Arrays.toString(cvReading));
+            System.out.println("Reading was: " + Arrays.toString(cvReading) + "-----------------------------");
             System.out.println("Desired Angle Delta: " + desiredAngle);
         } else {
-            System.out.println("Reading was NULL");
+            System.out.println("Reading was NULL------------------------------------------------------------");
         }
     }
 
@@ -73,7 +73,7 @@ public class RotateToAimCommand extends Command {
 
     // INCREASE these if it is OVERshooting
     // DECREASE these if it is UNDERshooting
-    private double TUNE_FACTOR = 0.9;
+    private double TUNE_FACTOR = 1.1;
     private double TUNE_OFFSET = 0.0;
     private double angleMoved() {
         double gyro = Robot.drivetrain.getGyroAngle();
@@ -85,10 +85,6 @@ public class RotateToAimCommand extends Command {
 
     private double degreesToMove() {
         return desiredAngle - angleMoved();
-    }
-
-    private double howFarHaveWeCome() {
-        return Math.abs(angleMoved() / (CAMERA_VIEWING_ANGLE_X / 2));
     }
 
     // In some sense, what percent of the way off are we? 100% = 1.0 would be
@@ -105,8 +101,7 @@ public class RotateToAimCommand extends Command {
                 return;
             }
             if (!forceStopped) {
-                //double speed = 0.9 - 0.5 * howFarHaveWeCome();
-                double speed = 0.4 + howMuchWeHaveToGo();
+                double speed = 0.4 + 0.6 * howMuchWeHaveToGo();
                 System.out.println("\n\n\n\nSpeed to use:\t" + speed);
                 System.out.println("getGyroAngle():\t" + Robot.drivetrain.getGyroAngle());
                 System.out.println("angleMoved():\t" + angleMoved());
@@ -114,11 +109,13 @@ public class RotateToAimCommand extends Command {
                 System.out.println("degreesToMove():\t" + degreesToMove());
                 System.out.println("original distance:\t" + StuyVisionModule.findDistanceToGoal(cvReading));
                 // right is negative when turning right
-                if (desiredAngle < 0) {
-                    System.out.println("Moving left, as desiredAngle=" + desiredAngle + " < 0");
+                if (degreesToMove() < 0) {
+                    System.out.println("\nMoving left, as desiredAngle=" + desiredAngle + " < 0");
+                    System.out.println("So: tankDrive(" + -speed + ", " + speed + ")\n");
                     Robot.drivetrain.tankDrive(-speed, speed);
                 } else {
-                    System.out.println("Moving RIGHT, as desiredAngle=" + desiredAngle + " > 0");
+                    System.out.println("\nMoving RIGHT, as desiredAngle=" + desiredAngle + " > 0");
+                    System.out.println("So: tankDrive(" + speed + ", " + -speed + ")\n");
                     Robot.drivetrain.tankDrive(speed, -speed);
                 }
             }
