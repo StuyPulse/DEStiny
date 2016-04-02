@@ -67,7 +67,7 @@ public class StuyVisionModule {
 
     public StuyVisionModule() {
         try {
-            cameraPort = 1;//outerUSBPort;
+            cameraPort = outerUSBPort;
             initializeCamera();
         } catch (Exception e) {
             System.out.println("Failed to create camera at " + cameraPort + ". Error was: " + e);
