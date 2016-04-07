@@ -5,6 +5,7 @@ import java.util.Arrays;
 import edu.stuy.robot.Robot;
 import edu.stuy.robot.cv.StuyVisionModule;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -20,15 +21,24 @@ public class CVReadAndPrintCommand extends Command {
     protected void initialize() {
         try {
             long start = System.currentTimeMillis();
-            double[] vec = Robot.vision.processImage();
+            double[] cvReading = Robot.vision.processImage();
             System.out.println("\n\n\n\n\n\n\n\n\n\nprocessImage took " + (System.currentTimeMillis() - start) + "ms");
-            System.out.println("Reading is: " + Arrays.toString(vec)); // Arrays.toString returns "null" is vec is null
-            System.out.println("Distance is: " + StuyVisionModule.findDistanceToGoal(vec));
-            if (vec != null) {
-                System.out.println("Angle X is: " + StuyVisionModule.frameXPxToDegrees(vec[0]));
-                System.out.println("Angle Y is: " + StuyVisionModule.frameYPxToDegrees(vec[1]));
-                System.out.println("Y to horiz: " + StuyVisionModule.yInFrameToDegreesFromHorizon(vec[1]));
+            System.out.println("Reading is: " + Arrays.toString(cvReading)); // Arrays.toString returns "null" is vec is null
+            System.out.println("Distance is: " + StuyVisionModule.findDistanceToGoal(cvReading));
+            if (cvReading != null) {
+                System.out.println("Angle X is: " + StuyVisionModule.frameXPxToDegrees(cvReading[0]));
+                System.out.println("Angle Y is: " + StuyVisionModule.frameYPxToDegrees(cvReading[1]));
+                System.out.println("Y to horiz: " + StuyVisionModule.yInFrameToDegreesFromHorizon(cvReading[1]));
             }
+            boolean canProceed = cvReading != null;
+            double desiredAngle;
+            SmartDashboard.putString("cv-reading", Arrays.toString(cvReading));
+            if (canProceed) {
+                desiredAngle = StuyVisionModule.frameXPxToDegrees(cvReading[0]);
+                SmartDashboard.putNumber("cv-angle", desiredAngle);
+                System.out.println("Desired Angle Delta: " + desiredAngle);
+            }
+            SmartDashboard.putBoolean("cv-visible", canProceed);
         } catch (Exception e) {
             System.err.println("\n\n\n\nGeneric exception caught in CVReadAndPrintCommand:");
             e.printStackTrace();
