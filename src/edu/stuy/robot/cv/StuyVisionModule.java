@@ -291,4 +291,32 @@ public class StuyVisionModule {
         }
         return findDistanceToGoal(vec[1]);
     }
+
+    private static class Report {
+        double[] reading;
+        double goalDegsY;
+        double goalDegsX;
+        double inchesAway;
+        public Report(double[] visionReading) {
+            reading = visionReading;
+            goalDegsX = frameXPxToDegrees(reading[0]);
+            goalDegsY = yInFrameToDegreesFromHorizon(reading[1]);
+            inchesAway = findDistanceToGoal(reading[1]);
+            // let null pointer exception occur if data is null
+        }
+        public String toString() {
+            return "CV Read.\n"
+                + " Raw: " + Arrays.toString(reading) + "\n"
+                + " Goal Degs X: " + goalDegsX + "\n"
+                + " Goal Degs Y: " + goalDegsY + "\n"
+                + " Distance (in): " + inchesAway + "\n";
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Running test: read from frame and determine angle to rotate");
+        StuyVisionModule sv = new StuyVisionModule();
+        Report r = new Report(sv.processImage());
+        System.out.println(r);
+    }
 }
