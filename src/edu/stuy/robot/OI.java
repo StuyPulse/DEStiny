@@ -3,27 +3,7 @@ package edu.stuy.robot;
 import static edu.stuy.robot.RobotMap.DRIVER_GAMEPAD;
 import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
 
-import edu.stuy.robot.commands.AcquirerAcquireCommand;
-import edu.stuy.robot.commands.AcquirerDeacquireCommand;
 import edu.stuy.robot.commands.CVReadAndPrintCommand;
-import edu.stuy.robot.commands.DisableAutoGearShiftCommand;
-import edu.stuy.robot.commands.EnableAutoGearShiftCommand;
-import edu.stuy.robot.commands.FlashlightOffCommand;
-import edu.stuy.robot.commands.FlashlightOnCommand;
-import edu.stuy.robot.commands.HighGearCommand;
-import edu.stuy.robot.commands.HoodDownCommand;
-import edu.stuy.robot.commands.HoodUpCommand;
-import edu.stuy.robot.commands.HopperRunCommand;
-import edu.stuy.robot.commands.JionDriveCommand;
-import edu.stuy.robot.commands.RotateDegreesGyroCommand;
-import edu.stuy.robot.commands.RotateToAimCommand;
-import edu.stuy.robot.commands.ShooterHopperBackwardsCommand;
-import edu.stuy.robot.commands.ShooterHopperStopCommand;
-import edu.stuy.robot.commands.ShooterSetLayupCommand;
-import edu.stuy.robot.commands.ShooterSetMaxSpeed;
-import edu.stuy.robot.commands.ShooterSetOutWorksSpeed;
-import edu.stuy.robot.commands.ShooterStopCommand;
-import edu.stuy.robot.commands.auton.DropDownMoveToAngleCommand;
 import edu.stuy.util.Gamepad;
 
 /**
@@ -66,38 +46,9 @@ public class OI {
         operatorGamepad = new Gamepad(OPERATOR_GAMEPAD);
 
         // DRIVER BINDINGS
-        driverGamepad.getStartButton().whenPressed(new EnableAutoGearShiftCommand());
-        driverGamepad.getSelectButton().whenPressed(new DisableAutoGearShiftCommand());
-        driverGamepad.getLeftTrigger().whileHeld(new JionDriveCommand());
-        driverGamepad.getLeftTrigger().whenReleased(new HighGearCommand());
-        driverGamepad.getRightBumper().whenPressed(new FlashlightOnCommand());
-        driverGamepad.getRightBumper().whenReleased(new FlashlightOffCommand());
-        driverGamepad.getLeftBumper().whenPressed(new FlashlightOnCommand());
-        driverGamepad.getLeftBumper().whenReleased(new FlashlightOffCommand());
-
-        // CV controls:
-        driverGamepad.getBottomButton().whenPressed(new RotateToAimCommand());
         driverGamepad.getTopButton().whenPressed(new CVReadAndPrintCommand());
-        driverGamepad.getLeftButton().whenPressed(new RotateDegreesGyroCommand());
         // driverGamepad's right button (B) is force stop CV command
 
-        // OPERATOR BINDINGS
-        operatorGamepad.getLeftTrigger().whileHeld(new HopperRunCommand(true));
-        operatorGamepad.getLeftBumper().whileHeld(new HopperRunCommand(false));
-        operatorGamepad.getRightTrigger().whileHeld(new AcquirerAcquireCommand());
-        operatorGamepad.getRightBumper().whileHeld(new AcquirerDeacquireCommand());
-
-        operatorGamepad.getDPadUp().whenPressed(new ShooterSetOutWorksSpeed());
-        operatorGamepad.getDPadLeft().whenPressed(new ShooterSetLayupCommand());
-        operatorGamepad.getDPadRight().whenPressed(new ShooterSetMaxSpeed());
-        operatorGamepad.getDPadDown().whenPressed(new ShooterStopCommand());
-
-        operatorGamepad.getLeftButton().whenPressed(new ShooterHopperBackwardsCommand());
-        operatorGamepad.getLeftButton().whenReleased(new ShooterHopperStopCommand());
-        operatorGamepad.getTopButton().whenPressed(new HoodUpCommand());
-        operatorGamepad.getRightButton().whenPressed(new HoodDownCommand());
-
-        operatorGamepad.getRightAnalogButton().whenPressed(new DropDownMoveToAngleCommand(40));
     }
 
     public boolean driverIsOverriding() {
