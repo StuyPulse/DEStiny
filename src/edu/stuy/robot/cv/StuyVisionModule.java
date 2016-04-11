@@ -221,6 +221,7 @@ public class StuyVisionModule {
             return null;
         }
         Mat frame = camera.read();
+        System.out.println("Got frame from camera");
         if (frame == null) {
             System.out.println("FRAME WAS NULL");
             return null;

@@ -11,17 +11,27 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class CVReadAndPrintCommand extends Command {
-
+    boolean tryToSaveFile;
     public CVReadAndPrintCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    }
+    public CVReadAndPrintCommand(boolean x) {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+        this.tryToSaveFile = x;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
         try {
             long start = System.currentTimeMillis();
-            double[] cvReading = Robot.vision.processImage();
+            double[] cvReading = null;
+            if (tryToSaveFile) {
+                cvReading = Robot.vision.processImageAndSave("/tmp/wb-img");
+            } else {
+                cvReading = Robot.vision.processImage();
+            }
             System.out.println("\n\n\n\n\n\n\n\n\n\nprocessImage took " + (System.currentTimeMillis() - start) + "ms");
             System.out.println("Reading is: " + Arrays.toString(cvReading)); // Arrays.toString returns "null" is vec is null
             System.out.println("Distance is: " + StuyVisionModule.findDistanceToGoal(cvReading));

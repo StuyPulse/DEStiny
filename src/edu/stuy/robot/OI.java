@@ -47,6 +47,7 @@ public class OI {
 
         // DRIVER BINDINGS
         driverGamepad.getTopButton().whenPressed(new CVReadAndPrintCommand());
+        driverGamepad.getLeftButton().whenPressed(new CVReadAndPrintCommand(true));
         // driverGamepad's right button (B) is force stop CV command
 
     }
