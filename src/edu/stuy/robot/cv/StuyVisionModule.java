@@ -320,4 +320,10 @@ public class StuyVisionModule {
         Report r = new Report(sv.processImage());
         System.out.println(r);
     }
+
+    public void run(Main app, Mat frame) {
+        app.postImage("Video", frame);
+        double[] result = hsvThresholding(frame);
+        System.out.println(Arrays.toString(result));
+    }
 }
