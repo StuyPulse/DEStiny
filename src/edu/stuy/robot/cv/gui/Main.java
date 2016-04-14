@@ -7,6 +7,10 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
 
+import edu.stuy.robot.cv.StuyVision;
+import edu.stuy.robot.cv.sources.CaptureSource;
+import edu.stuy.robot.cv.sources.DeviceCaptureSource;
+import edu.stuy.robot.cv.util.DebugPrinter;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -28,6 +32,60 @@ public class Main extends Application {
     private HashMap<Integer, ControlsController> tabs = new HashMap<Integer, ControlsController>();
     private ModuleRunner moduleRunner = new ModuleRunner();
     private HashMap<String, ImageFrame> images = new HashMap<String, ImageFrame>();
+
+    @Override
+    public void start(Stage primaryStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/main.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("css/main.css").toString());
+            // Initialize ModuleRunner with VisionModuleSuite
+            StuyVision.loadOpenCV();
+            VisionModule module = new StuyVision();
+            {
+                FXMLLoader tabLoader = new FXMLLoader(getClass().getResource("fxml/module_main.fxml"));
+                final SplitPane moduleContainer = tabLoader.load();
+                //ControlsController controlsController = tabLoader.getController();
+                //controlsController.setup(module);
+                //tabs.put(module.hashCode(), controlsController);
+                root.getTabs().add(new Tab(module.getName(), moduleContainer));
+            }
+            Main self = this;
+            CaptureSource cs = new DeviceCaptureSource(0);
+            {
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (;;) {
+                            try {
+                                long start = System.currentTimeMillis();
+                                Mat frame = cs.read();
+                                if (frame == null) {
+                                    System.out.println("frame is null");
+                                }
+                                module.run(self, frame);
+                                long duration = System.currentTimeMillis() - start;
+                                DebugPrinter.println(module.getName() + ": " + duration + " ms");
+                                Thread.sleep(1000 / 30);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }, module.getName() + " Thread");
+                t.setDaemon(true);
+                t.start();
+            }//moduleRunner.run(this);
+            primaryStage.setOnCloseRequest((event) -> quit());
+            primaryStage.setTitle("Java Vision GUI");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private void quit() {
         Platform.exit();
@@ -60,7 +118,8 @@ public class Main extends Application {
                     }
                 }
             });
-        } else {
+        }
+        else {
             // Update the existing ImageFrame
             Platform.runLater(() -> {
                 existingFrame.imageView.setImage(image);
@@ -81,45 +140,6 @@ public class Main extends Application {
         public ImageFrame(ImageView imageView, Text label) {
             this.imageView = imageView;
             this.label = label;
-        }
-    }
-
-    @Override
-    public void start(Stage primaryStage) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/main.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("css/main.css").toString());
-
-            CaptureSource cs = new DeviceCaptureSource(1); // Generally a webcam is port 0 and the LifeCam is 1
-            VisionModule vm = new StuyVisionModule();
-            FXMLLoader tabLoader = new FMLLoader(getClass().getResource("fxml/module_main.fxml"));
-            final SplitPane moduleContainer = tabLoader.load();
-            ControlsController ctlr = tabLoader.getController();
-            ctlr.setup(vm);
-            tabs.put(vm.hashCode(), ctlr);
-
-            new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (;;) {
-                            Mat frame = cs.read();
-                            if (frame == null) {
-                                cs.reinitializeCaptureSource();
-                                DebugPrinter.println("Looping capture source");
-                            } else {
-                                new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            vm.run(this, frame);
-                                        }
-                                    }).start();
-                            }
-                        }
-                    }
-                }).start();
-            Thread.sleep(1000 / 30);
         }
     }
 }

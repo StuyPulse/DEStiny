@@ -4,7 +4,7 @@ import static edu.stuy.robot.RobotMap.JONAH_ID;
 import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
 import static edu.stuy.robot.RobotMap.YUBIN_ID;
 
-import edu.stuy.robot.cv.StuyVisionModule;
+import edu.stuy.robot.cv.StuyVision;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -34,7 +34,7 @@ public class Robot extends IterativeRobot {
     private double autonStartTime;
     private boolean debugMode;
 
-    public static StuyVisionModule vision;
+    public static StuyVision vision;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -68,7 +68,7 @@ public class Robot extends IterativeRobot {
         flashlight = new Flashlight();*/
 
         oi = new OI();
-        vision = new StuyVisionModule();
+        vision = new StuyVision();
 
         /*drivetrain.setDrivetrainBrakeMode(true);
         shooter.setShooterBrakeMode(false);

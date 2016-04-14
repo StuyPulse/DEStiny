@@ -1,6 +1,12 @@
 package edu.stuy.robot.cv;
 
-import static edu.stuy.robot.RobotMap.*;
+import static edu.stuy.robot.RobotMap.CAMERA_FRAME_PX_HEIGHT;
+import static edu.stuy.robot.RobotMap.CAMERA_FRAME_PX_WIDTH;
+import static edu.stuy.robot.RobotMap.CAMERA_HEIGHT_FROM_GROUND;
+import static edu.stuy.robot.RobotMap.CAMERA_TILT_ANGLE;
+import static edu.stuy.robot.RobotMap.CAMERA_VIEWING_ANGLE_X;
+import static edu.stuy.robot.RobotMap.CAMERA_VIEWING_ANGLE_Y;
+import static edu.stuy.robot.RobotMap.HIGH_GOAL_HEIGHT;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -11,17 +17,18 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
-import org.opencv.core.Point;
 import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
+import edu.stuy.robot.cv.gui.Main;
+import edu.stuy.robot.cv.gui.VisionModule;
 import edu.stuy.robot.cv.sources.CaptureSource;
 import edu.stuy.robot.cv.sources.DeviceCaptureSource;
 
-public class StuyVisionModule {
+public class StuyVision extends VisionModule {
 
     public int minH_GREEN = 58;
     public int maxH_GREEN = 123;
@@ -45,19 +52,19 @@ public class StuyVisionModule {
 
     private static PrintWriter logWriter;
 
-    static {
+    public static void loadOpenCV() {
         // Load opencv native library
-        String dir = StuyVisionModule.class.getClassLoader().getResource("").getPath();
+        String dir = StuyVision.class.getClassLoader().getResource("").getPath();
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            System.load(dir + "..\\lib\\opencv-3.0.0\\build\\lib\\opencv_java300.dll");
+            System.load(dir.substring(1).replaceAll("\\%20", " ")
+                    + "..\\lib\\opencv-3.0.0\\build\\java\\x64\\opencv_java300.dll");
         } else {
             // This is the .so's location on the roboRio
             System.load("/usr/local/share/OpenCV/java/libopencv_java310.so");
         }
         try {
             logWriter = new PrintWriter("logs.txt");
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
     }
 
     private void initializeCamera() {
@@ -65,7 +72,7 @@ public class StuyVisionModule {
         System.out.println("Made camera");
     }
 
-    public StuyVisionModule() {
+    public StuyVision() {
         try {
             cameraPort = outerUSBPort;
             initializeCamera();
@@ -74,12 +81,12 @@ public class StuyVisionModule {
         }
     }
 
-    public StuyVisionModule(CaptureSource camera) {
+    public StuyVision(CaptureSource camera) {
         cameraPort = outerUSBPort;
         this.camera = camera;
     }
 
-    public StuyVisionModule(int i) {
+    public StuyVision(int i) {
         try {
             cameraPort = i;
             initializeCamera();
@@ -316,13 +323,14 @@ public class StuyVisionModule {
 
     public static void main(String[] args) {
         System.out.println("Running test: read from frame and determine angle to rotate");
-        StuyVisionModule sv = new StuyVisionModule();
+        StuyVision sv = new StuyVision();
         Report r = new Report(sv.processImage());
         System.out.println(r);
     }
 
     public void run(Main app, Mat frame) {
-        app.postImage("Video", frame);
+        System.out.println("run()ing StuyVision. frame null? " + (frame == null));
+        app.postImage(frame, "Video", this);
         double[] result = hsvThresholding(frame);
         System.out.println(Arrays.toString(result));
     }

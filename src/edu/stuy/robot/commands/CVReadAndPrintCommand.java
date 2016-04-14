@@ -3,7 +3,7 @@ package edu.stuy.robot.commands;
 import java.util.Arrays;
 
 import edu.stuy.robot.Robot;
-import edu.stuy.robot.cv.StuyVisionModule;
+import edu.stuy.robot.cv.StuyVision;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -34,17 +34,17 @@ public class CVReadAndPrintCommand extends Command {
             }
             System.out.println("\n\n\n\n\n\n\n\n\n\nprocessImage took " + (System.currentTimeMillis() - start) + "ms");
             System.out.println("Reading is: " + Arrays.toString(cvReading)); // Arrays.toString returns "null" is vec is null
-            System.out.println("Distance is: " + StuyVisionModule.findDistanceToGoal(cvReading));
+            System.out.println("Distance is: " + StuyVision.findDistanceToGoal(cvReading));
             if (cvReading != null) {
-                System.out.println("Angle X is: " + StuyVisionModule.frameXPxToDegrees(cvReading[0]));
-                System.out.println("Angle Y is: " + StuyVisionModule.frameYPxToDegrees(cvReading[1]));
-                System.out.println("Y to horiz: " + StuyVisionModule.yInFrameToDegreesFromHorizon(cvReading[1]));
+                System.out.println("Angle X is: " + StuyVision.frameXPxToDegrees(cvReading[0]));
+                System.out.println("Angle Y is: " + StuyVision.frameYPxToDegrees(cvReading[1]));
+                System.out.println("Y to horiz: " + StuyVision.yInFrameToDegreesFromHorizon(cvReading[1]));
             }
             boolean canProceed = cvReading != null;
             double desiredAngle;
             SmartDashboard.putString("cv-reading", Arrays.toString(cvReading));
             if (canProceed) {
-                desiredAngle = StuyVisionModule.frameXPxToDegrees(cvReading[0]);
+                desiredAngle = StuyVision.frameXPxToDegrees(cvReading[0]);
                 SmartDashboard.putNumber("cv-angle", desiredAngle);
                 System.out.println("Desired Angle Delta: " + desiredAngle);
             }
