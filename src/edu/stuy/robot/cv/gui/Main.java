@@ -8,8 +8,8 @@ import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
 
 import edu.stuy.robot.cv.StuyVision;
-import edu.stuy.robot.cv.sources.CaptureSource;
-import edu.stuy.robot.cv.sources.DeviceCaptureSource;
+import edu.stuy.robot.cv.capture.CaptureSource;
+import edu.stuy.robot.cv.capture.DeviceCaptureSource;
 import edu.stuy.robot.cv.util.DebugPrinter;
 import javafx.application.Application;
 import javafx.application.Platform;

@@ -24,12 +24,12 @@ import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
+import edu.stuy.robot.cv.capture.CaptureSource;
+import edu.stuy.robot.cv.capture.DeviceCaptureSource;
 import edu.stuy.robot.cv.gui.DoubleSV;
 import edu.stuy.robot.cv.gui.IntegerSV;
 import edu.stuy.robot.cv.gui.Main;
 import edu.stuy.robot.cv.gui.VisionModule;
-import edu.stuy.robot.cv.sources.CaptureSource;
-import edu.stuy.robot.cv.sources.DeviceCaptureSource;
 
 public class StuyVision extends VisionModule {
 
@@ -57,26 +57,6 @@ public class StuyVision extends VisionModule {
 
     private static PrintWriter logWriter;
 
-    public static void loadOpenCV() {
-        // Load opencv native library
-        String dir = StuyVision.class.getClassLoader().getResource("").getPath();
-        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            System.load(dir.substring(1).replaceAll("\\%20", " ")
-                    + "..\\lib\\opencv-3.0.0\\build\\java\\x64\\opencv_java300.dll");
-        } else {
-            // This is the .so's location on the roboRio
-            System.load("/usr/local/share/OpenCV/java/libopencv_java310.so");
-        }
-        try {
-            logWriter = new PrintWriter("logs.txt");
-        } catch (Exception e) {}
-    }
-
-    private void initializeCamera() {
-        camera = new DeviceCaptureSource(cameraPort);
-        System.out.println("Made camera");
-    }
-
     public StuyVision() {
         try {
             cameraPort = outerUSBPort;
@@ -98,6 +78,27 @@ public class StuyVision extends VisionModule {
         } catch (Exception e) {
             System.out.println("Failed to create camera at " + i + ", will reattempt later. Error was: " + e);
         }
+    }
+
+    public static void loadOpenCV() {
+        // Load opencv native library
+        String dir = StuyVision.class.getClassLoader().getResource("").getPath();
+        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+            System.load("C:\\Users\\Wilson\\694\\opencv-3.1.0\\opencv\\build\\java\\x64\\opencv_java310.dll");
+            //System.load(dir.substring(1).replaceAll("\\%20", " ")
+            //        + "..\\lib\\opencv-3.0.0\\build\\java\\x64\\opencv_java300.dll");
+        } else {
+            // This is the .so's location on the roboRio
+            System.load("/usr/local/share/OpenCV/java/libopencv_java310.so");
+        }
+        try {
+            logWriter = new PrintWriter("logs.txt");
+        } catch (Exception e) {}
+    }
+
+    private void initializeCamera() {
+        camera = new DeviceCaptureSource(cameraPort);
+        System.out.println("Made camera");
     }
 
     /**
@@ -313,6 +314,7 @@ public class StuyVision extends VisionModule {
         return total / (double) iters;
     }
 
+    // Calculation methods:
     public static double frameXPxToDegrees(double px) {
         return CAMERA_VIEWING_ANGLE_X * px / CAMERA_FRAME_PX_WIDTH;
     }
@@ -342,32 +344,63 @@ public class StuyVision extends VisionModule {
         double goalDegsY;
         double goalDegsX;
         double inchesAway;
+
         public Report(double[] visionReading) {
+            if (visionReading == null) {
+                return;
+            }
             reading = visionReading;
             goalDegsX = frameXPxToDegrees(reading[0]);
             goalDegsY = yInFrameToDegreesFromHorizon(reading[1]);
             inchesAway = findDistanceToGoal(reading[1]);
             // let null pointer exception occur if data is null
         }
+
+        public String formattedReading() {
+            if (reading == null) {
+                return "null";
+            }
+            return "["
+                + fmt(reading[0]) + ", "
+                + fmt(reading[1]) + ", "
+                + fmt(reading[2]) + "]";
+        }
+
+        private static final String blank = "------------------------------------";
         public String toString() {
-            return "CV Read.\n"
-                + " Raw: " + Arrays.toString(reading) + "\n"
-                + " Goal Degs X: " + goalDegsX + "\n"
-                + " Goal Degs Y: " + goalDegsY + "\n"
-                + " Distance (in): " + inchesAway + "\n";
+            boolean none = false;
+            if (reading == null) {
+                //return "| CV read no goals in frame\n" + blank + blank + blank + blank + blank;
+                none = true;
+            }
+            return "| CV Read: " + Arrays.toString(reading) + "\n"
+                + "|  Data:     " + (none ? blank : formattedReading()) + "\n"
+                + "|  Angle X:  " + (none ? blank : (fmt(goalDegsX) + "\u00B0 right from center")) + "\n"
+                + "|  Angle Y:  " + (none ? blank : (fmt(goalDegsY) + "\u00B0 down from center")) + "\n"
+                + "|  Distance: " + (none ? blank : fmtDist(inchesAway)) + "\n"
+                + "|  (Time: " + System.currentTimeMillis() + ")\n";
+        }
+
+        private static String fmtDist(double d) {
+            int inches = (int) d;
+            return (inches / 12) + " ft, " + (inches % 12) + " in";
+        }
+
+        private static String fmt(double d) {
+            return String.format("%.0f", d);
         }
     }
 
     public static void main(String[] args) {
         System.out.println("Running test: read from frame and determine angle to rotate");
         StuyVision sv = new StuyVision();
-        Report r = new Report(sv.processImage());
-        System.out.println(r);
+        double[] reading = sv.processImage();
+        System.out.println(new Report(reading));
     }
 
     public void run(Main app, Mat frame) {
         app.postImage(frame, "Video", this);
-        double[] result = hsvThresholding(frame, app);
-        System.out.println(Arrays.toString(result));
+        double[] reading = hsvThresholding(frame, app);
+        System.out.println("\n\n" + new Report(reading));
     }
 }

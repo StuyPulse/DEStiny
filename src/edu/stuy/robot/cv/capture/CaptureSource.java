@@ -1,4 +1,4 @@
-package edu.stuy.robot.cv.sources;
+package edu.stuy.robot.cv.capture;
 
 import static edu.stuy.robot.RobotMap.CAMERA_FRAME_PX_WIDTH;
 
@@ -11,12 +11,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public abstract class CaptureSource {
 
-    private int width = CAMERA_FRAME_PX_WIDTH;
+    private int resizeWidth = CAMERA_FRAME_PX_WIDTH;
 
     public abstract void reinitializeCaptureSource();
 
     public void setMaxImageDimension(int dim) {
-        this.width = dim;
+        resizeWidth = dim;
     }
 
     public abstract boolean isOpened();
@@ -27,7 +27,7 @@ public abstract class CaptureSource {
         if (success) {
             int frameHeight = frame.height();
             int frameWidth = frame.width();
-            double resizeRatio = (double) CAMERA_FRAME_PX_WIDTH / frameWidth;
+            double resizeRatio = (double) resizeWidth / frameWidth;
             Size desiredSize = new Size(frameWidth * resizeRatio, frameHeight * resizeRatio);
             Mat resizedFrame = new Mat();
             Imgproc.resize(frame, resizedFrame, desiredSize, 0, 0, Imgproc.INTER_CUBIC);

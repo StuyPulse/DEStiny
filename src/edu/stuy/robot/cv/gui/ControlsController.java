@@ -40,7 +40,7 @@ public class ControlsController {
         for (Field f : module.getClass().getFields()) {
             Class<?> fType = f.getType();
             if (fType.isAssignableFrom(IntegerSV.class)) {
-                DebugPrinter.println("Found IntegerSliderVariable: " + f.getName());
+                DebugPrinter.println("Found IntegerSV: " + f.getName());
                 IntegerSV isv = null;
                 try {
                     isv = (IntegerSV) f.get(module);
@@ -71,7 +71,7 @@ public class ControlsController {
                 variableContainers.add(sliderContainer);
             }
             else if (fType.isAssignableFrom(DoubleSV.class)) {
-                DebugPrinter.println("Found DoubleSliderVariable: " + f.getName());
+                DebugPrinter.println("Found DoubleSV: " + f.getName());
                 DoubleSV dsv = null;
                 try {
                     dsv = (DoubleSV) f.get(module);
