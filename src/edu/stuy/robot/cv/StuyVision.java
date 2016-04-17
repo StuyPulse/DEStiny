@@ -64,6 +64,9 @@ public class StuyVision extends VisionModule {
         } catch (Exception e) {
             System.out.println("Failed to create camera at " + cameraPort + ". Error was: " + e);
         }
+        try {
+            logWriter = new PrintWriter("logs.txt");
+        } catch (Exception e) {}
     }
 
     public StuyVision(CaptureSource camera) {
@@ -91,9 +94,6 @@ public class StuyVision extends VisionModule {
             // This is the .so's location on the roboRio
             System.load("/usr/local/share/OpenCV/java/libopencv_java310.so");
         }
-        try {
-            logWriter = new PrintWriter("logs.txt");
-        } catch (Exception e) {}
     }
 
     private void initializeCamera() {
@@ -249,7 +249,7 @@ public class StuyVision extends VisionModule {
 
         double[] output = getLargestGoal(frame, greenFiltered, app);
         try {
-            logWriter.println("Vector calculated: " + Arrays.toString(output));
+            logWriter.println(new Report(output));
             logWriter.flush();
         } catch (Exception e) {
         }
