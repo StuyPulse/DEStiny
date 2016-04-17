@@ -1,11 +1,11 @@
 package edu.stuy.robot.cv.gui;
 
-public class DoubleSliderVariable extends Variable implements NumberVariable {
+public class DoubleSV extends Variable implements NumberVariable {
 
     public final double DEFAULT, MIN, MAX;
     private double val;
 
-    public DoubleSliderVariable(String label, double defaultVal, double minVal, double maxVal) {
+    public DoubleSV(double defaultVal, double minVal, double maxVal, String label) {
         super(label);
         this.DEFAULT = defaultVal;
         this.MIN = minVal;

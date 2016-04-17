@@ -30,7 +30,7 @@ public class ControlsController {
     final DecimalFormat formatter = new DecimalFormat("#.###");
 
     public void setup(VisionModule module) {
-        /*ArrayList<VariableWrapper> variables = new ArrayList<>();
+        ArrayList<VariableWrapper> variables = new ArrayList<>();
         restoreDefaults.setOnAction((event) -> {
             for (VariableWrapper var : variables) {
                 var.restoreDefault();
@@ -39,11 +39,11 @@ public class ControlsController {
         ArrayList<Node> variableContainers = new ArrayList<>();
         for (Field f : module.getClass().getFields()) {
             Class<?> fType = f.getType();
-            if (fType.isAssignableFrom(IntegerSliderVariable.class)) {
+            if (fType.isAssignableFrom(IntegerSV.class)) {
                 DebugPrinter.println("Found IntegerSliderVariable: " + f.getName());
-                IntegerSliderVariable isv = null;
+                IntegerSV isv = null;
                 try {
-                    isv = (IntegerSliderVariable) f.get(module);
+                    isv = (IntegerSV) f.get(module);
                 }
                 catch (IllegalArgumentException | IllegalAccessException e) {
                     e.printStackTrace();
@@ -56,7 +56,7 @@ public class ControlsController {
                 value.getStyleClass().add("slider-value");
                 Text label = new Text(isv.LABEL);
                 label.getStyleClass().add("slider-label");
-                final IntegerSliderVariable finalIsv = isv;
+                final IntegerSV finalIsv = isv;
                 sliderContainer.getChildren().addAll(slider, value, label);
                 slider.valueProperty().addListener(new ChangeListener<Number>() {
                     @Override
@@ -70,11 +70,11 @@ public class ControlsController {
                 variables.add(new SliderVariableWrapper(slider, isv));
                 variableContainers.add(sliderContainer);
             }
-            else if (fType.isAssignableFrom(DoubleSliderVariable.class)) {
+            else if (fType.isAssignableFrom(DoubleSV.class)) {
                 DebugPrinter.println("Found DoubleSliderVariable: " + f.getName());
-                DoubleSliderVariable dsv = null;
+                DoubleSV dsv = null;
                 try {
-                    dsv = (DoubleSliderVariable) f.get(module);
+                    dsv = (DoubleSV) f.get(module);
                 }
                 catch (IllegalArgumentException | IllegalAccessException e) {
                     e.printStackTrace();
@@ -87,7 +87,7 @@ public class ControlsController {
                 value.getStyleClass().add("slider-value");
                 Text label = new Text(dsv.LABEL);
                 label.getStyleClass().add("slider-label");
-                final DoubleSliderVariable finalDsv = dsv;
+                final DoubleSV finalDsv = dsv;
                 sliderContainer.getChildren().addAll(slider, value, label);
                 slider.valueProperty().addListener(new ChangeListener<Number>() {
                     @Override
@@ -131,7 +131,7 @@ public class ControlsController {
         }
         Platform.runLater(() -> {
             controlsContainer.getChildren().addAll(variableContainers);
-        });*/
+        });
     }
 
     private abstract class VariableWrapper {

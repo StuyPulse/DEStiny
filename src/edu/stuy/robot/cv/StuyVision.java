@@ -17,12 +17,15 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.Point;
 import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
+import edu.stuy.robot.cv.gui.DoubleSV;
+import edu.stuy.robot.cv.gui.IntegerSV;
 import edu.stuy.robot.cv.gui.Main;
 import edu.stuy.robot.cv.gui.VisionModule;
 import edu.stuy.robot.cv.sources.CaptureSource;
@@ -30,21 +33,23 @@ import edu.stuy.robot.cv.sources.DeviceCaptureSource;
 
 public class StuyVision extends VisionModule {
 
-    public int minH_GREEN = 58;
-    public int maxH_GREEN = 123;
+    // The following can be left in even in production, as the overhead
+    // of using .value() is negligible
+    public IntegerSV minH_GREEN = IntegerSV.mkColor(58, "Min Hue");
+    public IntegerSV maxH_GREEN = IntegerSV.mkColor(123, "Max Hue");
 
-    public int minS_GREEN = 104;
-    public int maxS_GREEN = 255;
+    public IntegerSV minS_GREEN = IntegerSV.mkColor(104, "Min Saturation");
+    public IntegerSV maxS_GREEN = IntegerSV.mkColor(255, "Max Saturation");
 
-    public int minV_GREEN = 20;
-    public int maxV_GREEN = 155;
+    public IntegerSV minV_GREEN = IntegerSV.mkColor(20, "Min Value");
+    public IntegerSV maxV_GREEN = IntegerSV.mkColor(155, "Max Value");
 
     // Thresholds regarding the geometry of the bounding box of the region found
     // by the HSV filtering
-    public double minAreaThreshold = 200.0;
-    public double maxAreaThreshold = 30720.0;
-    public double minRatioThreshold = 1.1;
-    public double maxRatioThreshold = 3.0;
+    public DoubleSV minGoalArea = new DoubleSV(200.0, 0.0, 10000.0, "Min Goal Area");
+    public DoubleSV maxGoalArea = new DoubleSV(30720.0, 0.0, 10000.0, "Max Goal Area");
+    public DoubleSV minGoalRatio = new DoubleSV(1.1, 1.0, 10.0, "Min Goal Ratio");
+    public DoubleSV maxGoalRatio = new DoubleSV(3.0, 1.0, 10.0, "Max Goal Ratio");
 
     private static final int outerUSBPort = 0;
     private int cameraPort;
@@ -105,11 +110,17 @@ public class StuyVision extends VisionModule {
      */
     private boolean aspectRatioThreshold(double height, double width) {
         double ratio = width / height;
-        return (minRatioThreshold < ratio && ratio < maxRatioThreshold)
-                || (1 / maxRatioThreshold < ratio && ratio < 1 / minRatioThreshold);
+        return (minGoalRatio.value() < ratio && ratio < maxGoalRatio.value())
+                || (1 / maxGoalRatio.value() < ratio && ratio < 1 / minGoalRatio.value());
     }
 
-    private double[] getLargestGoal(Mat originalFrame, Mat filteredImage, boolean drawVector) {
+    private double[] getLargestGoal(Mat originalFrame, Mat filteredImage, Main app) {
+        boolean withGui = app != null;
+        Mat drawn = null;
+        if (withGui) {
+            drawn = originalFrame.clone();
+        }
+
         ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
         Imgproc.findContours(filteredImage, contours, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
         double largestArea = 0.0;
@@ -117,7 +128,7 @@ public class StuyVision extends VisionModule {
 
         for (int i = 0; i < contours.size(); i++) {
             double currArea = Imgproc.contourArea(contours.get(i));
-            if (currArea < minAreaThreshold || currArea > maxAreaThreshold) {
+            if (currArea < minGoalArea.value() || currArea > maxGoalArea.value()) {
                 continue;
             }
             MatOfPoint2f tmp = new MatOfPoint2f();
@@ -126,6 +137,13 @@ public class StuyVision extends VisionModule {
             if (!aspectRatioThreshold(r.size.height, r.size.width)) {
                 continue;
             }
+            if (withGui) {
+                Point[] points = new Point[4];
+                r.points(points);
+                for (int j = 0; j < points.length; j++) {
+                    Imgproc.line(drawn, points[j], points[(j + 1) % 4], new Scalar(0, 255, 0));
+                }
+            }
             if (currArea > largestArea) {
                 largestArea = currArea;
                 largestRect = r;
@@ -133,6 +151,10 @@ public class StuyVision extends VisionModule {
         }
 
         if (largestRect == null) {
+            if (withGui) {
+                // Post the unchanged image anyway for visual consistency
+                app.postImage(originalFrame, "Goals", this);
+            }
             // Return null to signify no goal found
             return null;
         }
@@ -142,15 +164,22 @@ public class StuyVision extends VisionModule {
         vector[1] = largestRect.center.y - originalFrame.height() / 2.0;
         vector[2] = largestRect.angle;
 
-        if (drawVector) {
-            Imgproc.circle(originalFrame, largestRect.center, 5, new Scalar(255, 0, 0));
+        if (withGui) {
+            Imgproc.circle(drawn, largestRect.center, 1, new Scalar(0, 0, 255), 2);
+            double w = drawn.width();
+            double h = drawn.height();
+            Imgproc.line(drawn,
+                new Point(w / 2, h / 2),
+                largestRect.center,
+                new Scalar(0, 0, 255));
+            app.postImage(drawn, "Goals", this);
         }
 
         return vector;
     }
 
     public double[] getLargestGoal(Mat orig, Mat f) {
-        return getLargestGoal(orig, f, false);
+        return getLargestGoal(orig, f, null);
     }
 
     /**
@@ -183,7 +212,9 @@ public class StuyVision extends VisionModule {
      *         is tilted
      *     </p>
      */
-    public double[] hsvThresholding(Mat frame, boolean drawVector) {
+    public double[] hsvThresholding(Mat frame, Main app) {
+        boolean withGui = app != null;
+
         // Convert BGR camera image to HSV for processing
         Mat hsv = new Mat();
         Imgproc.cvtColor(frame, hsv, Imgproc.COLOR_BGR2HSV);
@@ -191,25 +222,31 @@ public class StuyVision extends VisionModule {
         // Split HSV channels and process each channel
         ArrayList<Mat> greenFilterChannels = new ArrayList<Mat>();
         Core.split(hsv, greenFilterChannels);
-        Core.inRange(greenFilterChannels.get(0), new Scalar(minH_GREEN), new Scalar(maxH_GREEN),
+        Core.inRange(greenFilterChannels.get(0), new Scalar(minH_GREEN.value()), new Scalar(maxH_GREEN.value()),
                 greenFilterChannels.get(0));
-        Core.inRange(greenFilterChannels.get(1), new Scalar(minS_GREEN), new Scalar(maxS_GREEN),
+        Core.inRange(greenFilterChannels.get(1), new Scalar(minS_GREEN.value()), new Scalar(maxS_GREEN.value()),
                 greenFilterChannels.get(1));
-        Core.inRange(greenFilterChannels.get(2), new Scalar(minV_GREEN), new Scalar(maxV_GREEN),
+        Core.inRange(greenFilterChannels.get(2), new Scalar(minV_GREEN.value()), new Scalar(maxV_GREEN.value()),
                 greenFilterChannels.get(2));
 
         // Merge filtered H, S and V back into one binarized image
         Mat greenFiltered = new Mat();
         Core.bitwise_and(greenFilterChannels.get(0), greenFilterChannels.get(1), greenFiltered);
         Core.bitwise_and(greenFilterChannels.get(2), greenFiltered, greenFiltered);
+        if (withGui) {
+            app.postImage(greenFiltered, "After filtering H, S, V", this);
+        }
 
         // Erode and dilate to remove noise
         Mat erodeKernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
         Mat dilateKernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(9, 9));
         Imgproc.erode(greenFiltered, greenFiltered, erodeKernel);
         Imgproc.dilate(greenFiltered, greenFiltered, dilateKernel);
+        if (withGui) {
+            app.postImage(greenFiltered, "After erode/dilate", this);
+        }
 
-        double[] output = getLargestGoal(frame, greenFiltered, drawVector);
+        double[] output = getLargestGoal(frame, greenFiltered, app);
         try {
             logWriter.println("Vector calculated: " + Arrays.toString(output));
             logWriter.flush();
@@ -219,7 +256,7 @@ public class StuyVision extends VisionModule {
     }
 
     public double[] hsvThresholding(Mat frame) {
-        return hsvThresholding(frame, false);
+        return hsvThresholding(frame, null);
     }
 
     public double[] processImage() {
@@ -329,9 +366,8 @@ public class StuyVision extends VisionModule {
     }
 
     public void run(Main app, Mat frame) {
-        System.out.println("run()ing StuyVision. frame null? " + (frame == null));
         app.postImage(frame, "Video", this);
-        double[] result = hsvThresholding(frame);
+        double[] result = hsvThresholding(frame, app);
         System.out.println(Arrays.toString(result));
     }
 }

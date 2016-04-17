@@ -5,7 +5,7 @@ public class BooleanVariable extends Variable {
     public final boolean DEFAULT;
     private boolean val;
 
-    public BooleanVariable(String label, boolean defaultValue) {
+    public BooleanVariable(boolean defaultValue, String label) {
         super(label);
         this.DEFAULT = defaultValue;
         this.val = defaultValue;

@@ -30,7 +30,6 @@ public class Main extends Application {
     private TabPane root;
     private Scene scene;
     private HashMap<Integer, ControlsController> tabs = new HashMap<Integer, ControlsController>();
-    private ModuleRunner moduleRunner = new ModuleRunner();
     private HashMap<String, ImageFrame> images = new HashMap<String, ImageFrame>();
 
     @Override
@@ -46,9 +45,9 @@ public class Main extends Application {
             {
                 FXMLLoader tabLoader = new FXMLLoader(getClass().getResource("fxml/module_main.fxml"));
                 final SplitPane moduleContainer = tabLoader.load();
-                //ControlsController controlsController = tabLoader.getController();
-                //controlsController.setup(module);
-                //tabs.put(module.hashCode(), controlsController);
+                ControlsController controlsController = tabLoader.getController();
+                controlsController.setup(module);
+                tabs.put(module.hashCode(), controlsController);
                 root.getTabs().add(new Tab(module.getName(), moduleContainer));
             }
             Main self = this;
@@ -61,9 +60,6 @@ public class Main extends Application {
                             try {
                                 long start = System.currentTimeMillis();
                                 Mat frame = cs.read();
-                                if (frame == null) {
-                                    System.out.println("frame is null");
-                                }
                                 module.run(self, frame);
                                 long duration = System.currentTimeMillis() - start;
                                 DebugPrinter.println(module.getName() + ": " + duration + " ms");
@@ -76,7 +72,7 @@ public class Main extends Application {
                 }, module.getName() + " Thread");
                 t.setDaemon(true);
                 t.start();
-            }//moduleRunner.run(this);
+            }
             primaryStage.setOnCloseRequest((event) -> quit());
             primaryStage.setTitle("Java Vision GUI");
             primaryStage.setScene(scene);
