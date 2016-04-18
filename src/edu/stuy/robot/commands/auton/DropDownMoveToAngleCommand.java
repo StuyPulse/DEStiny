@@ -41,9 +41,9 @@ public class DropDownMoveToAngleCommand extends Command {
             System.out.println("POTENTIOMETER SPIKE DURING DROPDOWNMOVETOANGLE");
             return false;
         }
-        return Robot.dropdown.getAngle() < -20.0 ||
-                !is420Working() ||
-                Math.abs(Robot.dropdown.getAngle() - desiredAngle) < 4.0;
+        return Robot.dropdown.getAngle() < -20.0
+                || !isPotentiometerWorking()
+                || Math.abs(Robot.dropdown.getAngle() - desiredAngle) < 4.0;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class DropDownMoveToAngleCommand extends Command {
     protected void interrupted() {
     }
 
-    private boolean is420Working() {
+    private boolean isPotentiometerWorking() {
         if (Timer.getFPGATimestamp() - timeStart < 1.0) {
             return true;
         } else {
