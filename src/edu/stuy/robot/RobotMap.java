@@ -62,6 +62,7 @@ public interface RobotMap {
 
     // Physical constants
     int SHOOTER_WHEEL_DIAMETER = 4;
+    double SHOOTER_LAYUP_SPEED = 0.76;
     double SHOOTER_ENCODER_MAXSPEED = 3600.0;
     int DIO_ENCODER_PULSES_PER_REVOLUTION = 360;
     int DRIVETRAIN_WHEEL_DIAMETER = 8;

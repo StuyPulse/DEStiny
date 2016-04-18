@@ -1,5 +1,6 @@
 package edu.stuy.robot.commands;
 
+import static edu.stuy.robot.RobotMap.SHOOTER_LAYUP_SPEED;
 import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -15,7 +16,7 @@ public class ShooterSetLayupCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        Robot.shooter.setSpeed(0.76);
+        Robot.shooter.setSpeed(SHOOTER_LAYUP_SPEED);
     }
 
     // Called repeatedly when this Command is scheduled to run
