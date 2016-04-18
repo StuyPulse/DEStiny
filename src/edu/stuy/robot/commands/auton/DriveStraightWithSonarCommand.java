@@ -11,7 +11,9 @@ public class DriveStraightWithSonarCommand extends Command {
 
     private double inches;
     private double difference;
-    private double speedChange = 0.05;
+    private double speedChange = 0.15;
+    private double slowSpeed = 0.5;
+    private double fastSpeed = slowSpeed + speedChange;
 
     // Inches represents the number of inches from the tower you want to be from
     // the tower
@@ -28,6 +30,11 @@ public class DriveStraightWithSonarCommand extends Command {
         double left = data[0];
         double right = data[1];
         difference = left - right;
+        double average = (data[0] + data[1]) / 2;
+        if (inches > average) {
+            slowSpeed *= -1;
+            fastSpeed *= -1;
+        }
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -35,18 +42,13 @@ public class DriveStraightWithSonarCommand extends Command {
         double[] data = Robot.sonar.getData();
         double left = data[0];
         double right = data[1];
-        double slowSpeed = 0.5;
-        double fastSpeed = slowSpeed + speedChange;
-        double average = (data[0] + data[1]) / 2;
-        if (inches > average) {
-            slowSpeed *= -1;
-            fastSpeed *= -1;
-        }
         double currentDifference = left - right;
-        if (currentDifference > difference) {
+        if (currentDifference > difference + 0.5) {
             Robot.drivetrain.tankDrive(fastSpeed, slowSpeed);
-        } else {
+        } else if (currentDifference < difference - 0.5) {
             Robot.drivetrain.tankDrive(slowSpeed, fastSpeed);
+        } else {
+            Robot.drivetrain.tankDrive(slowSpeed, slowSpeed);
         }
     }
 
