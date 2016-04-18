@@ -1,5 +1,6 @@
 package edu.stuy.robot.commands.auton;
 
+import static edu.stuy.robot.RobotMap.SONAR_DISTANCE_THRESHOLD;
 import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -45,7 +46,7 @@ public class DriveStraightWithSonarCommand extends Command {
     protected boolean isFinished() {
         double[] data = Robot.sonar.getData();
         double average = (data[0] + data[1]) / 2;
-        return Math.abs(average - inches) < 2.0;
+        return Math.abs(average - inches) < SONAR_DISTANCE_THRESHOLD;
     }
 
     // Called once after isFinished returns true
