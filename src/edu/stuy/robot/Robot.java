@@ -3,7 +3,6 @@ package edu.stuy.robot;
 import static edu.stuy.robot.RobotMap.JONAH_ID;
 import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
 import static edu.stuy.robot.RobotMap.YUBIN_ID;
-
 import edu.stuy.robot.commands.auton.CrossObstacleThenShootCommand;
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
@@ -12,6 +11,7 @@ import edu.stuy.robot.commands.auton.GoOverRoughTerrainCommand;
 import edu.stuy.robot.commands.auton.PassChevalCommand;
 import edu.stuy.robot.commands.auton.PassPortcullisCommand;
 import edu.stuy.robot.commands.auton.ReachObstacleCommand;
+import edu.stuy.robot.commands.auton.YoloSonarShootingCommand;
 import edu.stuy.robot.cv.StuyVisionModule;
 import edu.stuy.robot.subsystems.Acquirer;
 import edu.stuy.robot.subsystems.Drivetrain;
@@ -58,6 +58,7 @@ public class Robot extends IterativeRobot {
     public static SendableChooser operatorChooser;
     public static SendableChooser autonPositionChooser;
     public static SendableChooser autonShootChooser;
+    public static SendableChooser autonCVChooser;
 
     private double autonStartTime;
     private boolean debugMode;
@@ -130,6 +131,7 @@ public class Robot extends IterativeRobot {
         setupAutonChooser();
         setupAutonPositionChooser();
         setupShootChooser();
+        setupCVChooser();
     }
 
     /**
@@ -180,6 +182,13 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData("Auton Shooting", autonShootChooser);
     }
 
+    private void setupCVChooser() {
+        autonCVChooser = new SendableChooser();
+        autonCVChooser.addDefault("Shoot with CV", true);
+        autonCVChooser.addObject("Shoot without CV (using Sonar)", false);
+        SmartDashboard.putData("Shoot using CV?", autonCVChooser);
+    }
+
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
     }
@@ -191,8 +200,13 @@ public class Robot extends IterativeRobot {
             int autonPosition = (Integer) autonPositionChooser.getSelected();
             autonomousCommand = selectedCommand;
             boolean shoot = (Boolean) autonShootChooser.getSelected();
+            boolean useCV = (Boolean) autonCVChooser.getSelected();
             if (shoot) {
-                autonomousCommand = new CrossObstacleThenShootCommand(autonomousCommand, autonPosition);
+                if (useCV) {
+                    autonomousCommand = new CrossObstacleThenShootCommand(autonomousCommand, autonPosition);
+                } else {
+                    autonomousCommand = new YoloSonarShootingCommand(autonomousCommand);
+                }
             }
             autonomousCommand.start();
             Robot.drivetrain.resetEncoders();
