@@ -87,9 +87,8 @@ public class StuyVision extends VisionModule {
         // Load opencv native library
         String dir = StuyVision.class.getClassLoader().getResource("").getPath();
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            System.load("C:\\Users\\Wilson\\694\\opencv-3.1.0\\opencv\\build\\java\\x64\\opencv_java310.dll");
-            //System.load(dir.substring(1).replaceAll("\\%20", " ")
-            //        + "..\\lib\\opencv-3.0.0\\build\\java\\x64\\opencv_java300.dll");
+            System.load(dir.substring(1).replaceAll("\\%20", " ")
+                    + "..\\lib\\opencv-3.0.0\\build\\java\\x64\\opencv_java300.dll");
         } else {
             // This is the .so's location on the roboRio
             System.load("/usr/local/share/OpenCV/java/libopencv_java310.so");
@@ -225,10 +224,19 @@ public class StuyVision extends VisionModule {
         Core.split(hsv, greenFilterChannels);
         Core.inRange(greenFilterChannels.get(0), new Scalar(minH_GREEN.value()), new Scalar(maxH_GREEN.value()),
                 greenFilterChannels.get(0));
+        if (withGui) {
+            app.postImage(greenFilterChannels.get(0), "After H", this);
+        }
         Core.inRange(greenFilterChannels.get(1), new Scalar(minS_GREEN.value()), new Scalar(maxS_GREEN.value()),
                 greenFilterChannels.get(1));
+        if (withGui) {
+            app.postImage(greenFilterChannels.get(1), "After S", this);
+        }
         Core.inRange(greenFilterChannels.get(2), new Scalar(minV_GREEN.value()), new Scalar(maxV_GREEN.value()),
                 greenFilterChannels.get(2));
+        if (withGui) {
+            app.postImage(greenFilterChannels.get(2), "After V", this);
+        }
 
         // Merge filtered H, S and V back into one binarized image
         Mat greenFiltered = new Mat();
