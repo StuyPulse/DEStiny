@@ -4,6 +4,7 @@ import static edu.stuy.robot.RobotMap.CAMERA_FRAME_PX_HEIGHT;
 import static edu.stuy.robot.RobotMap.CAMERA_FRAME_PX_WIDTH;
 import static edu.stuy.robot.RobotMap.CAMERA_HEIGHT_FROM_GROUND;
 import static edu.stuy.robot.RobotMap.CAMERA_TILT_ANGLE;
+import static edu.stuy.robot.RobotMap.CAMERA_DIST_TO_BOT_FRONT;
 import static edu.stuy.robot.RobotMap.CAMERA_VIEWING_ANGLE_X;
 import static edu.stuy.robot.RobotMap.CAMERA_VIEWING_ANGLE_Y;
 import static edu.stuy.robot.RobotMap.HIGH_GOAL_HEIGHT;
@@ -42,7 +43,7 @@ public class StuyVision extends VisionModule {
     public IntegerSV maxS_GREEN = IntegerSV.mkColor(255, "Max Saturation");
 
     public IntegerSV minV_GREEN = IntegerSV.mkColor(20, "Min Value");
-    public IntegerSV maxV_GREEN = IntegerSV.mkColor(155, "Max Value");
+    public IntegerSV maxV_GREEN = IntegerSV.mkColor(255, "Max Value");
 
     // Thresholds regarding the geometry of the bounding box of the region found
     // by the HSV filtering
@@ -335,16 +336,20 @@ public class StuyVision extends VisionModule {
         return CAMERA_TILT_ANGLE - frameYPxToDegrees(height);
     }
 
-    public static double findDistanceToGoal(double frameY) {
+    public static double findCameraDistanceToGoal(double frameY) {
         double angle = yInFrameToDegreesFromHorizon(frameY);
         return (HIGH_GOAL_HEIGHT - CAMERA_HEIGHT_FROM_GROUND) / Math.tan(Math.toRadians(angle));
+    }
+
+    public static double findBotDistanceToGoal(double frameY) {
+        return findCameraDistanceToGoal(frameY) - CAMERA_DIST_TO_BOT_FRONT;
     }
 
     public static double findDistanceToGoal(double[] vec) {
         if (vec == null) {
             return -1;
         }
-        return findDistanceToGoal(vec[1]);
+        return findCameraDistanceToGoal(vec[1]);
     }
 
     private static class Report {
@@ -352,6 +357,7 @@ public class StuyVision extends VisionModule {
         double goalDegsY;
         double goalDegsX;
         double inchesAway;
+        double degsUp;
 
         public Report(double[] visionReading) {
             if (visionReading == null) {
@@ -359,8 +365,9 @@ public class StuyVision extends VisionModule {
             }
             reading = visionReading;
             goalDegsX = frameXPxToDegrees(reading[0]);
-            goalDegsY = yInFrameToDegreesFromHorizon(reading[1]);
-            inchesAway = findDistanceToGoal(reading[1]);
+            goalDegsY = frameXPxToDegrees(reading[1]);
+            degsUp = yInFrameToDegreesFromHorizon(reading[1]);
+            inchesAway = findCameraDistanceToGoal(reading[1]);
             // let null pointer exception occur if data is null
         }
 
@@ -382,10 +389,11 @@ public class StuyVision extends VisionModule {
                 none = true;
             }
             return "| CV Read: " + Arrays.toString(reading) + "\n"
-                + "|  Data:     " + (none ? blank : formattedReading()) + "\n"
-                + "|  Angle X:  " + (none ? blank : (fmt(goalDegsX) + "\u00B0 right from center")) + "\n"
-                + "|  Angle Y:  " + (none ? blank : (fmt(goalDegsY) + "\u00B0 down from center")) + "\n"
-                + "|  Distance: " + (none ? blank : fmtDist(inchesAway)) + "\n"
+                + "|  Data:      " + (none ? blank : formattedReading()) + "\n"
+                + "|  Angle X:   " + (none ? blank : (fmt(goalDegsX) + "\u00B0 right from center")) + "\n"
+                + "|  Angle Y:   " + (none ? blank : (fmt(goalDegsY) + "\u00B0 down from center")) + "\n"
+                + "|  Elevation: " + (none ? blank : (fmt(degsUp) + "\u00B0 up from horizon")) + "\n"
+                + "|  Cam Dist:  " + (none ? blank : fmtDist(inchesAway)) + "\n"
                 + "|  (Time: " + System.currentTimeMillis() + ")\n";
         }
 

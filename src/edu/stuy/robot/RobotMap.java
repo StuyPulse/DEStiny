@@ -94,18 +94,18 @@ public interface RobotMap {
 
     // CV
     double MAX_DEGREES_OFF_AUTO_AIMING = 1.0;
-    int CAMERA_FRAME_PX_HEIGHT = 202;
+    int CAMERA_FRAME_PX_HEIGHT = 270; // TODO Test with corrected value (270)
     int CAMERA_FRAME_PX_WIDTH = 360;
-    double CAMERA_TILT_ANGLE = 32;
+    double CAMERA_TILT_ANGLE = 34;
+    double CAMERA_DIST_TO_BOT_FRONT = 28.0; // from camera to low omniwheel on arm when arm lowered
 
-    double CAMERA_VIEWING_ANGLE_X = 61;
-    double CAMERA_VIEWING_ANGLE_Y = 34.3;
-    double IDEAL_VERTICAL_OFFSET_AUTO_AIMING = 70;
-    double IDEAL_FAR_SHOOTING_DISTANCE = 14.0 * 12.0; // Confirm with driveteam
-    double MAX_VERTICAL_PX_OFF_AUTO_AIMING = 20;
+    double CAMERA_VIEWING_ANGLE_X = 61; // angular height of frame
+    double CAMERA_VIEWING_ANGLE_Y = 34.3; // angular width of frame
+    double LAYUP_BOT_SHOOTING_DISTANCE = 4 * 12.0; // front omniwheel (on arm) 4 ft from tower
+    // TODO: Include a FAR_BOT_SHOOTING_DISTANCE for far shots
 
-    double HIGH_GOAL_HEIGHT = 89; // inches to center of goal from floor (measured)
-    double CAMERA_HEIGHT_FROM_GROUND = 30; // inches
+    double HIGH_GOAL_HEIGHT = 90.0; // inches to center of goal from floor (measured)
+    double CAMERA_HEIGHT_FROM_GROUND = 29.0; // inches
 
     // Signal Lights
     int SIGNAL_LIGHT_RED_PORT = 4;
