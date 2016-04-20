@@ -1,9 +1,7 @@
 package edu.stuy.robot.commands.auton;
 
-import edu.stuy.robot.commands.HoodDownCommand;
-import edu.stuy.robot.commands.HoodUpCommand;
+import static edu.stuy.robot.RobotMap.SHOOTER_LAYUP_SPEED;
 import edu.stuy.robot.commands.HopperStopCommand;
-import edu.stuy.robot.commands.ShooterSetMaxSpeed;
 import edu.stuy.robot.commands.ShooterStopCommand;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -36,10 +34,10 @@ public class YoloSonarShootingCommand extends CommandGroup {
         // arm.
         addSequential(command);
         addSequential(new DropDownMoveToAngleCommand(0));
-        addSequential(new DriveStraightWithSonarCommand(DISTANCE_FROM_TOWER));
-        addParallel(new ShooterSetMaxSpeed(), 1);
-        addParallel(new AutonHopperCommand(4.0));
-        addParallel(new ShooterStopCommand());
+        addSequential(new DriveStraightWithSonarCommand(DISTANCE_FROM_TOWER), 5.0);
+        addSequential(new ShootWithTimeoutCommand(2, 1.0));
+        addSequential(new AutonHopperCommand(2.0));
+        addSequential(new ShooterStopCommand());
         addSequential(new HopperStopCommand());
     }
 }

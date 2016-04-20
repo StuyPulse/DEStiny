@@ -42,6 +42,7 @@ public class DriveStraightWithSonarCommand extends Command {
         double[] data = Robot.sonar.getData();
         double left = data[0];
         double right = data[1];
+
         double currentDifference = left - right;
         if (currentDifference > difference + 0.5) {
             Robot.drivetrain.tankDrive(fastSpeed, slowSpeed);
@@ -56,6 +57,9 @@ public class DriveStraightWithSonarCommand extends Command {
     protected boolean isFinished() {
         double[] data = Robot.sonar.getData();
         double average = (data[0] + data[1]) / 2;
+        if (average == 0) {
+            return true;
+        }
         return Math.abs(average - inches) < SONAR_DISTANCE_THRESHOLD;
     }
 

@@ -1,6 +1,6 @@
 package edu.stuy.robot.commands.auton;
 
-import edu.stuy.robot.commands.ShooterSetMaxSpeed;
+import edu.stuy.robot.commands.HopperStopCommand;
 import edu.stuy.robot.commands.ShooterStopCommand;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -26,8 +26,9 @@ public class ShootOuterworkCommand extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-        addParallel(new ShooterSetMaxSpeed(), 4);
-        addSequential(new AutonHopperCommand(4.0));
+        addSequential(new ShootWithTimeoutCommand(2, 1.0));
+        addSequential(new AutonHopperCommand(2.0));
         addSequential(new ShooterStopCommand());
+        addSequential(new HopperStopCommand());
     }
 }
