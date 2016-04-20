@@ -1,8 +1,5 @@
 package edu.stuy.robot.commands.auton;
 
-import static edu.stuy.robot.RobotMap.SHOOTER_LAYUP_SPEED;
-import edu.stuy.robot.commands.HopperStopCommand;
-import edu.stuy.robot.commands.ShooterStopCommand;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -10,8 +7,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  *
  */
 public class YoloSonarShootingCommand extends CommandGroup {
-    // This is for last resort shooting from position three if CV does not work
-    // and we are desperate for shooting in auton
+    // This is for last resort shooting if CV does not work and we are desperate
+    // for shooting in auton
 
     private static final int DISTANCE_FROM_TOWER = 76;
 
@@ -33,11 +30,9 @@ public class YoloSonarShootingCommand extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
         addSequential(command);
+        addSequential(new RotateDrivetrainCommand());
         addSequential(new DropDownMoveToAngleCommand(0));
         addSequential(new DriveStraightWithSonarCommand(DISTANCE_FROM_TOWER), 5.0);
-        addSequential(new ShootWithTimeoutCommand(2, 1.0));
-        addSequential(new AutonHopperCommand(2.0));
-        addSequential(new ShooterStopCommand());
-        addSequential(new HopperStopCommand());
+        addSequential(new ShootOuterworkCommand());
     }
 }
