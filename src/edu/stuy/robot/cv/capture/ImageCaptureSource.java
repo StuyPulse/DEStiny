@@ -1,42 +1,40 @@
-package edu.stuy.robot.cv.sources;
+package edu.stuy.robot.cv.capture;
 
 import org.opencv.core.Mat;
-import org.opencv.videoio.VideoCapture;
+import org.opencv.imgcodecs.Imgcodecs;
 
 import edu.stuy.robot.cv.util.FileManager;
 
-public class VideoCaptureSource extends CaptureSource {
+public class ImageCaptureSource extends CaptureSource {
 
     private final String filename;
-    private VideoCapture capture = null;
+    private Mat mat = null;
 
-    public VideoCaptureSource(String filename) {
+    public ImageCaptureSource(String filename) {
         FileManager.assertFileExists(filename);
         this.filename = filename;
         reinitializeCaptureSource();
     }
 
-    public VideoCaptureSource(String filename, int maxDimension) {
+    public ImageCaptureSource(String filename, int maxDimension) {
         this(filename);
         setMaxImageDimension(maxDimension);
     }
 
     @Override
     public void reinitializeCaptureSource() {
-        if (capture != null) {
-            capture.release();
-        }
-        capture = new VideoCapture(filename);
+        mat = Imgcodecs.imread(filename);
     }
 
     @Override
     public boolean isOpened() {
-        return capture.isOpened();
+        return mat != null;
     }
 
     @Override
     public boolean readFrame(Mat mat) {
-        return capture.read(mat);
+        this.mat.copyTo(mat);
+        return true;
     }
 
 }

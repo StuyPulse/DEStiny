@@ -1,4 +1,4 @@
-package edu.stuy.robot.cv.sources;
+package edu.stuy.robot.cv.capture;
 
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
