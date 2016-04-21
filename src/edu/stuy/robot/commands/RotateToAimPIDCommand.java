@@ -3,7 +3,7 @@ package edu.stuy.robot.commands;
 import java.util.Arrays;
 
 import edu.stuy.robot.Robot;
-import edu.stuy.robot.cv.StuyVisionModule;
+import edu.stuy.robot.cv.StuyVision;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -26,7 +26,7 @@ public class RotateToAimPIDCommand extends RotateDegreesPIDCommand {
 
         boolean goalInFrame = cvReading != null;
         if (goalInFrame) {
-            this.targetAngle = StuyVisionModule.frameXPxToDegrees(cvReading[0]);
+            this.targetAngle = StuyVision.frameXPxToDegrees(cvReading[0]);
             System.out.println("Reading was: " + Arrays.toString(cvReading) + "-----------------------------");
             System.out.println("Desired Angle Delta: " + targetAngle);
         } else {

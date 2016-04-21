@@ -3,7 +3,7 @@ package edu.stuy.robot.commands;
 import java.util.Arrays;
 
 import edu.stuy.robot.Robot;
-import edu.stuy.robot.cv.StuyVisionModule;
+import edu.stuy.robot.cv.StuyVision;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -26,7 +26,7 @@ public class RotateToAimCommand extends GyroRotationalCommand {
         canProceed = cvReading != null;
         SmartDashboard.putString("cv-reading", Arrays.toString(cvReading));
         if (canProceed) {
-            desiredAngle = StuyVisionModule.frameXPxToDegrees(cvReading[0]);
+            desiredAngle = StuyVision.frameXPxToDegrees(cvReading[0]);
             SmartDashboard.putNumber("cv-angle", desiredAngle);
             System.out.println("Reading was: " + Arrays.toString(cvReading) + "-----------------------------");
             System.out.println("Desired Angle Delta: " + desiredAngle);
