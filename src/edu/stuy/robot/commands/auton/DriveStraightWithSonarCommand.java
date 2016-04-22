@@ -30,8 +30,8 @@ public class DriveStraightWithSonarCommand extends Command {
         double left = data[0];
         double right = data[1];
         difference = left - right;
-        double average = (data[0] + data[1]) / 2;
-        if (inches > average) {
+        double smallest = Math.min(left, right);
+        if (inches > smallest) {
             slowSpeed *= -1;
             fastSpeed *= -1;
         }
@@ -56,11 +56,11 @@ public class DriveStraightWithSonarCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         double[] data = Robot.sonar.getData();
-        double average = (data[0] + data[1]) / 2;
-        if (average == 0) {
+        double smallest = Math.min(data[0], data[1]);
+        if (smallest == 0) {
             return true;
         }
-        return Math.abs(average - inches) < SONAR_DISTANCE_THRESHOLD;
+        return Math.abs(smallest - inches) < SONAR_DISTANCE_THRESHOLD;
     }
 
     // Called once after isFinished returns true
