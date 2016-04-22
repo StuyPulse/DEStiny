@@ -13,6 +13,10 @@ public class GoOverMoatCommand extends CommandGroup {
     private static final double INITIAL_TIME = 2.0;
     private static final double INITIAL_SPEED = 0.7;
 
+    private static final double FINAL_DISTANCE = 198.0;
+    private static final double FINAL_TIME = 12.0;
+    private static final double FINAL_SPEED = 0.9;
+
     public GoOverMoatCommand() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
@@ -37,6 +41,6 @@ public class GoOverMoatCommand extends CommandGroup {
         addParallel(new DropDownMoveToAngleCommand(ARM_CROSSING_OBSTACLE_ANGLE), 2.0);
         addSequential(new DriveForwardCommand(INITIAL_DISTANCE, INITIAL_TIME, INITIAL_SPEED));
         addParallel(new DropDownMoveToAngleCommand(ARM_CROSSING_OBSTACLE_ANGLE), 2.0);
-		addSequential(new DriveOverMoatCommand());
+		addSequential(new DriveForwardCommand(FINAL_DISTANCE, FINAL_TIME, FINAL_SPEED));
 	}
 }

@@ -13,6 +13,10 @@ public class GoOverRockWallCommand extends CommandGroup {
     private static final double INITIAL_TIME = 1.0;
     private static final double INITIAL_SPEED = 0.7;
 
+    private static final double FINAL_DISTANCE = 168.0;
+    private static final double FINAL_TIME = 15.0;
+    private static final double FINAL_SPEED = 1.0;
+
     public GoOverRockWallCommand() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
@@ -35,6 +39,6 @@ public class GoOverRockWallCommand extends CommandGroup {
         addParallel(new DropDownMoveToAngleCommand(ARM_CROSSING_OBSTACLE_ANGLE), 2.0);
         addSequential(new DriveForwardCommand(INITIAL_DISTANCE, INITIAL_TIME, INITIAL_SPEED), 1);
         addParallel(new DropDownMoveToAngleCommand(ARM_CROSSING_OBSTACLE_ANGLE), 2.0);
-        addSequential(new DriveOverRockWallCommand());
+        addSequential(new DriveForwardCommand(FINAL_DISTANCE, FINAL_TIME, FINAL_SPEED));
     }
 }

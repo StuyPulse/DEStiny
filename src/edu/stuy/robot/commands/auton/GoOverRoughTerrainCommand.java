@@ -9,6 +9,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class GoOverRoughTerrainCommand extends CommandGroup {
 
+    private static final double INITIAL_DISTANCE = 196.0;
+    private static final double INITIAL_TIME = 15.0;
+    private static final double INITIAL_SPEED = 1.0;
+
 	public GoOverRoughTerrainCommand() {
 		// Add Commands here:
 		// e.g. addSequential(new Command1());
@@ -29,6 +33,6 @@ public class GoOverRoughTerrainCommand extends CommandGroup {
 		addSequential(new DropDownMoveToAngleCommand(ARM_CROSSING_OBSTACLE_ANGLE), 2.0);
 		addParallel(new LowGearCommand());
         addParallel(new DropDownMoveToAngleCommand(ARM_CROSSING_OBSTACLE_ANGLE), 2.0);
-		addSequential(new DriveOverRoughTerrainCommand());
+		addSequential(new DriveForwardCommand(INITIAL_DISTANCE, INITIAL_TIME, INITIAL_SPEED));
 	}
 }
