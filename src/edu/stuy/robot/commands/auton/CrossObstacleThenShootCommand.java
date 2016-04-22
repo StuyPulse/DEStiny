@@ -1,12 +1,14 @@
 package edu.stuy.robot.commands.auton;
 
-import edu.stuy.robot.commands.DriveToLayupRangeCommand;
+import edu.stuy.robot.commands.DriveToCourtyardRangeCommand;
 import edu.stuy.robot.commands.DrivetrainDriveStraightCommand;
 import edu.stuy.robot.commands.FlashlightOffCommand;
 import edu.stuy.robot.commands.FlashlightOnCommand;
-import edu.stuy.robot.commands.HighGearCommand;
+import edu.stuy.robot.commands.HoodUpCommand;
+import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.LowGearCommand;
 import edu.stuy.robot.commands.RotateToAimCommand;
+import edu.stuy.robot.commands.ShooterSetMaxSpeed;
 import edu.stuy.robot.commands.ShooterStopCommand;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -35,6 +37,7 @@ public class CrossObstacleThenShootCommand extends CommandGroup {
         // arm.
 
         addSequential(obstacle);
+        addSequential(new HoodUpCommand());
         addSequential(new LowGearCommand());
         addSequential(new DrivetrainDriveStraightCommand(2 * 12.0, 0.6), 3.0);
         if (position != 3 && position != 4) {
