@@ -97,7 +97,7 @@ public interface RobotMap {
 
     // CV
     double MAX_DEGREES_OFF_AUTO_AIMING = 1.0;
-    int CAMERA_FRAME_PX_HEIGHT = 270; // TODO Test with corrected value (270)
+    int CAMERA_FRAME_PX_HEIGHT = 270;
     int CAMERA_FRAME_PX_WIDTH = 360;
     double CAMERA_TILT_ANGLE = 34;
     double CAMERA_DIST_TO_BOT_FRONT = 28.0; // from camera to low omniwheel on arm when arm lowered
