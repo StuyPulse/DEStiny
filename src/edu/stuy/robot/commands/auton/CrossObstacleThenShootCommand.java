@@ -43,10 +43,9 @@ public class CrossObstacleThenShootCommand extends CommandGroup {
             addSequential(new RotateDrivetrainCommand());
         }
         addParallel(new FlashlightOnCommand()); // So we can see where it is aiming
-        addSequential(new RotateToAimCommand());
-        addSequential(new DriveToLayupRangeCommand(), 4.0);
-        addSequential(new ShootOuterworkCommand());
-        addSequential(new ShooterStopCommand());
-        addSequential(new FlashlightOffCommand());
+        addParallel(new ShooterSetMaxSpeed());
+        addSequential(new RotateToAimCommand(), 4.0);
+        addSequential(new DriveToCourtyardRangeCommand(), 2.5);
+        addSequential(new HopperRunCommand(true, 3.0));
     }
 }

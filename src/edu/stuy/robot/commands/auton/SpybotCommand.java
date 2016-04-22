@@ -2,6 +2,7 @@ package edu.stuy.robot.commands.auton;
 
 import edu.stuy.robot.commands.HoodDownCommand;
 import edu.stuy.robot.commands.HoodUpCommand;
+import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.HopperStopCommand;
 import edu.stuy.robot.commands.ShooterSetMaxSpeed;
 import edu.stuy.robot.commands.ShooterStopCommand;
@@ -31,12 +32,11 @@ public class SpybotCommand extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
 
+        addSequential(new ShooterSetMaxSpeed());
         addSequential(new HoodUpCommand());
         addSequential(new DropDownMoveToAngleCommand(0));
-        addSequential(new ShootWithTimeoutCommand(2, 1.0));
-        addSequential(new AutonHopperCommand(4.0));
+        addSequential(new HopperRunCommand(true, 3.0));
         addParallel(new ShooterStopCommand());
-        addSequential(new HopperStopCommand());
         addSequential(new HoodDownCommand());
     }
 }

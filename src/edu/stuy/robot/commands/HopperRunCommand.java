@@ -1,6 +1,7 @@
 package edu.stuy.robot.commands;
 
 import edu.stuy.robot.*;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -9,6 +10,9 @@ import edu.wpi.first.wpilibj.command.Command;
 public class HopperRunCommand extends Command {
 
     private boolean feed;
+    private boolean useTimeout;
+    private double timeout;
+    private double startTime;
 
     public HopperRunCommand(boolean in) {
         // Use requires() here to declare subsystem dependencies
@@ -17,8 +21,18 @@ public class HopperRunCommand extends Command {
         feed = in;
     }
 
+    public HopperRunCommand(boolean in, double timeout) {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+        requires(Robot.hopper);
+        feed = in;
+        useTimeout = true;
+        this.timeout = timeout;
+    }
+
     // Called just before this Command runs the first time
     protected void initialize() {
+        startTime = Timer.getFPGATimestamp();
         if (feed) {
             Robot.hopper.feed();
         } else {
@@ -33,7 +47,16 @@ public class HopperRunCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        if (useTimeout) {
+            double currTime = Timer.getFPGATimestamp();
+            if (Timer.getFPGATimestamp() - startTime > timeout) {
+                Robot.hopper.stop();
+                return true;
+            }
+            return false;
+        } else {
+            return true;
+        }
     }
 
     // Called once after isFinished returns true
