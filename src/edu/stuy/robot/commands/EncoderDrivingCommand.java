@@ -1,13 +1,13 @@
 package edu.stuy.robot.commands;
 
-import static edu.stuy.robot.RobotMap.LAYUP_BOT_SHOOTING_DISTANCE;
-
 import edu.stuy.robot.Robot;
-import edu.stuy.robot.cv.StuyVision;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * Abstract command for moving forward or back by a displacement
+ * determined at runtime by one call to the <code>setInchesToMove</code>
+ * method implemented by the subclass.
+ * @author Berkow
  */
 public abstract class EncoderDrivingCommand extends Command {
 
