@@ -215,7 +215,6 @@ public class Robot extends IterativeRobot {
         } catch (Exception e) {
             System.err.println("\n\n\n\n\nTOP-LEVEL CATCH in autonomousInit. Exception was:");
             e.printStackTrace();
-            System.err.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         }
     }
 
