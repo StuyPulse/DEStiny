@@ -46,7 +46,6 @@ public class CrossObstacleThenShootCommand extends CommandGroup {
         addSequential(new RotateToAimCommand());
         addSequential(new DriveToLayupRangeCommand(), 4.0);
         addSequential(new ShootOuterworkCommand());
-        addSequential(new HighGearCommand());
         addSequential(new ShooterStopCommand());
         addSequential(new FlashlightOffCommand());
     }
