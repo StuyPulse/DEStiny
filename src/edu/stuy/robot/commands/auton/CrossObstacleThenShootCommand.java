@@ -2,6 +2,7 @@ package edu.stuy.robot.commands.auton;
 
 import edu.stuy.robot.commands.DriveToLayupRangeCommand;
 import edu.stuy.robot.commands.DrivetrainDriveStraightCommand;
+import edu.stuy.robot.commands.FlashlightOffCommand;
 import edu.stuy.robot.commands.FlashlightOnCommand;
 import edu.stuy.robot.commands.HighGearCommand;
 import edu.stuy.robot.commands.LowGearCommand;
@@ -47,5 +48,6 @@ public class CrossObstacleThenShootCommand extends CommandGroup {
         addSequential(new ShootOuterworkCommand());
         addSequential(new HighGearCommand());
         addSequential(new ShooterStopCommand());
+        addSequential(new FlashlightOffCommand());
     }
 }
