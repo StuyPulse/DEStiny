@@ -186,8 +186,8 @@ public class Robot extends IterativeRobot {
     private void setupCVChooser() {
         autonCVChooser = new SendableChooser();
         autonCVChooser.addDefault("Shoot with CV", true);
-        autonCVChooser.addObject("Shoot without CV (using Sonar)", false);
-        SmartDashboard.putData("Shoot using CV?", autonCVChooser);
+        autonCVChooser.addObject("Shoot with yolo (sonar)", false);
+        SmartDashboard.putData("Shooting Method", autonCVChooser);
     }
 
     public void disabledPeriodic() {
