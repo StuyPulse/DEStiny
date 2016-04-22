@@ -7,6 +7,13 @@ import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+/**
+ * Abstract command for rotating a certain number of degrees.
+ * The angle to rotate is determined at runtime during initialize,
+ * by the abstract method <code>getDesiredAngle</code>
+ * @author Berkow
+ *
+ */
 public abstract class GyroRotationalCommand extends Command {
 
     protected double desiredAngle;
@@ -17,10 +24,6 @@ public abstract class GyroRotationalCommand extends Command {
 
     private boolean priorGearShiftState;
 
-    private static final long timeout = 5000; // currently not in use
-    private double[] cvReading;
-    private long timeStart;
-
     public GyroRotationalCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -30,7 +33,6 @@ public abstract class GyroRotationalCommand extends Command {
     private void initialSetup() {
         forceStopped = false;
         abort = false;
-        timeStart = System.currentTimeMillis();
         priorGearShiftState = Robot.drivetrain.gearUp;
         Robot.drivetrain.manualGearShift(true);
     }
