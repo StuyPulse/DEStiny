@@ -1,5 +1,7 @@
 package edu.stuy.robot.commands.auton;
 
+import edu.stuy.robot.commands.DriveToLayupRangeCommand;
+import edu.stuy.robot.commands.DrivetrainDriveStraightCommand;
 import edu.stuy.robot.commands.FlashlightOnCommand;
 import edu.stuy.robot.commands.HighGearCommand;
 import edu.stuy.robot.commands.LowGearCommand;
@@ -33,14 +35,15 @@ public class CrossObstacleThenShootCommand extends CommandGroup {
 
         addSequential(obstacle);
         addSequential(new LowGearCommand());
-        if (position != 3 || position != 4) {
-            // RotateDrivetrainCommand will automatically decide angle
+        addSequential(new DrivetrainDriveStraightCommand(2 * 12.0, 0.6), 3.0);
+        if (position != 3 && position != 4) {
+            // RotateDrivetrainCommand will, at runtime, decide angle
             // based on Robot.autonPositionChooser.getSelected()
             addSequential(new RotateDrivetrainCommand());
         }
         addParallel(new FlashlightOnCommand()); // So we can see where it is aiming
         addSequential(new RotateToAimCommand());
-        addSequential(new DriveStraightWithSonarCommand(40.0), 5.0);
+        addSequential(new DriveToLayupRangeCommand(), 4.0);
         addSequential(new ShootOuterworkCommand());
         addSequential(new HighGearCommand());
         addSequential(new ShooterStopCommand());
