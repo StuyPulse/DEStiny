@@ -1,9 +1,9 @@
 package edu.stuy.robot;
 
+import static edu.stuy.robot.RobotMap.HOOD_DOWN_POSITION;
 import static edu.stuy.robot.RobotMap.JONAH_ID;
 import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
 import static edu.stuy.robot.RobotMap.YUBIN_ID;
-
 import edu.stuy.robot.commands.auton.CrossObstacleThenShootCommand;
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
@@ -256,10 +256,12 @@ public class Robot extends IterativeRobot {
             Robot.drivetrain.resetEncoders();
             // This is here and also in autonomus periodic as a safety measure
             Robot.shooter.stop();
+            Robot.hopper.stop();
+            Robot.flashlight.flashlightOff();
+            Robot.hood.changePosition(HOOD_DOWN_POSITION);
         } catch (Exception e) {
             System.err.println("\n\n\n\n\nTOP-LEVEL CATCH in telopInit. Exception was:");
             e.printStackTrace();
-            System.err.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         }
     }
 
