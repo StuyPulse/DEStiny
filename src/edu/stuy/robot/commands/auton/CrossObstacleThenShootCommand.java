@@ -37,7 +37,8 @@ public class CrossObstacleThenShootCommand extends CommandGroup {
         // arm.
 
         addSequential(obstacle);
-        addSequential(new HoodUpCommand());
+        addParallel(new HoodUpCommand());
+        addSequential(new DropDownMoveToAngleCommand(0), 2.0);
         addSequential(new LowGearCommand());
         addSequential(new DrivetrainDriveStraightCommand(2 * 12.0, 0.6), 3.0);
         if (position != 3 && position != 4) {
