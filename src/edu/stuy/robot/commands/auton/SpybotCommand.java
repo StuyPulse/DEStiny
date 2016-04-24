@@ -34,7 +34,7 @@ public class SpybotCommand extends CommandGroup {
 
         addSequential(new ShooterSetMaxSpeed());
         addSequential(new HoodUpCommand());
-        addSequential(new DropDownMoveToAngleCommand(0));
+        addSequential(new DropDownMoveToAngleCommand(0), 2.0);
         addSequential(new HopperRunCommand(true, 3.0));
         addParallel(new ShooterStopCommand());
         addSequential(new HoodDownCommand());
