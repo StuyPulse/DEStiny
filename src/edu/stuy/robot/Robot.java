@@ -107,15 +107,6 @@ public class Robot extends IterativeRobot {
 
         SmartDashboard.putNumber(SHOOTER_SPEED_LABEL, 0.0);
 
-        // Auton Distances:
-        SmartDashboard.putNumber("Rock", 0);
-        SmartDashboard.putNumber("Moat", 0);
-        SmartDashboard.putNumber("Rough", 0);
-        SmartDashboard.putNumber("Ramparts", 0);
-        SmartDashboard.putNumber("Draw", 0); // complex
-        SmartDashboard.putNumber("Cheval", 0);
-        SmartDashboard.putNumber("Portcullis", 0); // complex
-
         // Potentiometer
         double initialVoltage = 93.5;
         double finalVoltage = 170;
