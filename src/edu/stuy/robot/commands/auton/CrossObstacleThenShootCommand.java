@@ -38,16 +38,15 @@ public class CrossObstacleThenShootCommand extends CommandGroup {
 
         addSequential(obstacle);
         addParallel(new HoodUpCommand());
+        addParallel(new ShooterSetMaxSpeed());
         addSequential(new DropDownMoveToAngleCommand(0), 2.0);
         addSequential(new LowGearCommand());
-        addSequential(new DrivetrainDriveStraightCommand(2 * 12.0, 0.6), 3.0);
         if (position != 3 && position != 4) {
             // RotateDrivetrainCommand will, at runtime, decide angle
             // based on Robot.autonPositionChooser.getSelected()
             addSequential(new RotateDrivetrainCommand());
         }
         addParallel(new FlashlightOnCommand()); // So we can see where it is aiming
-        addParallel(new ShooterSetMaxSpeed());
         addSequential(new RotateToAimCommand(), 4.0);
         addSequential(new DriveToCourtyardRangeCommand(), 2.5);
         addSequential(new HopperRunCommand(true, 3.0));
