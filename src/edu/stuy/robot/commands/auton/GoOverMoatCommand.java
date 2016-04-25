@@ -14,7 +14,7 @@ public class GoOverMoatCommand extends CommandGroup {
     private static final double INITIAL_SPEED = 0.7;
 
     private static final double FINAL_DISTANCE = 198.0;
-    private static final double FINAL_TIME = 12.0;
+    private static final double FINAL_TIME = 2.75;
     private static final double FINAL_SPEED = 0.9;
 
     public GoOverMoatCommand() {
