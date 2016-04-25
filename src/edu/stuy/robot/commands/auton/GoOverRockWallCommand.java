@@ -13,8 +13,8 @@ public class GoOverRockWallCommand extends CommandGroup {
     private static final double INITIAL_TIME = 1.0;
     private static final double INITIAL_SPEED = 0.7;
 
-    private static final double FINAL_DISTANCE = 168.0;
-    private static final double FINAL_TIME = 15.0;
+    private static final double FINAL_DISTANCE = 180.0;
+    private static final double FINAL_TIME = 2.0;
     private static final double FINAL_SPEED = 1.0;
 
     public GoOverRockWallCommand() {
