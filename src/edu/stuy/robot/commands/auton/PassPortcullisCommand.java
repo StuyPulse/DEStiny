@@ -20,7 +20,7 @@ public class PassPortcullisCommand extends CommandGroup {
         addSequential(new DriveForwardCommand(INITIAL_DISTANCE_FORWARD_IN_INCHES, INITIAL_TIME_FORWARD_IN_SECONDS, INITIAL_SPEED),
             INITIAL_TIME_FORWARD_IN_SECONDS);
         addParallel(new DriveForwardCommand(SECOND_DISTANCE_FORWARD_IN_INCHES, SECOND_TIME_FORWARD_IN_SECONDS, SECOND_SPEED));
-        addSequential(new DropDownMoveToAngleCommand(70), 2.0);
-        addSequential(new DropDownMoveToAngleCommand(0), 2.0);
+        addSequential(new DropDownMoveToAngleCommand(70), 2.5);
+        addSequential(new DropDownMoveToAngleCommand(0), 1.0);
     }
 }
