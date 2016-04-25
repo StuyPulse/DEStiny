@@ -3,12 +3,12 @@ package edu.stuy.robot.commands.auton;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class PassChevalCommand extends CommandGroup {
-    private static final int INITIAL_DISTANCE = 90;
-    private static final int INITIAL_TIME = 10;
+    private static final double INITIAL_DISTANCE = 90;
+    private static final double INITIAL_TIME = 3.5;
     private static final double INITIAL_SPEED = 0.5;
 
-    private static final int FINAL_DISTANCE = 150;
-    private static final int FINAL_TIME = 10;
+    private static final double FINAL_DISTANCE = 150;
+    private static final double FINAL_TIME = 1.5;
     private static final double FINAL_SPEED = 1.0;
 
     public PassChevalCommand() {
