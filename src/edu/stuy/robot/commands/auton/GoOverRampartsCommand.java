@@ -13,7 +13,7 @@ public class GoOverRampartsCommand extends CommandGroup {
     private static final double INITIAL_SPEED = 0.7;
 
     private static final double FINAL_DISTANCE = 180.0;
-    private static final double FINAL_TIME = 10.0;
+    private static final double FINAL_TIME = 5.0;
     private static final double FINAL_SPEED = 1.0;
 
     public GoOverRampartsCommand() {
