@@ -4,12 +4,12 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class PassPortcullisCommand extends CommandGroup {
 
-    private static final int INITIAL_DISTANCE_FORWARD_IN_INCHES = 100;
-    private static final int INITIAL_TIME_FORWARD_IN_SECONDS = 7;
+    private static final double INITIAL_DISTANCE_FORWARD_IN_INCHES = 100.0;
+    private static final double INITIAL_TIME_FORWARD_IN_SECONDS = 3.0;
     private static final double INITIAL_SPEED = 0.5;
 
-    private static final int SECOND_DISTANCE_FORWARD_IN_INCHES = 150;
-    private static final int SECOND_TIME_FORWARD_IN_SECONDS = 10;
+    private static final double SECOND_DISTANCE_FORWARD_IN_INCHES = 150.0;
+    private static final double SECOND_TIME_FORWARD_IN_SECONDS = 2.5;
     private static final double SECOND_SPEED = 0.7;
 
     public PassPortcullisCommand() {
