@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class GoOverRoughTerrainCommand extends CommandGroup {
 
     private static final double INITIAL_DISTANCE = 196.0;
-    private static final double INITIAL_TIME = 15.0;
+    private static final double INITIAL_TIME = 1.50;
     private static final double INITIAL_SPEED = 1.0;
 
 	public GoOverRoughTerrainCommand() {
