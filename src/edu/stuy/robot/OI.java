@@ -76,14 +76,12 @@ public class OI {
         driverGamepad.getLeftBumper().whenReleased(new FlashlightOffCommand());
 
         // CV controls
-
-        // All of colored buttons for aiming:
+        // Colored buttons all for aiming:
         driverGamepad.getBottomButton().whenPressed(new RotateToAimCommand());
         driverGamepad.getTopButton().whenPressed(new RotateToAimCommand());
         driverGamepad.getRightButton().whenPressed(new RotateToAimCommand());
         driverGamepad.getLeftButton().whenPressed(new RotateToAimCommand());
-
-        // DPad left and right for moving into range
+        // DPad left and right for moving into range:
         driverGamepad.getDPadLeft().whenPressed(new DriveToCourtyardRangeCommand());
         driverGamepad.getDPadRight().whenPressed(new DriveToLayupRangeCommand());
 
