@@ -79,7 +79,6 @@ public class OI {
         driverGamepad.getBottomButton().whenPressed(new RotateToAimCommand());
         driverGamepad.getTopButton().whenPressed(new CVReadAndPrintCommand());
         driverGamepad.getLeftButton().whenPressed(new RotateDegreesGyroCommand());
-        // driverGamepad's right button (B) is force stop CV command
 
         // OPERATOR BINDINGS
         operatorGamepad.getLeftTrigger().whileHeld(new HopperRunCommand(true));
@@ -105,6 +104,6 @@ public class OI {
                 Math.max(Math.abs(driverGamepad.getLeftX()),
                         Math.max(Math.abs(driverGamepad.getRightY()),
                                 Math.abs(driverGamepad.getRightX()))));
-        return max > 0.1 || Robot.oi.driverGamepad.getRightButton().get();
+        return max > 0.1;
     }
 }
