@@ -17,7 +17,6 @@ public class DriveToCourtyardRangeCommand extends EncoderDrivingCommand {
     }
 
     protected void setInchesToMove() {
-        Robot.drivetrain.resetEncoders();
         double[] cvReading = Robot.vision.processImage();
         if (cvReading != null) {
             double curDistance = StuyVision.findBotDistanceToGoal(cvReading[1]);

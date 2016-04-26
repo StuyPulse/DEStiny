@@ -21,6 +21,7 @@ public abstract class EncoderDrivingCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
         try {
+            Robot.drivetrain.resetEncoders();
             initialInchesToMove = 0.0;
             cancelCommand = false;
             setInchesToMove();
