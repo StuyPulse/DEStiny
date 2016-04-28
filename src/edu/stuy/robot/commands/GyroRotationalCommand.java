@@ -30,28 +30,21 @@ public abstract class GyroRotationalCommand extends Command {
         requires(Robot.drivetrain);
     }
 
-    private void initialSetup() {
-        forceStopped = false;
-        abort = false;
-        priorGearShiftState = Robot.drivetrain.gearUp;
-        Robot.drivetrain.manualGearShift(true);
-    }
-
     protected abstract void setDesiredAngle();
-
-    private void sprintSetup() {
-        Robot.drivetrain.resetGyro();
-
-        desiredAngle = 0.0;
-        canProceed = true; // Proceed by default
-        setDesiredAngle();
-    }
 
     // Called just before this Command runs the first time
     protected void initialize() {
         try {
-            initialSetup();
-            sprintSetup();
+            forceStopped = false;
+            abort = false;
+            priorGearShiftState = Robot.drivetrain.gearUp;
+            Robot.drivetrain.manualGearShift(true);
+            Robot.drivetrain.resetGyro();
+
+            // Set defaults for values accessible by setDesiredAngle
+            desiredAngle = 0.0;
+            canProceed = true; // Proceed by default
+            setDesiredAngle();
         } catch (Exception e) {
             System.out.println("Error in intialize in RotateToAimCommand:");
             e.printStackTrace();
@@ -61,7 +54,7 @@ public abstract class GyroRotationalCommand extends Command {
 
     // INCREASE these if it is OVERshooting
     // DECREASE these if it is UNDERshooting
-    private double TUNE_FACTOR = 1.1;
+    private double TUNE_FACTOR = 1;//.1;
     private double TUNE_OFFSET = 0.0;
     private double angleMoved() {
         double gyro = Robot.drivetrain.getGyroAngle();
@@ -75,12 +68,6 @@ public abstract class GyroRotationalCommand extends Command {
         return desiredAngle - angleMoved();
     }
 
-    // In some sense, what percent of the way off are we? 100% = 1.0 would be
-    // the goal is at left/right edge of the frame; 0% = 0.0 would be on target.
-    private double howMuchWeHaveToGo() {
-        return Math.abs(degreesToMove() / (CAMERA_VIEWING_ANGLE_X / 2));
-    }
-
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         try {
@@ -89,8 +76,8 @@ public abstract class GyroRotationalCommand extends Command {
                 return;
             }
             if (!forceStopped) {
-                double speed = 0.5 + 0.3 * Math.pow(howMuchWeHaveToGo(), 2);
-                //System.out.println("\n\n\n\nSpeed to use:\t" + speed);
+                double speed = 0.65; // + 0.25 * Math.pow(howMuchWeHaveToGo(), 2);
+                System.out.println("\n\n\n\n\n\n\nSpeed to use:\t" + speed);
                 System.out.println("getGyroAngle():\t" + Robot.drivetrain.getGyroAngle());
                 System.out.println("angleMoved():\t" + angleMoved());
                 System.out.println("desiredAngle:\t" + desiredAngle);

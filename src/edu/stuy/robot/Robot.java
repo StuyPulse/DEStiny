@@ -71,7 +71,6 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-
         setupDebugChooser();
         debugMode = (Boolean) debugChooser.getSelected();
 
@@ -108,22 +107,23 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber(SHOOTER_SPEED_LABEL, 0.0);
 
         // Potentiometer
-        double initialVoltage = 93.5;
-        double finalVoltage = 170;
+        double initialVoltage = 195;
+        double finalVoltage = 270;
         SmartDashboard.putNumber("Initial Voltage", initialVoltage);
         SmartDashboard.putNumber("Final Voltage", finalVoltage);
         SmartDashboard.putNumber("Conversion Factor", 90.0 / (finalVoltage - initialVoltage));
-
-        drivetrain.setDrivetrainBrakeMode(true);
-        shooter.setShooterBrakeMode(false);
-        hopper.setHopperBrakeMode(true);
-        dropdown.setDropDownBreakMode(true);
 
         // Set up the auton chooser
         setupAutonChooser();
         setupAutonPositionChooser();
         setupShootChooser();
         setupCVChooser();
+        /*} catch (Exception e) {
+            SmartDashboard.putString("robotInit exception", e.toString());
+            System.out.println("\n\n\n\n\n\n\n\n\n");
+            System.out.println("Exception caught in robotInit:");
+            e.printStackTrace();
+        }*/
     }
 
     /**

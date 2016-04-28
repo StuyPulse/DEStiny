@@ -60,6 +60,7 @@ public class StuyVision extends VisionModule {
 
     public StuyVision() {
         try {
+            loadOpenCV();
             cameraPort = outerUSBPort;
             initializeCamera();
         } catch (Exception e) {
@@ -71,12 +72,14 @@ public class StuyVision extends VisionModule {
     }
 
     public StuyVision(CaptureSource camera) {
+        loadOpenCV();
         cameraPort = outerUSBPort;
         this.camera = camera;
     }
 
     public StuyVision(int i) {
         try {
+            loadOpenCV();
             cameraPort = i;
             initializeCamera();
         } catch (Exception e) {
@@ -352,7 +355,7 @@ public class StuyVision extends VisionModule {
         return findCameraDistanceToGoal(vec[1]);
     }
 
-    private static class Report {
+    public static class Report {
         double[] reading;
         double goalDegsY;
         double goalDegsX;

@@ -5,6 +5,7 @@ import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
 
 import edu.stuy.robot.commands.AcquirerAcquireCommand;
 import edu.stuy.robot.commands.AcquirerDeacquireCommand;
+import edu.stuy.robot.commands.CVReadAndPrintCommand;
 import edu.stuy.robot.commands.DisableAutoGearShiftCommand;
 import edu.stuy.robot.commands.DriveToCourtyardRangeCommand;
 import edu.stuy.robot.commands.DriveToLayupRangeCommand;
@@ -84,6 +85,8 @@ public class OI {
         // DPad left and right for moving into range:
         driverGamepad.getDPadLeft().whenPressed(new DriveToCourtyardRangeCommand());
         driverGamepad.getDPadRight().whenPressed(new DriveToLayupRangeCommand());
+        // For testing:
+        driverGamepad.getDPadDown().whenPressed(new CVReadAndPrintCommand());
 
         // OPERATOR BINDINGS
         operatorGamepad.getLeftTrigger().whileHeld(new HopperRunCommand(true));
