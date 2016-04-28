@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -53,8 +54,8 @@ public class DropDown extends Subsystem {
 
     public double getAngle() {
         double x = getVoltage();
-        double initialVoltage = 78;
-        double finalVoltage = 150;
+        double initialVoltage = SmartDashboard.getNumber("Initial Voltage");
+        double finalVoltage = SmartDashboard.getNumber("Final Voltage");
         double conversionFactor = 90.0 / (finalVoltage - initialVoltage);
         return (x - initialVoltage) * conversionFactor;
     }

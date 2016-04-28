@@ -78,6 +78,13 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Gyro I", 0);
         SmartDashboard.putNumber("Gyro D", 0);
 
+        // Potentiometer
+        double initialVoltage = 78;
+        double finalVoltage = 150;
+        SmartDashboard.putNumber("Initial Voltage", initialVoltage);
+        SmartDashboard.putNumber("Final Voltage", finalVoltage);
+        SmartDashboard.putNumber("Conversion Factor", 90.0 / (finalVoltage - initialVoltage));
+
         // Angle to move in gyro predetermined-angle (non-CV) auto-rotation
         SmartDashboard.putNumber("cv-angle", 90);
 
@@ -113,13 +120,6 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Draw", 0); // complex
         SmartDashboard.putNumber("Cheval", 0);
         SmartDashboard.putNumber("Portcullis", 0); // complex
-
-        // Potentiometer
-        double initialVoltage = 78;
-        double finalVoltage = 150;
-        SmartDashboard.putNumber("Initial Voltage", initialVoltage);
-        SmartDashboard.putNumber("Final Voltage", finalVoltage);
-        SmartDashboard.putNumber("Conversion Factor", 90.0 / (finalVoltage - initialVoltage));
 
         drivetrain.setDrivetrainBrakeMode(true);
         shooter.setShooterBrakeMode(false);
