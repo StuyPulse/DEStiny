@@ -19,7 +19,7 @@ public class DriveOverRockWallCommand extends DriveForwardCommand {
 
     @Override
     protected void execute() {
-        super.setMaxDistanceInInches(168.0);
+        super.setMaxDistanceInInches(168.0 + 60);
         super.execute();
     }
 

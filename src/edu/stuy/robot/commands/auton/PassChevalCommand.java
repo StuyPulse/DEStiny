@@ -3,7 +3,7 @@ package edu.stuy.robot.commands.auton;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class PassChevalCommand extends CommandGroup {
-    private static final int INITIAL_DISTANCE_FORWARD_IN_INCHES = 90;
+    private static final int INITIAL_DISTANCE_FORWARD_IN_INCHES = 60;
     private static final int INITIAL_TIME_FORWARD_IN_SECONDS = 10;
     private static final double INITIAL_SPEED = 0.5;
     private static final int SECOND_DISTANCE_FORWARD_IN_INCHES = 150;

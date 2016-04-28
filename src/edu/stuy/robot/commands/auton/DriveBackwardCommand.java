@@ -47,4 +47,9 @@ public class DriveBackwardCommand extends Command {
 	@Override
 	protected void interrupted() {
 	}
+
+    public void setMaxDistanceInInches(double d) {
+        // TODO Auto-generated method stub
+        maxDistanceInInches = d;
+    }
 }

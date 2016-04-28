@@ -7,6 +7,7 @@ import static edu.stuy.robot.RobotMap.YUBIN_ID;
 import edu.stuy.robot.commands.auton.CrossObstacleThenShootCommand;
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
+import edu.stuy.robot.commands.auton.GoOverRockWallBackwardsCommand;
 import edu.stuy.robot.commands.auton.GoOverRockWallCommand;
 import edu.stuy.robot.commands.auton.GoOverRoughTerrainCommand;
 import edu.stuy.robot.commands.auton.PassChevalCommand;
@@ -163,6 +164,7 @@ public class Robot extends IterativeRobot {
         autonChooser.addObject("5. Ramparts", new GoOverRampartsCommand());
         autonChooser.addObject("6. Cheval", new PassChevalCommand());
         autonChooser.addObject("7. Portcullis", new PassPortcullisCommand());
+        autonChooser.addObject("8. Rock Back", new GoOverRockWallBackwardsCommand());
         SmartDashboard.putData("Auton setting", autonChooser);
     }
 
