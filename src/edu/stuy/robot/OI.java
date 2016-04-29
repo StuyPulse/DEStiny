@@ -7,6 +7,8 @@ import edu.stuy.robot.commands.AcquirerAcquireCommand;
 import edu.stuy.robot.commands.AcquirerDeacquireCommand;
 import edu.stuy.robot.commands.CVReadAndPrintCommand;
 import edu.stuy.robot.commands.DisableAutoGearShiftCommand;
+import edu.stuy.robot.commands.DriveToCourtyardRangeCommand;
+import edu.stuy.robot.commands.DriveToLayupRangeCommand;
 import edu.stuy.robot.commands.EnableAutoGearShiftCommand;
 import edu.stuy.robot.commands.FlashlightOffCommand;
 import edu.stuy.robot.commands.FlashlightOnCommand;
@@ -16,7 +18,6 @@ import edu.stuy.robot.commands.HoodUpCommand;
 import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.JionDriveCommand;
 import edu.stuy.robot.commands.RotateToAimCommand;
-import edu.stuy.robot.commands.RotateToAimPIDCommand;
 import edu.stuy.robot.commands.ShooterHopperBackwardsCommand;
 import edu.stuy.robot.commands.ShooterHopperStopCommand;
 import edu.stuy.robot.commands.ShooterSetLayupCommand;
@@ -75,11 +76,17 @@ public class OI {
         driverGamepad.getLeftBumper().whenPressed(new FlashlightOnCommand());
         driverGamepad.getLeftBumper().whenReleased(new FlashlightOffCommand());
 
-        // CV controls:
-        //driverGamepad.getBottomButton().whenPressed(new RotateToAimCommand());
-        driverGamepad.getTopButton().whenPressed(new CVReadAndPrintCommand());
-        driverGamepad.getLeftButton().whenPressed(new RotateToAimPIDCommand());
-        // driverGamepad's right button (B) is force stop CV command
+        // CV controls
+        // Colored buttons all for aiming:
+        driverGamepad.getBottomButton().whenPressed(new RotateToAimCommand());
+        driverGamepad.getTopButton().whenPressed(new RotateToAimCommand());
+        driverGamepad.getRightButton().whenPressed(new RotateToAimCommand());
+        driverGamepad.getLeftButton().whenPressed(new RotateToAimCommand());
+        // DPad left and right for moving into range:
+        driverGamepad.getDPadLeft().whenPressed(new DriveToCourtyardRangeCommand());
+        driverGamepad.getDPadRight().whenPressed(new DriveToLayupRangeCommand());
+        // For testing, and benign if accidentally pressed:
+        driverGamepad.getDPadDown().whenPressed(new CVReadAndPrintCommand());
 
         // OPERATOR BINDINGS
         operatorGamepad.getLeftTrigger().whileHeld(new HopperRunCommand(true));
@@ -105,6 +112,6 @@ public class OI {
                 Math.max(Math.abs(driverGamepad.getLeftX()),
                         Math.max(Math.abs(driverGamepad.getRightY()),
                                 Math.abs(driverGamepad.getRightX()))));
-        return max > 0.1 || Robot.oi.driverGamepad.getRightButton().get();
+        return max > 0.1;
     }
 }
