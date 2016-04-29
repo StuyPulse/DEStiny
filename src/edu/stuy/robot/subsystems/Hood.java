@@ -24,9 +24,9 @@ public class Hood extends Subsystem {
 		// setDefaultCommand(new MySpecialCommand());
 	}
 
-	public void changePosition(boolean x) {
-		hoodSolenoid.set(x);
-	    up = !up;
+	public void changePosition(boolean up) {
+		hoodSolenoid.set(up);
+	    this.up = up;
 	}
 
 	public boolean getState() {
