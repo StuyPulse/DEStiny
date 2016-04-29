@@ -19,13 +19,13 @@ public class Hopper extends Subsystem {
     // here. Call these from Commands.
     private CANTalon hopperMotor;
     private AnalogInput distanceSensor;
-    private DigitalOutput yellowStrip;
+    private DigitalOutput hopperSignalLight;
 
     public Hopper() {
         hopperMotor = new CANTalon(HOPPER_MOTOR_CHANNEL);
         hopperMotor.setInverted(true);
         distanceSensor = new AnalogInput(HOPPER_SENSOR_CHANNEL);
-        yellowStrip = new DigitalOutput(SIGNAL_LIGHT_BLUE_PORT);
+        hopperSignalLight = new DigitalOutput(SIGNAL_LIGHT_BLUE_PORT);
     }
 
     public void initDefaultCommand() {
@@ -58,11 +58,11 @@ public class Hopper extends Subsystem {
     }
 
     public void lightOn() {
-        yellowStrip.set(true);
+        hopperSignalLight.set(false);
     }
 
     public void lightOff() {
-        yellowStrip.set(false);
+        hopperSignalLight.set(true);
     }
 
     public void runHopperSensor() {
