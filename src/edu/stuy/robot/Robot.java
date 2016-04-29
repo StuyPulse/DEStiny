@@ -304,6 +304,11 @@ public class Robot extends IterativeRobot {
             e.printStackTrace();
             System.err.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         }
+        try {
+            hopper.runHopperSensor();
+        } catch (Exception e) {
+            System.err.println("Hopper sensor failed");
+        }
     }
 
     /**
