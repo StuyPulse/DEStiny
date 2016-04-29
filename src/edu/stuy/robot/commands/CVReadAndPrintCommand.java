@@ -27,7 +27,7 @@ public class CVReadAndPrintCommand extends Command {
         try {
             long start = System.currentTimeMillis();
             double[] cvReading = null;
-            cvReading = Robot.vision.processImage(tryToSaveFile);
+            cvReading = Robot.vision.processImage(Robot.isDebugModeOn() && tryToSaveFile);
             System.out.println("\n\n\n\n\n\n\n\n\n\nprocessImage took " + (System.currentTimeMillis() - start) + "ms");
             System.out.println(new StuyVision.Report(cvReading));
             boolean canProceed = cvReading != null;

@@ -62,7 +62,7 @@ public class Robot extends IterativeRobot {
     public static SendableChooser autonShootChooser;
 
     private double autonStartTime;
-    private boolean debugMode;
+    private static boolean debugMode;
 
     public static StuyVision vision;
 
@@ -306,5 +306,9 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
         LiveWindow.run();
+    }
+
+    public static boolean isDebugModeOn() {
+        return debugMode;
     }
 }

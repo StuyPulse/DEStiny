@@ -86,7 +86,7 @@ public class OI {
         driverGamepad.getDPadLeft().whenPressed(new DriveToCourtyardRangeCommand());
         driverGamepad.getDPadRight().whenPressed(new DriveToLayupRangeCommand());
         // For testing, and benign if accidentally pressed:
-        driverGamepad.getDPadDown().whenPressed(new CVReadAndPrintCommand());
+        driverGamepad.getDPadDown().whenPressed(new CVReadAndPrintCommand(true));
 
         // OPERATOR BINDINGS
         operatorGamepad.getLeftTrigger().whileHeld(new HopperRunCommand(true));
