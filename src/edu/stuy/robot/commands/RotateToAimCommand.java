@@ -24,7 +24,7 @@ public class RotateToAimCommand extends GyroRotationalCommand {
         canProceed = cvReading != null;
         SmartDashboard.putString("cv-reading", Arrays.toString(cvReading));
         if (canProceed) {
-            desiredAngle = -StuyVision.frameXPxToDegrees(cvReading[0]);
+            desiredAngle = StuyVision.frameXPxToDegrees(cvReading[0]);
             SmartDashboard.putNumber("cv-angle", desiredAngle);
         }
         SmartDashboard.putBoolean("cv-visible", canProceed);
