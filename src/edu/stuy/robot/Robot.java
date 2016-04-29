@@ -102,6 +102,10 @@ public class Robot extends IterativeRobot {
         hood = new Hood();
         sonar = new Sonar();
         cvSignalLight = new YellowSignalLight();
+
+        // Turn off the cv signal light
+        cvSignalLight.set(false);
+
         flashlight = new Flashlight();
 
         oi = new OI();
