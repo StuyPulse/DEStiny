@@ -68,6 +68,11 @@ public abstract class GyroRotationalCommand extends Command {
         return desiredAngle - angleMoved();
     }
 
+    private double howMuchWeHaveToGo() {
+        // Used for ramping
+        return Math.abs(degreesToMove() / (CAMERA_VIEWING_ANGLE_X / 2));
+    }
+
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         try {

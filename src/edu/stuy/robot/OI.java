@@ -83,10 +83,10 @@ public class OI {
         driverGamepad.getRightButton().whenPressed(new RotateToAimCommand());
         driverGamepad.getLeftButton().whenPressed(new RotateToAimCommand());
         // DPad left and right for moving into range:
-        driverGamepad.getDPadLeft().whenPressed(new DriveToCourtyardRangeCommand());
-        driverGamepad.getDPadRight().whenPressed(new DriveToLayupRangeCommand());
+        //driverGamepad.getDPadLeft().whenPressed(new DriveToCourtyardRangeCommand());
+        //driverGamepad.getDPadRight().whenPressed(new DriveToLayupRangeCommand());
         // For testing, and benign if accidentally pressed:
-        driverGamepad.getDPadDown().whenPressed(new CVReadAndPrintCommand(true));
+        //driverGamepad.getDPadDown().whenPressed(new CVReadAndPrintCommand(true));
 
         // OPERATOR BINDINGS
         operatorGamepad.getLeftTrigger().whileHeld(new HopperRunCommand(true));
@@ -108,10 +108,14 @@ public class OI {
     }
 
     public boolean driverIsOverriding() {
-        double max = Math.max(Math.abs(driverGamepad.getLeftY()),
+        /*double max = Math.max(Math.abs(driverGamepad.getLeftY()),
                 Math.max(Math.abs(driverGamepad.getLeftX()),
                         Math.max(Math.abs(driverGamepad.getRightY()),
                                 Math.abs(driverGamepad.getRightX()))));
-        return max > 0.1;
+        return max > 0.1;*/
+        return driverGamepad.getDPadLeft().get()
+                || driverGamepad.getDPadRight().get()
+                || driverGamepad.getDPadUp().get()
+                || driverGamepad.getDPadDown().get();
     }
 }
