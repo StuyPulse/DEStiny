@@ -155,7 +155,6 @@ public class Robot extends IterativeRobot {
     }
 
     private void setupAutonChooser() {
-
         autonChooser = new SendableChooser();
         autonChooser.addDefault("0. Reach edge of obstacle but refrain from going over", new ReachObstacleCommand());
         autonChooser.addObject("1. Do nothing", new CommandGroup());
@@ -191,12 +190,14 @@ public class Robot extends IterativeRobot {
         try {
             debugMode = (Boolean) debugChooser.getSelected();
             Command selectedCommand = (Command) autonChooser.getSelected();
-            int autonPosition = (Integer) autonPositionChooser.getSelected();
+            // int autonPosition = (Integer) autonPositionChooser.getSelected();
             autonomousCommand = selectedCommand;
+            /*
             boolean shoot = (Boolean) autonShootChooser.getSelected();
             if (shoot) {
                 autonomousCommand = new CrossObstacleThenShootCommand(autonomousCommand, autonPosition);
             }
+            */
             autonomousCommand.start();
             Robot.drivetrain.resetEncoders();
             autonStartTime = Timer.getFPGATimestamp();
