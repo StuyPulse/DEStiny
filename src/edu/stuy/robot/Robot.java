@@ -82,7 +82,7 @@ public class Robot extends IterativeRobot {
 
         // Potentiometer
         double initialVoltage = 78;
-        double finalVoltage = 150;
+        double finalVoltage = 145;
         SmartDashboard.putNumber("Initial Voltage", initialVoltage);
         SmartDashboard.putNumber("Final Voltage", finalVoltage);
         SmartDashboard.putNumber("Conversion Factor", 90.0 / (finalVoltage - initialVoltage));
