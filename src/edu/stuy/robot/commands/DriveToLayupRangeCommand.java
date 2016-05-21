@@ -25,5 +25,9 @@ public class DriveToLayupRangeCommand extends EncoderDrivingCommand {
             // CV failed!
             cancelCommand = true;
         }
+        System.out.println(new StuyVision.Report(cvReading));
+        if (cvReading != null) {
+            System.out.println(StuyVision.findBotDistanceToGoal(cvReading[1]));
+        }
     }
 }

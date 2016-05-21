@@ -29,4 +29,8 @@ public class RotateToAimCommand extends GyroRotationalCommand {
         }
         SmartDashboard.putBoolean("cv-visible", canProceed);
     }
+
+    protected void onEnd() {
+        System.out.println(new StuyVision.Report(cvReading));
+    }
 }

@@ -28,8 +28,8 @@ public class DrivetrainDriveStraightCommand extends Command {
     
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        leftDist = Robot.drivetrain.getLeftEncoder();
-        rightDist = Robot.drivetrain.getRightEncoder();
+        leftDist = Robot.drivetrain.getLeftEncoderAbs();
+        rightDist = Robot.drivetrain.getRightEncoderAbs();
         if (leftDist - rightDist > 3.0f) {
             Robot.drivetrain.tankDrive(speed * getSpeedMultiplier(), speed);
         } else if (rightDist - leftDist > 3.0f) {

@@ -5,9 +5,7 @@ import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
 
 import edu.stuy.robot.commands.AcquirerAcquireCommand;
 import edu.stuy.robot.commands.AcquirerDeacquireCommand;
-import edu.stuy.robot.commands.CVReadAndPrintCommand;
 import edu.stuy.robot.commands.DisableAutoGearShiftCommand;
-import edu.stuy.robot.commands.DriveToCourtyardRangeCommand;
 import edu.stuy.robot.commands.DriveToLayupRangeCommand;
 import edu.stuy.robot.commands.EnableAutoGearShiftCommand;
 import edu.stuy.robot.commands.FlashlightOffCommand;
@@ -79,7 +77,7 @@ public class OI {
         // CV controls
         // Colored buttons all for aiming:
         driverGamepad.getBottomButton().whenPressed(new RotateToAimCommand());
-        driverGamepad.getTopButton().whenPressed(new RotateToAimCommand());
+        driverGamepad.getTopButton().whenPressed(new DriveToLayupRangeCommand());
         driverGamepad.getRightButton().whenPressed(new RotateToAimCommand());
         driverGamepad.getLeftButton().whenPressed(new RotateToAimCommand());
         // DPad left and right for moving into range:
@@ -108,14 +106,15 @@ public class OI {
     }
 
     public boolean driverIsOverriding() {
-        /*double max = Math.max(Math.abs(driverGamepad.getLeftY()),
+        double joysticksMax = Math.max(Math.abs(driverGamepad.getLeftY()),
                 Math.max(Math.abs(driverGamepad.getLeftX()),
                         Math.max(Math.abs(driverGamepad.getRightY()),
                                 Math.abs(driverGamepad.getRightX()))));
-        return max > 0.1;*/
+        //return joysticksMax > 0.2;
         return driverGamepad.getDPadLeft().get()
                 || driverGamepad.getDPadRight().get()
                 || driverGamepad.getDPadUp().get()
-                || driverGamepad.getDPadDown().get();
+                || driverGamepad.getDPadDown().get()
+                || joysticksMax > 0.2;
     }
 }

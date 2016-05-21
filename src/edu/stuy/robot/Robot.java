@@ -216,8 +216,8 @@ public class Robot extends IterativeRobot {
         try {
             Scheduler.getInstance().run();
             if (debugMode) {
-                SmartDashboard.putNumber("drivetrain left encoder", Robot.drivetrain.getLeftEncoder());
-                SmartDashboard.putNumber("drivetrain right encoder", Robot.drivetrain.getRightEncoder());
+                SmartDashboard.putNumber("drivetrain left encoder", Robot.drivetrain.getLeftEncoderAbs());
+                SmartDashboard.putNumber("drivetrain right encoder", Robot.drivetrain.getRightEncoderAbs());
                 SmartDashboard.putNumber("Max distance of drivetrain encoders", Robot.drivetrain.getDistance());
                 SmartDashboard.putNumber("potentiometer", Robot.dropdown.getAngle());
                 SmartDashboard.putNumber("Potentiometer voltage", Robot.dropdown.getVoltage());
@@ -277,8 +277,8 @@ public class Robot extends IterativeRobot {
             if (debugMode) {
                 SmartDashboard.putNumber("gyro", Robot.drivetrain.getGyroAngle());
                 SmartDashboard.putNumber("Current Shooter Motor Speed:", Robot.shooter.getCurrentMotorSpeedInRPM());
-                SmartDashboard.putNumber("drivetrain left encoder", Robot.drivetrain.getLeftEncoder());
-                SmartDashboard.putNumber("drivetrain right encoder", Robot.drivetrain.getRightEncoder());
+                SmartDashboard.putNumber("drivetrain left encoder", Robot.drivetrain.getLeftEncoderAbs());
+                SmartDashboard.putNumber("drivetrain right encoder", Robot.drivetrain.getRightEncoderAbs());
                 SmartDashboard.putBoolean("Gear shift override", drivetrain.overrideAutoGearShifting);
                 try {
                     SmartDashboard.putNumber("Hopper Sensor", Robot.hopper.getDistance());

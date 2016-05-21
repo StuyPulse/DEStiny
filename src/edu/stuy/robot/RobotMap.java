@@ -101,7 +101,7 @@ public interface RobotMap {
 
     double CAMERA_VIEWING_ANGLE_X = 61; // angular height of frame
     double CAMERA_VIEWING_ANGLE_Y = 34.3; // angular width of frame
-    double LAYUP_SHOOTING_DISTANCE = 4 * 12.0; // front omniwheel (on arm) 4 ft from tower
+    double LAYUP_SHOOTING_DISTANCE = 4.5 * 12.0; // front omniwheel (on arm) 4 ft from tower
     double COURTYARD_SHOOTING_DISTANCE = 103.1; // front omniwheel (on arm) 8 ft from tower
 
     double HIGH_GOAL_HEIGHT = 90.0; // inches to center of goal from floor (measured)

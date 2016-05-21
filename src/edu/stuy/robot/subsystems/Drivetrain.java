@@ -104,18 +104,32 @@ public class Drivetrain extends Subsystem {
         return gyro.getAngle();
     }
 
-    public double getLeftEncoder() {
+    public double getLeftEncoderAbs() {
         return Math.abs(leftEncoder.getDistance());
     }
 
-    public double getRightEncoder() {
+    public double getRightEncoderAbs() {
         return Math.abs(rightEncoder.getDistance());
     }
 
+    public double getLeftEncoder() {
+        return leftEncoder.getDistance();
+    }
+
+    public double getRightEncoder() {
+        return rightEncoder.getDistance();
+    }
+
     public double getDistance() {
+        double left = getLeftEncoderAbs();
+        double right = getRightEncoderAbs();
+        return Math.max(left, right);
+    }
+
+    public double getDisplacement() {
         double left = getLeftEncoder();
         double right = getRightEncoder();
-        return Math.max(left, right);
+        return (left + right) / 2;
     }
 
     public void resetEncoders() {

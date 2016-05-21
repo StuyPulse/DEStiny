@@ -81,7 +81,7 @@ public abstract class GyroRotationalCommand extends Command {
                 return;
             }
             if (!forceStopped) {
-                double speed = 0.65; // + 0.25 * Math.pow(howMuchWeHaveToGo(), 2);
+                double speed = 0.7 + 0.25 * Math.pow(howMuchWeHaveToGo(), 2);
                 System.out.println("\n\n\n\n\n\n\nSpeed to use:\t" + speed);
                 System.out.println("getGyroAngle():\t" + Robot.drivetrain.getGyroAngle());
                 System.out.println("angleMoved():\t" + angleMoved());
@@ -136,12 +136,15 @@ public abstract class GyroRotationalCommand extends Command {
         }
     }
 
+    abstract protected void onEnd();
+
     // Called once after isFinished returns true
     protected void end() {
         Robot.drivetrain.tankDrive(0.0, 0.0);
         System.out.println("ENDED");
         // Set drivetrain gearshift to how it was before aiming
         Robot.drivetrain.manualGearShift(priorGearShiftState);
+        onEnd();
     }
 
     // Called when another command which requires one or more of the same

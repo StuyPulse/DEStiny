@@ -24,6 +24,7 @@ public abstract class EncoderDrivingCommand extends Command {
             Robot.drivetrain.resetEncoders();
             initialInchesToMove = 0.0;
             cancelCommand = false;
+            abort = false;
             setInchesToMove();
         } catch (Exception e) {
             System.out.println("Error in initialize in EncoderDrivingCommand:");
@@ -39,8 +40,10 @@ public abstract class EncoderDrivingCommand extends Command {
     protected void execute() {
         try {
             double inchesToGo = inchesToMove();
-            double speed = 0.5 + 0.3 * Math.min(1.0, Math.pow(inchesToGo / distForMaxSpeed, 2));
+            double speed = 0.55 + 0.3 * Math.min(1.0, Math.pow(inchesToGo / distForMaxSpeed, 2));
             // The above speed calculation is based on the one that has worked for GyroRotationalCommand
+            System.out.println("Inches to go: " + inchesToGo);
+            speed *= Math.signum(initialInchesToMove);
             Robot.drivetrain.tankDrive(speed, speed);
         } catch (Exception e) {
             System.out.println("Error in execute in EncoderDrivingCommand:");
@@ -54,7 +57,7 @@ public abstract class EncoderDrivingCommand extends Command {
         if (abort || cancelCommand || Robot.oi.driverIsOverriding()) {
             return true;
         }
-        return inchesToMove() <= 3.0;
+        return Math.abs(inchesToMove()) <= 3.0;
     }
 
     // Called once after isFinished returns true
@@ -65,9 +68,11 @@ public abstract class EncoderDrivingCommand extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        Robot.drivetrain.tankDrive(0.0, 0.0);
     }
 
     private double inchesToMove() {
-        return initialInchesToMove - Robot.drivetrain.getDistance();
+        // Encoders only return nonnegative values
+        return Math.abs(initialInchesToMove) - Robot.drivetrain.getDistance();
     }
 }
