@@ -1,11 +1,11 @@
 package edu.stuy.robot;
 
+import static edu.stuy.robot.RobotMap.HOOD_DOWN_POSITION;
 import static edu.stuy.robot.RobotMap.JONAH_ID;
 import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
 import static edu.stuy.robot.RobotMap.YUBIN_ID;
-import static edu.stuy.robot.RobotMap.HOOD_DOWN_POSITION;
 
-import edu.stuy.robot.commands.auton.CrossObstacleThenShootCommand;
+import edu.stuy.robot.commands.auton.CrossObstacleThenShootDinnerCommand;
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
 import edu.stuy.robot.commands.auton.GoOverRockWallBackwardsCommand;
@@ -196,12 +196,12 @@ public class Robot extends IterativeRobot {
             Command selectedCommand = (Command) autonChooser.getSelected();
             // int autonPosition = (Integer) autonPositionChooser.getSelected();
             autonomousCommand = selectedCommand;
-            /*
+
             boolean shoot = (Boolean) autonShootChooser.getSelected();
             if (shoot) {
-                autonomousCommand = new CrossObstacleThenShootCommand(autonomousCommand, autonPosition);
+                autonomousCommand = new CrossObstacleThenShootDinnerCommand(autonomousCommand);
             }
-            */
+
             autonomousCommand.start();
             Robot.drivetrain.resetEncoders();
             autonStartTime = Timer.getFPGATimestamp();

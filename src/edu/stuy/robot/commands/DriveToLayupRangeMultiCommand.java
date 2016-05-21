@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class RotateToAimMultiCommand extends CommandGroup {
+public class DriveToLayupRangeMultiCommand extends CommandGroup {
     
-    public  RotateToAimMultiCommand() {
+    public  DriveToLayupRangeMultiCommand() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -25,9 +25,11 @@ public class RotateToAimMultiCommand extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
 
-        // First rotation:
-        addSequential(new RotateToAimCommand());
-        // Refine:
-        addSequential(new RotateToAimCommand());
+        // This is a janky way of doing this. Urgency calls.
+
+        // First movement:
+        addSequential(new DriveToLayupRangeCommand());
+        // Refine to account for mistakes:
+        addSequential(new DriveToLayupRangeCommand());
     }
 }

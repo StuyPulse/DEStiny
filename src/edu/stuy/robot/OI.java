@@ -6,7 +6,6 @@ import static edu.stuy.robot.RobotMap.OPERATOR_GAMEPAD;
 import edu.stuy.robot.commands.AcquirerAcquireCommand;
 import edu.stuy.robot.commands.AcquirerDeacquireCommand;
 import edu.stuy.robot.commands.DisableAutoGearShiftCommand;
-import edu.stuy.robot.commands.DriveToLayupRangeCommand;
 import edu.stuy.robot.commands.EnableAutoGearShiftCommand;
 import edu.stuy.robot.commands.FlashlightOffCommand;
 import edu.stuy.robot.commands.FlashlightOnCommand;
@@ -15,7 +14,8 @@ import edu.stuy.robot.commands.HoodDownCommand;
 import edu.stuy.robot.commands.HoodUpCommand;
 import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.JionDriveCommand;
-import edu.stuy.robot.commands.RotateToAimCommand;
+import edu.stuy.robot.commands.RotateToAimMultiCommand;
+import edu.stuy.robot.commands.SetupForShotCommand;
 import edu.stuy.robot.commands.ShooterHopperBackwardsCommand;
 import edu.stuy.robot.commands.ShooterHopperStopCommand;
 import edu.stuy.robot.commands.ShooterSetLayupCommand;
@@ -76,10 +76,10 @@ public class OI {
 
         // CV controls
         // Colored buttons all for aiming:
-        driverGamepad.getBottomButton().whenPressed(new RotateToAimCommand());
-        driverGamepad.getTopButton().whenPressed(new DriveToLayupRangeCommand());
-        driverGamepad.getRightButton().whenPressed(new RotateToAimCommand());
-        driverGamepad.getLeftButton().whenPressed(new RotateToAimCommand());
+        driverGamepad.getBottomButton().whenPressed(new RotateToAimMultiCommand());
+        driverGamepad.getTopButton().whenPressed(new SetupForShotCommand());
+        driverGamepad.getRightButton().whenPressed(new RotateToAimMultiCommand());
+        driverGamepad.getLeftButton().whenPressed(new RotateToAimMultiCommand());
         // DPad left and right for moving into range:
         //driverGamepad.getDPadLeft().whenPressed(new DriveToCourtyardRangeCommand());
         //driverGamepad.getDPadRight().whenPressed(new DriveToLayupRangeCommand());
