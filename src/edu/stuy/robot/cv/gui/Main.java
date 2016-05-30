@@ -41,7 +41,6 @@ public class Main extends Application {
             scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("css/main.css").toString());
             // Initialize ModuleRunner with VisionModuleSuite
-            StuyVision.loadOpenCV();
             VisionModule module = new StuyVision();
             {
                 FXMLLoader tabLoader = new FXMLLoader(getClass().getResource("fxml/module_main.fxml"));
