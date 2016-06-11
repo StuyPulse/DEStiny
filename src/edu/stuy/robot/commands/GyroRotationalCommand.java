@@ -24,10 +24,30 @@ public abstract class GyroRotationalCommand extends Command {
 
     private boolean priorGearShiftState;
 
+    private boolean gentleRotate;
+    private double tolerance;
+
     public GyroRotationalCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.drivetrain);
+        tolerance = MAX_DEGREES_OFF_AUTO_AIMING;
+    }
+
+    public GyroRotationalCommand(boolean gentle) {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+        requires(Robot.drivetrain);
+        gentleRotate = gentle;
+        tolerance = MAX_DEGREES_OFF_AUTO_AIMING;
+    }
+
+    public GyroRotationalCommand(boolean gentle, double tolerance) {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+        requires(Robot.drivetrain);
+        gentleRotate = gentle;
+        this.tolerance = tolerance;
     }
 
     protected abstract void setDesiredAngle();
@@ -81,7 +101,9 @@ public abstract class GyroRotationalCommand extends Command {
                 return;
             }
             if (!forceStopped) {
-                double speed = 0.7 + 0.25 * Math.pow(howMuchWeHaveToGo(), 2);
+                double speed = gentleRotate
+                        ? 0.6 + 0.15 * Math.pow(howMuchWeHaveToGo(), 2)
+                        : 0.6 + 0.25 * Math.pow(howMuchWeHaveToGo(), 2);
                 System.out.println("\n\n\n\n\n\n\nSpeed to use:\t" + speed);
                 System.out.println("getGyroAngle():\t" + Robot.drivetrain.getGyroAngle());
                 System.out.println("angleMoved():\t" + angleMoved());
@@ -120,7 +142,7 @@ public abstract class GyroRotationalCommand extends Command {
             double degsOff = degreesToMove();
             SmartDashboard.putNumber("CV degrees off", degsOff);
 
-            boolean onTarget = Math.abs(degsOff) < MAX_DEGREES_OFF_AUTO_AIMING;
+            boolean onTarget = Math.abs(degsOff) < tolerance;
             System.out.println("degsOff: " + degsOff + "\nonTarget: " + onTarget);
             Robot.cvSignalLight.set(onTarget);
 

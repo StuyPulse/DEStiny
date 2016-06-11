@@ -17,6 +17,18 @@ public class RotateToAimCommand extends GyroRotationalCommand {
         super();
     }
 
+    public RotateToAimCommand(boolean gentle) {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+        super(gentle);
+    }
+
+    public RotateToAimCommand(boolean gentle, double tolerance) {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+        super(gentle, tolerance);
+    }
+
     private double[] cvReading;
 
     protected void setDesiredAngle() {

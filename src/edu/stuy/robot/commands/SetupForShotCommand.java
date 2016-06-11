@@ -27,5 +27,6 @@ public class SetupForShotCommand extends CommandGroup {
 
         addSequential(new RotateToAimMultiCommand());
         addSequential(new DriveToLayupRangeCommand());
+        addSequential(new RotateToAimMultiCommand(2.0));
     }
 }
