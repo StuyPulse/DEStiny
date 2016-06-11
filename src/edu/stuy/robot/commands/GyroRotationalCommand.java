@@ -102,8 +102,8 @@ public abstract class GyroRotationalCommand extends Command {
             }
             if (!forceStopped) {
                 double speed = gentleRotate
-                        ? 0.6 + 0.15 * Math.pow(howMuchWeHaveToGo(), 2)
-                        : 0.6 + 0.25 * Math.pow(howMuchWeHaveToGo(), 2);
+                        ? 0.62 + 0.15 * Math.pow(howMuchWeHaveToGo(), 2)
+                        : 0.62 + 0.25 * Math.pow(howMuchWeHaveToGo(), 2);
                 System.out.println("\n\n\n\n\n\n\nSpeed to use:\t" + speed);
                 System.out.println("getGyroAngle():\t" + Robot.drivetrain.getGyroAngle());
                 System.out.println("angleMoved():\t" + angleMoved());
