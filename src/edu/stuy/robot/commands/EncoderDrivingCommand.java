@@ -53,7 +53,7 @@ public abstract class EncoderDrivingCommand extends AutoMovementCommand {
             super.execute();
             if (!getForceStopped()) {
                 double inchesToGo = inchesToMove();
-                double speed = 0.55 + 0.3 * Math.min(1.0, Math.pow(inchesToGo / distForMaxSpeed, 2));
+                double speed = 0.7 + 0.3 * Math.min(1.0, Math.pow(inchesToGo / distForMaxSpeed, 2));
                 // The above speed calculation is based on the one that has worked for GyroRotationalCommand
                 System.out.println("Inches to go: " + inchesToGo);
                 speed *= Math.signum(initialInchesToMove);

@@ -74,7 +74,6 @@ public abstract class GyroRotationalCommand extends AutoMovementCommand {
             super.initialize();
             abort = false;
             priorGearShiftState = Robot.drivetrain.gearUp;
-            Robot.drivetrain.manualGearShift(true);
             Robot.drivetrain.resetGyro();
 
             // Set defaults for values accessible by setDesiredAngle
@@ -116,8 +115,8 @@ public abstract class GyroRotationalCommand extends AutoMovementCommand {
             super.execute();
             if (!getForceStopped()) {
                 double speed = gentleRotate
-                        ? 0.62 + 0.15 * Math.pow(howMuchWeHaveToGo(), 2)
-                        : 0.62 + 0.25 * Math.pow(howMuchWeHaveToGo(), 2);
+                        ? 0.53 + 0.15 * Math.pow(howMuchWeHaveToGo(), 2)
+                        : 0.60 + 0.30 * Math.pow(howMuchWeHaveToGo(), 2);
                 System.out.println("\n\n\n\n\n\n\nSpeed to use:\t" + speed);
                 System.out.println("getGyroAngle():\t" + Robot.drivetrain.getGyroAngle());
                 System.out.println("angleMoved():\t" + angleMoved());
@@ -186,6 +185,5 @@ public abstract class GyroRotationalCommand extends AutoMovementCommand {
     // subsystems is scheduled to run
     protected void interrupted() {
         Robot.drivetrain.tankDrive(0.0, 0.0);
-        Robot.drivetrain.manualGearShift(priorGearShiftState);
     }
 }
