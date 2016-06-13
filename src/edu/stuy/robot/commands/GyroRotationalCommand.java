@@ -4,7 +4,7 @@ import static edu.stuy.robot.RobotMap.CAMERA_VIEWING_ANGLE_X;
 import static edu.stuy.robot.RobotMap.MAX_DEGREES_OFF_AUTO_AIMING;
 
 import edu.stuy.robot.Robot;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.stuy.util.BoolBox;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -14,12 +14,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author Berkow
  *
  */
-public abstract class GyroRotationalCommand extends Command {
+public abstract class GyroRotationalCommand extends AutoMovementCommand {
 
     protected double desiredAngle;
     protected boolean canProceed; // E.g., whether goal is in frame
 
-    private boolean forceStopped; // When operator force stops
     private boolean abort; // When there is an error in a method
 
     private boolean priorGearShiftState;
@@ -28,13 +27,15 @@ public abstract class GyroRotationalCommand extends Command {
     private double tolerance;
 
     public GyroRotationalCommand() {
+        super();
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.drivetrain);
         tolerance = MAX_DEGREES_OFF_AUTO_AIMING;
     }
 
-    public GyroRotationalCommand(boolean gentle) {
+    public GyroRotationalCommand(BoolBox forceStopBox, boolean gentle) {
+        super(forceStopBox);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.drivetrain);
@@ -50,12 +51,27 @@ public abstract class GyroRotationalCommand extends Command {
         this.tolerance = tolerance;
     }
 
+    public GyroRotationalCommand(BoolBox forceStopBox, boolean gentle, double tolerance) {
+        super(forceStopBox);
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+        requires(Robot.drivetrain);
+        gentleRotate = gentle;
+        this.tolerance = tolerance;
+    }
+
     protected abstract void setDesiredAngle();
 
     // Called just before this Command runs the first time
+    @Override
     protected void initialize() {
         try {
-            forceStopped = false;
+            // If we received a forceStoppedBox controller and it is already
+            // true, stop immediately.
+            if (externallyStopped()) {
+                return;
+            }
+            super.initialize();
             abort = false;
             priorGearShiftState = Robot.drivetrain.gearUp;
             Robot.drivetrain.manualGearShift(true);
@@ -94,13 +110,11 @@ public abstract class GyroRotationalCommand extends Command {
     }
 
     // Called repeatedly when this Command is scheduled to run
+    @Override
     protected void execute() {
         try {
-            if (Robot.oi.driverIsOverriding()) {
-                forceStopped = true;
-                return;
-            }
-            if (!forceStopped) {
+            super.execute();
+            if (!getForceStopped()) {
                 double speed = gentleRotate
                         ? 0.62 + 0.15 * Math.pow(howMuchWeHaveToGo(), 2)
                         : 0.62 + 0.25 * Math.pow(howMuchWeHaveToGo(), 2);
@@ -109,7 +123,6 @@ public abstract class GyroRotationalCommand extends Command {
                 System.out.println("angleMoved():\t" + angleMoved());
                 System.out.println("desiredAngle:\t" + desiredAngle);
                 System.out.println("degreesToMove():\t" + degreesToMove());
-                //System.out.println("original distance:\t" + StuyVisionModule.findDistanceToGoal(cvReading));
                 // right is negative when turning right
                 if (degreesToMove() < 0) {
                     System.out.println("\nMoving left, as degreesToMove()=" + desiredAngle + " < 0");
@@ -131,10 +144,13 @@ public abstract class GyroRotationalCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         try {
+            if (getForceStopped()) {
+                return true;
+            }
             // When no more can or should be done:
-            if (forceStopped || abort || !canProceed || Math.abs(desiredAngle) < 0.001) { // last condition for cases when it is zero
+            if (abort || !canProceed || Math.abs(desiredAngle) < 0.001) { // last condition for cases when it is zero
                 Robot.cvSignalLight.setOff();
-                System.out.println("\n\n\n\n\n\n\nforce stopped: " + forceStopped + "\ngoalInFrame: " + canProceed + "\ndesiredAngle: " + desiredAngle);
+                System.out.println("\n\n\n\n\n\n\ngoalInFrame: " + canProceed + "\ndesiredAngle: " + desiredAngle);
                 return true;
             }
 
@@ -146,14 +162,11 @@ public abstract class GyroRotationalCommand extends Command {
             System.out.println("degsOff: " + degsOff + "\nonTarget: " + onTarget);
             Robot.cvSignalLight.set(onTarget);
 
-            //if (System.currentTimeMillis() - timeStart > timeout) {
-            //    System.out.println("RotateToAimCommand timed out after " + timeout + "ms");
-            //    return true;
-            //}
             return onTarget;
         } catch (Exception e) {
             System.out.println("Error in isFinished in RotateToAimCommand:");
             e.printStackTrace();
+            abort = true;
             return true; // abort
         }
     }

@@ -23,6 +23,7 @@ import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Hopper;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.stuy.robot.subsystems.Sonar;
+import edu.stuy.util.BoolBox;
 import edu.stuy.util.YellowSignalLight;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -65,6 +66,7 @@ public class Robot extends IterativeRobot {
     private static boolean debugMode;
 
     public static StuyVision vision;
+    public static BoolBox stopAutoMovement = new BoolBox(false);
 
     /**
      * This function is run when the robot is first started up and should be

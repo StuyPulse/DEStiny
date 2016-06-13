@@ -11,6 +11,7 @@ import edu.stuy.robot.cv.StuyVision;
 public class DriveToCourtyardRangeCommand extends EncoderDrivingCommand {
 
     public DriveToCourtyardRangeCommand() {
+        super(Robot.stopAutoMovement);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.drivetrain);
@@ -24,6 +25,10 @@ public class DriveToCourtyardRangeCommand extends EncoderDrivingCommand {
         } else {
             // CV failed!
             cancelCommand = true;
+        }
+        System.out.println(new StuyVision.Report(cvReading));
+        if (cvReading != null) {
+            System.out.println(StuyVision.findBotDistanceToGoal(cvReading[1]));
         }
     }
 }

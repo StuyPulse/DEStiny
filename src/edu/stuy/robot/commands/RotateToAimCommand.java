@@ -14,19 +14,19 @@ public class RotateToAimCommand extends GyroRotationalCommand {
     public RotateToAimCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        super();
+        super(Robot.stopAutoMovement, false);
     }
 
     public RotateToAimCommand(boolean gentle) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        super(gentle);
+        super(Robot.stopAutoMovement, gentle);
     }
 
     public RotateToAimCommand(boolean gentle, double tolerance) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        super(gentle, tolerance);
+        super(Robot.stopAutoMovement, gentle, tolerance);
     }
 
     private double[] cvReading;

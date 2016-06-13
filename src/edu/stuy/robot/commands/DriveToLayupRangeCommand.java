@@ -4,6 +4,7 @@ import static edu.stuy.robot.RobotMap.LAYUP_SHOOTING_DISTANCE;
 
 import edu.stuy.robot.Robot;
 import edu.stuy.robot.cv.StuyVision;
+import edu.stuy.util.BoolBox;
 
 /**
  *
@@ -11,6 +12,7 @@ import edu.stuy.robot.cv.StuyVision;
 public class DriveToLayupRangeCommand extends EncoderDrivingCommand {
 
     public DriveToLayupRangeCommand() {
+        super(Robot.stopAutoMovement);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.drivetrain);

@@ -1,7 +1,7 @@
 package edu.stuy.robot.commands;
 
 import edu.stuy.robot.Robot;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.stuy.util.BoolBox;
 
 /**
  * Abstract command for moving forward or back by a displacement
@@ -9,18 +9,29 @@ import edu.wpi.first.wpilibj.command.Command;
  * method implemented by the subclass.
  * @author Berkow
  */
-public abstract class EncoderDrivingCommand extends Command {
+public abstract class EncoderDrivingCommand extends AutoMovementCommand {
 
     protected double initialInchesToMove; // positive is forward
-    protected boolean cancelCommand;
+    protected boolean cancelCommand; // set by subclass
 
     private boolean abort;
 
     abstract protected void setInchesToMove();
 
+    public EncoderDrivingCommand() {
+    }
+
+    public EncoderDrivingCommand(BoolBox forceStopController) {
+        super(forceStopController);
+    }
+
     // Called just before this Command runs the first time
     protected void initialize() {
         try {
+            if (externallyStopped()) {
+                return;
+            }
+            super.initialize();
             Robot.drivetrain.resetEncoders();
             initialInchesToMove = 0.0;
             cancelCommand = false;
@@ -39,12 +50,15 @@ public abstract class EncoderDrivingCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         try {
-            double inchesToGo = inchesToMove();
-            double speed = 0.55 + 0.3 * Math.min(1.0, Math.pow(inchesToGo / distForMaxSpeed, 2));
-            // The above speed calculation is based on the one that has worked for GyroRotationalCommand
-            System.out.println("Inches to go: " + inchesToGo);
-            speed *= Math.signum(initialInchesToMove);
-            Robot.drivetrain.tankDrive(speed, speed);
+            super.execute();
+            if (!getForceStopped()) {
+                double inchesToGo = inchesToMove();
+                double speed = 0.55 + 0.3 * Math.min(1.0, Math.pow(inchesToGo / distForMaxSpeed, 2));
+                // The above speed calculation is based on the one that has worked for GyroRotationalCommand
+                System.out.println("Inches to go: " + inchesToGo);
+                speed *= Math.signum(initialInchesToMove);
+                Robot.drivetrain.tankDrive(speed, speed);
+            }
         } catch (Exception e) {
             System.out.println("Error in execute in EncoderDrivingCommand:");
             e.printStackTrace();
@@ -54,7 +68,7 @@ public abstract class EncoderDrivingCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        if (abort || cancelCommand || Robot.oi.driverIsOverriding()) {
+        if (abort || cancelCommand || getForceStopped()) {
             return true;
         }
         return Math.abs(inchesToMove()) <= 3.0;
