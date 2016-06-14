@@ -14,6 +14,7 @@ import edu.stuy.robot.commands.HoodDownCommand;
 import edu.stuy.robot.commands.HoodUpCommand;
 import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.JionDriveCommand;
+import edu.stuy.robot.commands.RotateToAimCommand;
 import edu.stuy.robot.commands.RotateToAimMultiCommand;
 import edu.stuy.robot.commands.RunInLowGearCommand;
 import edu.stuy.robot.commands.SetupForShotCommand;
@@ -78,8 +79,8 @@ public class OI {
         // CV controls
         driverGamepad.getBottomButton().whenPressed(new RunInLowGearCommand(new RotateToAimMultiCommand()));
         driverGamepad.getTopButton().whenPressed(new SetupForShotCommand());
-        driverGamepad.getRightButton().whenPressed(new RunInLowGearCommand(new RotateToAimMultiCommand()));
-        driverGamepad.getLeftButton().whenPressed(new RunInLowGearCommand(new RotateToAimMultiCommand()));
+        driverGamepad.getRightButton().whenPressed(new RunInLowGearCommand(new RotateToAimCommand()));
+        driverGamepad.getLeftButton().whenPressed(new RunInLowGearCommand(new RotateToAimCommand()));
 
         // OPERATOR BINDINGS
         operatorGamepad.getLeftTrigger().whileHeld(new HopperRunCommand(true));
