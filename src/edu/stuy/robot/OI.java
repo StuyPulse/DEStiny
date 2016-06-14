@@ -15,6 +15,7 @@ import edu.stuy.robot.commands.HoodUpCommand;
 import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.JionDriveCommand;
 import edu.stuy.robot.commands.RotateToAimMultiCommand;
+import edu.stuy.robot.commands.RunInLowGearCommand;
 import edu.stuy.robot.commands.SetupForShotCommand;
 import edu.stuy.robot.commands.ShooterHopperBackwardsCommand;
 import edu.stuy.robot.commands.ShooterHopperStopCommand;
@@ -75,16 +76,10 @@ public class OI {
         driverGamepad.getLeftBumper().whenReleased(new FlashlightOffCommand());
 
         // CV controls
-        // Colored buttons all for aiming:
-        driverGamepad.getBottomButton().whenPressed(new RotateToAimMultiCommand());
+        driverGamepad.getBottomButton().whenPressed(new RunInLowGearCommand(new RotateToAimMultiCommand()));
         driverGamepad.getTopButton().whenPressed(new SetupForShotCommand());
-        driverGamepad.getRightButton().whenPressed(new RotateToAimMultiCommand());
-        driverGamepad.getLeftButton().whenPressed(new RotateToAimMultiCommand());
-        // DPad left and right for moving into range:
-        //driverGamepad.getDPadLeft().whenPressed(new DriveToCourtyardRangeCommand());
-        //driverGamepad.getDPadRight().whenPressed(new DriveToLayupRangeCommand());
-        // For testing, and benign if accidentally pressed:
-        //driverGamepad.getDPadDown().whenPressed(new CVReadAndPrintCommand(true));
+        driverGamepad.getRightButton().whenPressed(new RunInLowGearCommand(new RotateToAimMultiCommand()));
+        driverGamepad.getLeftButton().whenPressed(new RunInLowGearCommand(new RotateToAimMultiCommand()));
 
         // OPERATOR BINDINGS
         operatorGamepad.getLeftTrigger().whileHeld(new HopperRunCommand(true));

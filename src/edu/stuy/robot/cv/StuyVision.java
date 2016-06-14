@@ -62,7 +62,9 @@ public class StuyVision extends VisionModule {
 
     public StuyVision() {
         try {
+            // Ensure native libraries are loaded
             loadOpenCV();
+            // Assume the camera is plugged into port `outerUSBPort`
             cameraPort = outerUSBPort;
             initializeCamera();
         } catch (Exception e) {

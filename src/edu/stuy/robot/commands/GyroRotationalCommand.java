@@ -174,7 +174,7 @@ public abstract class GyroRotationalCommand extends AutoMovementCommand {
 
     // Called once after isFinished returns true
     protected void end() {
-        Robot.drivetrain.tankDrive(0.0, 0.0);
+        Robot.drivetrain.stop();
         System.out.println("ENDED");
         // Set drivetrain gearshift to how it was before aiming
         Robot.drivetrain.manualGearShift(priorGearShiftState);

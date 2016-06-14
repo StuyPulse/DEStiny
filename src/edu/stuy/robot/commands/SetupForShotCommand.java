@@ -27,9 +27,13 @@ public class SetupForShotCommand extends CommandGroup {
 
         addSequential(new LowGearCommand());
         addSequential(new ResetForceStopCommand());
-        addSequential(new RotateToAimMultiCommand(1.5));
+
+        addSequential(new RotateToAimCommand(false, 1.5)); // Coarse rotation
+        addSequential(new RotateToAimCommand(true)); // Refining rotation
+
         addSequential(new DriveToLayupRangeCommand());
         addSequential(new RotateToAimCommand(false, 2.0));
+
         addSequential(new ResetForceStopCommand());
         addSequential(new HighGearCommand());
     }
