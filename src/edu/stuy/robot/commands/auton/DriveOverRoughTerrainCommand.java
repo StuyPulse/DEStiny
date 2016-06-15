@@ -20,7 +20,7 @@ public class DriveOverRoughTerrainCommand extends DriveForwardCommand {
 
     @Override
     protected void execute() {
-        super.setMaxDistanceInInches(196.0);
+        super.setMaxDistanceInInches(150.0);
         Robot.drivetrain.tankDrive(1.0, 1.0);
     }
 

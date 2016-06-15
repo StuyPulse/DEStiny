@@ -6,11 +6,11 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class HopperRunCommand extends Command {
+public class HopperRunContinuousCommand extends Command {
 
     private boolean feed;
 
-    public HopperRunCommand(boolean in) {
+    public HopperRunContinuousCommand(boolean in) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.hopper);
@@ -20,6 +20,10 @@ public class HopperRunCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
         System.out.println("IN INITIALIZE OF HOPPER RUN");
+    }
+
+    // Called repeatedly when this Command is scheduled to run
+    protected void execute() {
         if (feed) {
             System.out.println("FEEDING HOPPER");
             Robot.hopper.feed();
@@ -30,13 +34,9 @@ public class HopperRunCommand extends Command {
         Robot.hopper.runHopperSensor();
     }
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    }
-
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true
