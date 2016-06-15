@@ -6,7 +6,7 @@ public class PassChevalCommand extends CommandGroup {
     private static final int INITIAL_DISTANCE_FORWARD_IN_INCHES = 60;
     private static final int INITIAL_TIME_FORWARD_IN_SECONDS = 10;
     private static final double INITIAL_SPEED = 0.5;
-    private static final int SECOND_DISTANCE_FORWARD_IN_INCHES = 150;
+    private static final int SECOND_DISTANCE_FORWARD_IN_INCHES = 120;
     private static final int SECOND_TIME_FORWARD_IN_SECONDS = 10;
     private static final double SECOND_SPEED = 1.0;
 
