@@ -1,13 +1,14 @@
 package edu.stuy.robot.commands;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class SetupForShotCommand extends CommandGroup {
+public class RunInLowGearCommand extends CommandGroup {
     
-    public  SetupForShotCommand() {
+    public  RunInLowGearCommand(Command command) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -24,15 +25,8 @@ public class SetupForShotCommand extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-
-        addSequential(new ResetForceStopCommand());
-
-        addSequential(new RotateToAimCommand(false, 1.5)); // Coarse rotation
-        addSequential(new RotateToAimCommand(true)); // Refining rotation
-
-        addSequential(new DriveToLayupRangeCommand());
-        addSequential(new RotateToAimCommand(false, 2.0));
-
-        addSequential(new ResetForceStopCommand());
+        addSequential(new LowGearCommand());
+        addSequential(command);
+        addSequential(new HighGearCommand());
     }
 }
