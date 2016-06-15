@@ -5,7 +5,7 @@ import static edu.stuy.robot.RobotMap.JONAH_ID;
 import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
 import static edu.stuy.robot.RobotMap.YUBIN_ID;
 
-import edu.stuy.robot.commands.auton.CrossObstacleThenShootDinnerCommand;
+import edu.stuy.robot.commands.auton.CrossObstacleThenShootCommand;
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
 import edu.stuy.robot.commands.auton.GoOverRockWallBackwardsCommand;
@@ -54,6 +54,7 @@ public class Robot extends IterativeRobot {
     public static Flashlight flashlight;
     public static OI oi;
 
+    Command selectedAutonomousCommand;
     Command autonomousCommand;
 
     public static SendableChooser debugChooser;
@@ -195,13 +196,16 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         try {
             debugMode = (Boolean) debugChooser.getSelected();
-            Command selectedCommand = (Command) autonChooser.getSelected();
-            // int autonPosition = (Integer) autonPositionChooser.getSelected();
-            autonomousCommand = selectedCommand;
-
-            boolean shoot = (Boolean) autonShootChooser.getSelected();
-            if (shoot) {
-                autonomousCommand = new CrossObstacleThenShootDinnerCommand(autonomousCommand);
+            Command selected = (Command) autonChooser.getSelected();
+            if (selected != selectedAutonomousCommand) {
+                int autonPosition = (Integer) autonPositionChooser.getSelected();
+                boolean shoot = (Boolean) autonShootChooser.getSelected();
+                selectedAutonomousCommand = selected;
+                if (shoot) {
+                    autonomousCommand = new CrossObstacleThenShootCommand(selectedAutonomousCommand, autonPosition);
+                } else {
+                    autonomousCommand = selectedAutonomousCommand;
+                }
             }
 
             autonomousCommand.start();

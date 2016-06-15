@@ -1,10 +1,9 @@
 package edu.stuy.robot.commands.auton;
 
-import edu.stuy.robot.commands.DriveToCourtyardRangeCommand;
+import edu.stuy.robot.commands.DrivetrainStopCommand;
 import edu.stuy.robot.commands.FlashlightOnCommand;
 import edu.stuy.robot.commands.HopperRunCommand;
 import edu.stuy.robot.commands.LowGearCommand;
-import edu.stuy.robot.commands.RotateToAimCommand;
 import edu.stuy.robot.commands.SetupForShotCommand;
 import edu.stuy.robot.commands.ShooterSetLayupCommand;
 import edu.wpi.first.wpilibj.command.Command;
@@ -34,6 +33,7 @@ public class CrossObstacleThenShootCommand extends CommandGroup {
         // arm.
 
         addSequential(obstacle);
+        addSequential(new DrivetrainStopCommand());
         addParallel(new ShooterSetLayupCommand());
         addSequential(new DropDownMoveToAngleCommand(0), 2.0);
         addSequential(new LowGearCommand());

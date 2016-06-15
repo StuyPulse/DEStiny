@@ -31,7 +31,7 @@ public class SetupForShotCommand extends CommandGroup {
         addSequential(new RotateToAimCommand(true)); // Refining rotation
 
         addSequential(new DriveToLayupRangeCommand());
-        addSequential(new RotateToAimCommand(false, 2.0));
+        addSequential(new RotateToAimCommand(false, 1.7));
 
         addSequential(new ResetForceStopCommand());
     }
