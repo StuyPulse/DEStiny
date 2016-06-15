@@ -78,7 +78,7 @@ public class OI {
 
         // CV controls
         driverGamepad.getBottomButton().whenPressed(new RunInLowGearCommand(new RotateToAimMultiCommand()));
-        driverGamepad.getTopButton().whenPressed(new SetupForShotCommand());
+        driverGamepad.getTopButton().whenPressed(new RunInLowGearCommand(new SetupForShotCommand()));
         driverGamepad.getRightButton().whenPressed(new RunInLowGearCommand(new RotateToAimCommand()));
         driverGamepad.getLeftButton().whenPressed(new RunInLowGearCommand(new RotateToAimCommand()));
 

@@ -256,6 +256,7 @@ public class Robot extends IterativeRobot {
 
             Robot.flashlight.flashlightOff();
             Robot.hood.changePosition(HOOD_DOWN_POSITION);
+            Robot.drivetrain.manualGearShift(false);
         } catch (Exception e) {
             System.err.println("\n\n\n\n\nTOP-LEVEL CATCH in telopInit. Exception was:");
             e.printStackTrace();
