@@ -58,11 +58,11 @@ public class Hopper extends Subsystem {
     }
 
     public void lightOn() {
-        hopperSignalLight.set(false);
+        hopperSignalLight.set(true);
     }
 
     public void lightOff() {
-        hopperSignalLight.set(true);
+        hopperSignalLight.set(false);
     }
 
     public void runHopperSensor() {
