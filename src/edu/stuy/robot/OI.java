@@ -9,6 +9,7 @@ import edu.stuy.robot.commands.DisableAutoGearShiftCommand;
 import edu.stuy.robot.commands.EnableAutoGearShiftCommand;
 import edu.stuy.robot.commands.FlashlightOffCommand;
 import edu.stuy.robot.commands.FlashlightOnCommand;
+import edu.stuy.robot.commands.GyroRotationalCommand;
 import edu.stuy.robot.commands.HighGearCommand;
 import edu.stuy.robot.commands.HoodDownCommand;
 import edu.stuy.robot.commands.HoodUpCommand;
@@ -79,8 +80,12 @@ public class OI {
         // CV controls
         driverGamepad.getBottomButton().whenPressed(new RunInLowGearCommand(new RotateToAimMultiCommand()));
         driverGamepad.getTopButton().whenPressed(new RunInLowGearCommand(new SetupForShotCommand()));
-        driverGamepad.getRightButton().whenPressed(new RunInLowGearCommand(new RotateToAimCommand()));
-        driverGamepad.getLeftButton().whenPressed(new RunInLowGearCommand(new RotateToAimCommand()));
+        GyroRotationalCommand singleRotationLeft = new RotateToAimCommand();
+        singleRotationLeft.setUseCVSignalLight(true);
+        GyroRotationalCommand singleRotationRight = new RotateToAimCommand();
+        singleRotationRight.setUseCVSignalLight(true);
+        driverGamepad.getRightButton().whenPressed(new RunInLowGearCommand(singleRotationLeft));
+        driverGamepad.getLeftButton().whenPressed(new RunInLowGearCommand(singleRotationRight));
 
         // OPERATOR BINDINGS
         operatorGamepad.getLeftTrigger().whileHeld(new HopperRunCommand(true));

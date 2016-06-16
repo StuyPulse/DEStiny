@@ -31,7 +31,10 @@ public class SetupForShotCommand extends CommandGroup {
         addSequential(new RotateToAimCommand(true)); // Refining rotation
 
         addSequential(new DriveToLayupRangeCommand());
-        addSequential(new RotateToAimCommand(false, 1.7));
+
+        GyroRotationalCommand finalRotation = new RotateToAimCommand(false, 1.7);
+        finalRotation.setUseCVSignalLight(true);
+        addSequential(finalRotation);
 
         addSequential(new ResetForceStopCommand());
     }

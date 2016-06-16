@@ -7,11 +7,11 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 /**
  *
  */
-public class YellowSignalLight {
+public class CVSignalLight {
 
     private DigitalOutput light;
 
-    public YellowSignalLight() {
+    public CVSignalLight() {
         light = new DigitalOutput(SIGNAL_LIGHT_YELLOW_PORT);
     }
 

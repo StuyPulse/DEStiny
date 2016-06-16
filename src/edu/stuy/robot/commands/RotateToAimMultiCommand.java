@@ -11,13 +11,17 @@ public class RotateToAimMultiCommand extends CommandGroup {
         // First rotation:
         addSequential(new RotateToAimCommand());
         // Refine:
-        addSequential(new RotateToAimCommand(true));
+        GyroRotationalCommand finalRot = new RotateToAimCommand(true);
+        finalRot.setUseCVSignalLight(true);
+        addSequential(finalRot);
     }
 
     public RotateToAimMultiCommand(double tolerance) {
         // First rotation:
         addSequential(new RotateToAimCommand(false, tolerance));
         // Refine:
-        addSequential(new RotateToAimCommand(true));
+        GyroRotationalCommand finalRot = new RotateToAimCommand(true);
+        finalRot.setUseCVSignalLight(true);
+        addSequential(finalRot);
     }
 }

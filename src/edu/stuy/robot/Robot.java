@@ -24,7 +24,7 @@ import edu.stuy.robot.subsystems.Hopper;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.stuy.robot.subsystems.Sonar;
 import edu.stuy.util.BoolBox;
-import edu.stuy.util.YellowSignalLight;
+import edu.stuy.util.CVSignalLight;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -50,7 +50,7 @@ public class Robot extends IterativeRobot {
     public static Shooter shooter;
     public static Hood hood;
     public static Sonar sonar;
-    public static YellowSignalLight cvSignalLight;
+    public static CVSignalLight cvSignalLight;
     public static Flashlight flashlight;
     public static OI oi;
 
@@ -108,7 +108,7 @@ public class Robot extends IterativeRobot {
         shooter = new Shooter();
         hood = new Hood();
         sonar = new Sonar();
-        cvSignalLight = new YellowSignalLight();
+        cvSignalLight = new CVSignalLight();
 
         // Turn off the cv signal light
         cvSignalLight.set(false);
@@ -199,6 +199,7 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
         try {
+            Robot.cvSignalLight.setOff();
             debugMode = (Boolean) debugChooser.getSelected();
             Command selected = (Command) autonChooser.getSelected();
             if (selected != selectedAutonomousCommand) {

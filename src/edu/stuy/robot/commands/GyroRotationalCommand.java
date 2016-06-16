@@ -26,6 +26,8 @@ public abstract class GyroRotationalCommand extends AutoMovementCommand {
     private boolean gentleRotate;
     private double tolerance;
 
+    private boolean useCVSignalLight;
+
     public GyroRotationalCommand() {
         super();
         // Use requires() here to declare subsystem dependencies
@@ -58,6 +60,10 @@ public abstract class GyroRotationalCommand extends AutoMovementCommand {
         requires(Robot.drivetrain);
         gentleRotate = gentle;
         this.tolerance = tolerance;
+    }
+
+    public void setUseCVSignalLight(boolean useIt) {
+        useCVSignalLight = useIt;
     }
 
     protected abstract void setDesiredAngle();
@@ -159,7 +165,9 @@ public abstract class GyroRotationalCommand extends AutoMovementCommand {
 
             boolean onTarget = Math.abs(degsOff) < tolerance;
             System.out.println("degsOff: " + degsOff + "\nonTarget: " + onTarget);
-            Robot.cvSignalLight.set(onTarget);
+            if (useCVSignalLight) {
+                Robot.cvSignalLight.set(onTarget);
+            }
 
             return onTarget;
         } catch (Exception e) {
@@ -176,8 +184,12 @@ public abstract class GyroRotationalCommand extends AutoMovementCommand {
     protected void end() {
         Robot.drivetrain.stop();
         System.out.println("ENDED");
-        // Set drivetrain gearshift to how it was before aiming
+
+        // TODO: The following, as this begins always in low gear and
+        // does not change the gear, should do nothing. Test having
+        // removed it to be absolutely sure.
         Robot.drivetrain.manualGearShift(priorGearShiftState);
+
         onEnd();
     }
 
