@@ -267,10 +267,12 @@ public class StuyVision extends VisionModule {
             System.out.println("Camera object is uninitialized or frame not taken!");
             return null;
         }
-        Mat frame = null;
-        for (int i = 0; i < 6; i++) {
-            frame = camera.readSized(rawFrame, resizedFrame);
+        // To prevent buffer repeat frames from being used:
+        for (int i = 0; i < 5; i++) {
+            camera.readFrame(rawFrame);
         }
+        // Now read and resize updated frame:
+        Mat frame = camera.readSized(rawFrame, resizedFrame);
         System.out.println("Got frame from camera");
         if (frame == null) {
             System.out.println("FRAME WAS NULL");
