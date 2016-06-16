@@ -40,6 +40,8 @@ public class RotateToAimCommand extends GyroRotationalCommand {
             SmartDashboard.putNumber("cv-angle", desiredAngle);
         }
         SmartDashboard.putBoolean("cv-visible", canProceed);
+        // For auton:
+        Robot.cvFoundGoal = canProceed;
     }
 
     protected void onEnd() {

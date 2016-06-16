@@ -1,42 +1,43 @@
-package edu.stuy.robot.commands;
+package edu.stuy.robot.commands.auton;
 
-import edu.stuy.robot.*;
+import edu.stuy.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * Checks <code>Robot.cvFoundGoal</code> to determine whether
+ * to run the hopper to shoot or to turn off the shooter.
  */
-public class HopperRunContinuousCommand extends Command {
+public class HandleAutonShotCommand extends Command {
 
-    private boolean feed;
-
-    public HopperRunContinuousCommand(boolean in) {
+    public HandleAutonShotCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.hopper);
-        feed = in;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        System.out.println("IN INITIALIZE OF HOPPER RUN");
+        if (Robot.cvFoundGoal) {
+            System.out.println("Robot.cvFoundGoal is true. Feeding hopper");
+        } else {
+            System.out.println("Robot.cvFoundGoal is false. Cutting power to shooter");
+            Robot.shooter.stop();
+        }
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if (feed) {
-            System.out.println("FEEDING HOPPER");
+        if (Robot.cvFoundGoal) {
             Robot.hopper.feed();
-        } else {
-            System.out.println("SPITTING OUT BAD FOOD");
-            Robot.hopper.vomit();
+            Robot.hopper.runHopperSensor();
         }
-        Robot.hopper.runHopperSensor();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        // Continue running until externally timed out (e.g. in a CommandGroup)
+        // if the hopper is to run. Otherwise exit immediately.
+        return !Robot.cvFoundGoal;
     }
 
     // Called once after isFinished returns true

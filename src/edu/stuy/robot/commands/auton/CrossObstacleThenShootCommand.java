@@ -2,7 +2,6 @@ package edu.stuy.robot.commands.auton;
 
 import edu.stuy.robot.commands.DrivetrainStopCommand;
 import edu.stuy.robot.commands.FlashlightOnCommand;
-import edu.stuy.robot.commands.HopperRunContinuousCommand;
 import edu.stuy.robot.commands.LowGearCommand;
 import edu.stuy.robot.commands.SetupForShotCommand;
 import edu.stuy.robot.commands.ShooterSetLayupCommand;
@@ -44,7 +43,10 @@ public class CrossObstacleThenShootCommand extends CommandGroup {
         }
         addParallel(new FlashlightOnCommand()); // So we can see where it is aiming
         addSequential(new SetupForShotCommand());
-        addSequential(new HopperRunContinuousCommand(true), 3.0);
+
+        // The following only runs the hopper if goal was in frame for CV
+        addSequential(new HandleAutonShotCommand(), 3.0);
+
         // Drivetrain returns to high gear in teleopInit, where
         // also shooter, hopper and flashlight are turned off.
     }

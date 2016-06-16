@@ -69,6 +69,10 @@ public class Robot extends IterativeRobot {
     public static StuyVision vision;
     public static BoolBox stopAutoMovement = new BoolBox(false);
 
+    // Used to not waste a ball in a shooting auton if CV doesn't
+    // find the goal (because, e.g., the bot got rekt by obstacle):
+    public static boolean cvFoundGoal = false;
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
