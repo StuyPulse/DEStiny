@@ -54,12 +54,16 @@ public class Main extends Application {
             DeviceCaptureSource cs = new DeviceCaptureSource(0);
             {
                 Thread t = new Thread(new Runnable() {
+                    private Mat rawFrame;
+                    private Mat resizedFrame;
                     @Override
                     public void run() {
+                        rawFrame = new Mat();
+                        resizedFrame = new Mat();
                         for (;;) {
                             try {
                                 long start = System.currentTimeMillis();
-                                Mat frame = cs.read();
+                                Mat frame = cs.readSized(rawFrame, resizedFrame);
                                 module.run(self, frame);
                                 long duration = System.currentTimeMillis() - start;
                                 DebugPrinter.println(module.getName() + ": " + duration + " ms");

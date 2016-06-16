@@ -60,6 +60,10 @@ public class StuyVision extends VisionModule {
 
     private static PrintWriter logWriter;
 
+    // Reused across processImage() calls
+    private Mat rawFrame;
+    private Mat resizedFrame;
+
     public StuyVision() {
         try {
             // Ensure native libraries are loaded
@@ -67,6 +71,8 @@ public class StuyVision extends VisionModule {
             // Assume the camera is plugged into port `outerUSBPort`
             cameraPort = outerUSBPort;
             initializeCamera();
+            rawFrame = new Mat();
+            resizedFrame = new Mat();
         } catch (Exception e) {
             System.out.println("Failed to create camera at " + cameraPort + ". Error was: " + e);
         }
@@ -263,7 +269,7 @@ public class StuyVision extends VisionModule {
         }
         Mat frame = null;
         for (int i = 0; i < 6; i++) {
-            frame = camera.read();
+            frame = camera.readSized(rawFrame, resizedFrame);
         }
         System.out.println("Got frame from camera");
         if (frame == null) {

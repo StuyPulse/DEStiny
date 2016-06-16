@@ -21,15 +21,17 @@ public abstract class CaptureSource {
 
     public abstract boolean isOpened();
 
-    public Mat read() {
-        Mat frame = new Mat();
+    public Mat readSized() {
+        return readSized(new Mat(), new Mat());
+    }
+
+    public Mat readSized(Mat frame, Mat resizedFrame) {
         boolean success = readFrame(frame);
         if (success) {
             int frameHeight = frame.height();
             int frameWidth = frame.width();
             double resizeRatio = (double) resizeWidth / frameWidth;
             Size desiredSize = new Size(frameWidth * resizeRatio, frameHeight * resizeRatio);
-            Mat resizedFrame = new Mat();
             Imgproc.resize(frame, resizedFrame, desiredSize, 0, 0, Imgproc.INTER_CUBIC);
             DebugPrinter.println("\nCaptureSource: init frame dims: (" + frameWidth + ", " + frameHeight + ").");
             DebugPrinter.println("Ratio: " + resizeRatio + ".");
