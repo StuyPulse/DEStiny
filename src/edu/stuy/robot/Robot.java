@@ -3,6 +3,8 @@ package edu.stuy.robot;
 import static edu.stuy.robot.RobotMap.HOOD_DOWN_POSITION;
 import static edu.stuy.robot.RobotMap.JONAH_ID;
 import static edu.stuy.robot.RobotMap.SHOOTER_SPEED_LABEL;
+import static edu.stuy.robot.RobotMap.SIGNAL_LIGHT_BLUE_PORT;
+import static edu.stuy.robot.RobotMap.SIGNAL_LIGHT_YELLOW_PORT;
 import static edu.stuy.robot.RobotMap.YUBIN_ID;
 
 import edu.stuy.robot.commands.auton.CrossObstacleThenShootCommand;
@@ -24,7 +26,7 @@ import edu.stuy.robot.subsystems.Hopper;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.stuy.robot.subsystems.Sonar;
 import edu.stuy.util.BoolBox;
-import edu.stuy.util.CVSignalLight;
+import edu.stuy.util.SignalLight;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -50,7 +52,8 @@ public class Robot extends IterativeRobot {
     public static Shooter shooter;
     public static Hood hood;
     public static Sonar sonar;
-    public static CVSignalLight cvSignalLight;
+    public static SignalLight blueSignalLight;
+    public static SignalLight cvSignalLight;
     public static Flashlight flashlight;
     public static OI oi;
 
@@ -108,10 +111,11 @@ public class Robot extends IterativeRobot {
         shooter = new Shooter();
         hood = new Hood();
         sonar = new Sonar();
-        cvSignalLight = new CVSignalLight();
+        blueSignalLight = new SignalLight(SIGNAL_LIGHT_BLUE_PORT, true);
+        cvSignalLight = new SignalLight(SIGNAL_LIGHT_YELLOW_PORT, true);
 
         // Turn off the cv signal light
-        cvSignalLight.set(false);
+        cvSignalLight.stayOff();
 
         flashlight = new Flashlight();
 
@@ -199,7 +203,7 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
         try {
-            Robot.cvSignalLight.setOff();
+            Robot.cvSignalLight.stayOff();
             debugMode = (Boolean) debugChooser.getSelected();
             Command selected = (Command) autonChooser.getSelected();
             if (selected != selectedAutonomousCommand) {
@@ -233,6 +237,7 @@ public class Robot extends IterativeRobot {
                 SmartDashboard.putNumber("potentiometer", Robot.dropdown.getAngle());
                 SmartDashboard.putNumber("Potentiometer voltage", Robot.dropdown.getVoltage());
             }
+            Robot.blueSignalLight.tick();
             // This block is here instead of teleop init to save battery voltage
             // because teleop init does not run immediately after auton disables
             if (Timer.getFPGATimestamp() - autonStartTime > 14) {
@@ -286,6 +291,7 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         try {
             Scheduler.getInstance().run();
+            Robot.blueSignalLight.tick();
             if (debugMode) {
                 SmartDashboard.putNumber("gyro", Robot.drivetrain.getGyroAngle());
                 SmartDashboard.putNumber("Current Shooter Motor Speed:", Robot.shooter.getCurrentMotorSpeedInRPM());

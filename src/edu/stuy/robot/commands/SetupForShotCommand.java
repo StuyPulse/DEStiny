@@ -33,7 +33,7 @@ public class SetupForShotCommand extends CommandGroup {
         addSequential(new DriveToLayupRangeCommand());
 
         GyroRotationalCommand finalRotation = new RotateToAimCommand(false, 1.7);
-        finalRotation.setUseCVSignalLight(true);
+        finalRotation.setUseSignalLights(true);
         addSequential(finalRotation);
 
         addSequential(new ResetForceStopCommand());

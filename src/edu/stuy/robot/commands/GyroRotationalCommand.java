@@ -26,7 +26,7 @@ public abstract class GyroRotationalCommand extends AutoMovementCommand {
     private boolean gentleRotate;
     private double tolerance;
 
-    private boolean useCVSignalLight;
+    private boolean useSignalLights;
 
     public GyroRotationalCommand() {
         super();
@@ -62,8 +62,8 @@ public abstract class GyroRotationalCommand extends AutoMovementCommand {
         this.tolerance = tolerance;
     }
 
-    public void setUseCVSignalLight(boolean useIt) {
-        useCVSignalLight = useIt;
+    public void setUseSignalLights(boolean use) {
+        useSignalLights = use;
     }
 
     protected abstract void setDesiredAngle();
@@ -153,20 +153,27 @@ public abstract class GyroRotationalCommand extends AutoMovementCommand {
                 return true;
             }
             // When no more can or should be done:
-            if (abort || !canProceed || Math.abs(desiredAngle) < 0.001) { // last condition for cases when it is zero
-                Robot.cvSignalLight.setOff();
+            if (abort || !canProceed || Math.abs(desiredAngle) < 0.001) {
+                // The last condition above is *not* the judgment of whether aiming has
+                // succeeded; it is a failsafe for cases in which desiredAngle is 0
+                Robot.cvSignalLight.stayOff();
                 System.out.println("\n\n\n\n\n\n\ngoalInFrame: " + canProceed + "\ndesiredAngle: " + desiredAngle);
                 return true;
             }
 
-            // Judgement of success:
+            // Judgment of success:
             double degsOff = degreesToMove();
             SmartDashboard.putNumber("CV degrees off", degsOff);
 
             boolean onTarget = Math.abs(degsOff) < tolerance;
             System.out.println("degsOff: " + degsOff + "\nonTarget: " + onTarget);
-            if (useCVSignalLight) {
-                Robot.cvSignalLight.set(onTarget);
+            if (useSignalLights) {
+                if (onTarget) {
+                    Robot.cvSignalLight.stayOn();
+                } else {
+                    Robot.cvSignalLight.stayOff();
+                }
+                Robot.blueSignalLight.setBlinking(onTarget);
             }
 
             return onTarget;

@@ -24,8 +24,9 @@ public class DrivetrainTankDriveCommand extends Command {
         double right = Robot.drivetrain.inputSquared(Robot.oi.driverGamepad.getRightY());
         Robot.drivetrain.tankDrive(-left, -right);
 
-        // Turn off cv signal light, as the bot is no longer auto-aligned
-        Robot.cvSignalLight.setOff();
+        // Turn off cv signal light and stop hopper light blinking, as the bot is no longer auto-aligned
+        Robot.cvSignalLight.stayOff();
+        Robot.blueSignalLight.setBlinking(false);
     }
 
     // Make this return true when this Command no longer needs to run execute()

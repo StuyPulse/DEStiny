@@ -3,12 +3,11 @@ package edu.stuy.robot.subsystems;
 import static edu.stuy.robot.RobotMap.HOPPER_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.HOPPER_SENSOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.HOPPER_SENSOR_THRESHOLD;
-import static edu.stuy.robot.RobotMap.SIGNAL_LIGHT_BLUE_PORT;
 
+import edu.stuy.robot.Robot;
 import edu.stuy.robot.commands.HopperStopCommand;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -19,13 +18,11 @@ public class Hopper extends Subsystem {
     // here. Call these from Commands.
     private CANTalon hopperMotor;
     private AnalogInput distanceSensor;
-    private DigitalOutput hopperSignalLight;
 
     public Hopper() {
         hopperMotor = new CANTalon(HOPPER_MOTOR_CHANNEL);
         hopperMotor.setInverted(true);
         distanceSensor = new AnalogInput(HOPPER_SENSOR_CHANNEL);
-        hopperSignalLight = new DigitalOutput(SIGNAL_LIGHT_BLUE_PORT);
     }
 
     public void initDefaultCommand() {
@@ -57,19 +54,13 @@ public class Hopper extends Subsystem {
         return getDistance() > HOPPER_SENSOR_THRESHOLD;
     }
 
-    public void lightOn() {
-        hopperSignalLight.set(true);
-    }
-
-    public void lightOff() {
-        hopperSignalLight.set(false);
-    }
-
     public void runHopperSensor() {
-        if (hasBall()) {
-            lightOn();
-        } else {
-            lightOff();
+        if (!Robot.blueSignalLight.getBlinking()) {
+            if (hasBall()) {
+                Robot.blueSignalLight.stayOn();
+            } else {
+                Robot.blueSignalLight.stayOff();
+            }
         }
     }
 }

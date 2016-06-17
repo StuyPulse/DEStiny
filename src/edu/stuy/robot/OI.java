@@ -81,9 +81,9 @@ public class OI {
         driverGamepad.getBottomButton().whenPressed(new RunInLowGearCommand(new RotateToAimMultiCommand()));
         driverGamepad.getTopButton().whenPressed(new RunInLowGearCommand(new SetupForShotCommand()));
         GyroRotationalCommand singleRotationLeft = new RotateToAimCommand();
-        singleRotationLeft.setUseCVSignalLight(true);
+        singleRotationLeft.setUseSignalLights(true);
         GyroRotationalCommand singleRotationRight = new RotateToAimCommand();
-        singleRotationRight.setUseCVSignalLight(true);
+        singleRotationRight.setUseSignalLights(true);
         driverGamepad.getRightButton().whenPressed(new RunInLowGearCommand(singleRotationLeft));
         driverGamepad.getLeftButton().whenPressed(new RunInLowGearCommand(singleRotationRight));
 

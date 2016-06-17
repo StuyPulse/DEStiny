@@ -12,7 +12,7 @@ public class RotateToAimMultiCommand extends CommandGroup {
         addSequential(new RotateToAimCommand());
         // Refine:
         GyroRotationalCommand finalRot = new RotateToAimCommand(true);
-        finalRot.setUseCVSignalLight(true);
+        finalRot.setUseSignalLights(true);
         addSequential(finalRot);
     }
 
@@ -21,7 +21,7 @@ public class RotateToAimMultiCommand extends CommandGroup {
         addSequential(new RotateToAimCommand(false, tolerance));
         // Refine:
         GyroRotationalCommand finalRot = new RotateToAimCommand(true);
-        finalRot.setUseCVSignalLight(true);
+        finalRot.setUseSignalLights(true);
         addSequential(finalRot);
     }
 }
