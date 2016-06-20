@@ -217,6 +217,7 @@ public class Robot extends IterativeRobot {
                 }
             }
 
+            Robot.drivetrain.resetGyro();
             autonomousCommand.start();
             Robot.drivetrain.resetEncoders();
             autonStartTime = Timer.getFPGATimestamp();

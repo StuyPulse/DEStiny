@@ -1,5 +1,6 @@
 package edu.stuy.robot.commands.auton;
 
+import edu.stuy.robot.commands.AdjustIfNecessaryCommand;
 import edu.stuy.robot.commands.DrivetrainStopCommand;
 import edu.stuy.robot.commands.FlashlightOnCommand;
 import edu.stuy.robot.commands.LowGearCommand;
@@ -34,6 +35,7 @@ public class CrossObstacleThenShootCommand extends CommandGroup {
         addSequential(obstacle);
         addSequential(new LowGearCommand());
         addSequential(new DrivetrainStopCommand());
+        addSequential(new AdjustIfNecessaryCommand());
         addParallel(new ShooterSetLayupCommand());
         addSequential(new DropDownMoveToAngleCommand(0), 2.0);
         if (position != 3 && position != 4) {
