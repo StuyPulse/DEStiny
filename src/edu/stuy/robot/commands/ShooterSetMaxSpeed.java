@@ -11,11 +11,13 @@ public class ShooterSetMaxSpeed extends Command {
     public ShooterSetMaxSpeed() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.shooter);
+        requires(Robot.flashlight);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
         Robot.shooter.setSpeed(1.0);
+        Robot.flashlight.flashlightOn();
     }
 
     // Called repeatedly when this Command is scheduled to run

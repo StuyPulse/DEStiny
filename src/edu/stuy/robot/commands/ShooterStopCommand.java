@@ -12,11 +12,13 @@ public class ShooterStopCommand extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.shooter);
+        requires(Robot.flashlight);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
         Robot.shooter.stop();
+        Robot.flashlight.flashlightOff();
     }
 
     // Called repeatedly when this Command is scheduled to run

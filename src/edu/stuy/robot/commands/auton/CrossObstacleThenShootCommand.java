@@ -41,7 +41,6 @@ public class CrossObstacleThenShootCommand extends CommandGroup {
             // based on Robot.autonPositionChooser.getSelected()
             addSequential(new RotateDrivetrainCommand());
         }
-        addParallel(new FlashlightOnCommand()); // So we can see where it is aiming
         addSequential(new SetupForShotCommand());
 
         // The following only runs the hopper if goal was in frame for CV
