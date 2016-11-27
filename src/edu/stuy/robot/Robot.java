@@ -17,7 +17,7 @@ import edu.stuy.robot.subsystems.Hood;
 import edu.stuy.robot.subsystems.Hopper;
 import edu.stuy.robot.subsystems.Shooter;
 import edu.stuy.robot.subsystems.Sonar;
-import edu.stuy.util.TegraDataReader;
+import edu.stuy.util.TegraThreadManager;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -47,8 +47,7 @@ public class Robot extends IterativeRobot {
     Command autonomousCommand;
     SendableChooser autonChooser;
 
-    private static TegraDataReader tegraDataReader;
-    private static Thread tegraThread;
+    private TegraThreadManager tegraThreadManager;
     private double autonStartTime;
 
     /**
@@ -97,26 +96,11 @@ public class Robot extends IterativeRobot {
 
         setupAutonChooser();
 
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                if (tegraThread != null && tegraThread.isAlive()) {
-                    tegraThread.interrupt();
-                }
-            }
-        });
-        System.out.println("ADDED SHUTDOWN HOOK");
-    }
-
-    private void startTegraReadingThread() {
-        tegraDataReader = new TegraDataReader();
-        // Call .start(), rather than .run(), to run it in a separate thread
-        tegraThread = new Thread(tegraDataReader);
-        tegraThread.start();
+        tegraThreadManager = new TegraThreadManager();
     }
 
     public static double[] readTegraVector() {
-        return tegraDataReader.getMostRecent();
+        return tegraThreadManager.getMostRecent();
     }
 
     public void disabledPeriodic() {
@@ -128,6 +112,11 @@ public class Robot extends IterativeRobot {
         autonomousCommand.start();
         Robot.drivetrain.resetEncoders();
         autonStartTime = Timer.getFPGATimestamp();
+
+        System.out.println("STARTING TEGRA THREAD");
+        // TODO: Re-add try,catch for the following:
+        tegraThreadManager.startTegraReadingThread();
+        System.out.println("Started tegra thread");
     }
 
     public void autonomousPeriodic() {
@@ -167,9 +156,10 @@ public class Robot extends IterativeRobot {
         }
         Robot.drivetrain.resetEncoders();
         Robot.shooter.stop();
+
         System.out.println("STARTING TEGRA THREAD");
         // TODO: Re-add try,catch for the following:
-        startTegraReadingThread();
+        tegraThreadManager.startTegraReadingThread();
         System.out.println("Started tegra thread");
     }
 
@@ -178,9 +168,6 @@ public class Robot extends IterativeRobot {
      * to reset subsystems before shutting down.
      */
     public void disabledInit() {
-        if (tegraThread != null && tegraThread.isAlive()) {
-            tegraThread.interrupt();
-        }
     }
 
     /**

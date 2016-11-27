@@ -65,7 +65,8 @@ public class TegraDataReader implements Runnable {
                 writer.flush();
             }
             double[] valToSave = vector;
-            if (vector[0] == Double.POSITIVE_INFINITY && vector[1] == Double.POSITIVE_INFINITY
+            if (vector[0] == Double.POSITIVE_INFINITY
+                    && vector[1] == Double.POSITIVE_INFINITY
                     && vector[2] == Double.POSITIVE_INFINITY) {
                 // Three +Infinitys is the flag for no goal found
                 // There is only one double representation of
@@ -74,7 +75,7 @@ public class TegraDataReader implements Runnable {
             }
             mostRecentValue.set(valToSave);
         }
-        // At this point the thread has been interrupted, so clean up
+        // The thread has been interrupted, so clean up
         serialPort.free();
     }
 }
