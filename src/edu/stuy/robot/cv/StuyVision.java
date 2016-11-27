@@ -77,7 +77,7 @@ public class StuyVision extends VisionModule {
             System.out.println("Failed to create camera at " + cameraPort + ". Error was: " + e);
         }
         try {
-            logWriter = new PrintWriter("logs.txt");
+            logWriter = new PrintWriter("/tmp/logs.txt");
         } catch (Exception e) {
         }
     }
@@ -110,7 +110,7 @@ public class StuyVision extends VisionModule {
     /**
      * Given the dimensions of a rectangle, return whether the ratio of these
      * rectangle's dimensions suggests it may be a valid goal.
-     * 
+     *
      * @param height
      * @param width
      * @return
@@ -190,14 +190,14 @@ public class StuyVision extends VisionModule {
      * Process an image to look for a goal, and, if a <code>app</code> is
      * passed, post two intermediate states of the image from during processing
      * to the gui
-     * 
+     *
      * @param frame
      * The image to process
-     * 
+     *
      * @param app
      * (Optional: pass <code>null</code> to ignore) The <code>Main</code> to
      * post intermediate states of the processed image to.
-     * 
+     *
      * @return Three doubles, in a <code>double[3]</code>, ordered as such: <p>
      * <code>index 0</code>: The x-offset, in pixels, of the center of the
      * bounding rectangle of the found goal from the center of the image </p>
@@ -265,6 +265,11 @@ public class StuyVision extends VisionModule {
     public double[] processImage(boolean save) {
         if (camera == null) {
             System.out.println("Camera object is uninitialized or frame not taken!");
+            try {
+                initializeCamera();
+            } catch (Exception e) {
+                System.out.println("Failed to create camera at " + cameraPort + ". Error was: " + e);
+            }
             return null;
         }
         // To prevent buffer repeat frames from being used:
@@ -289,13 +294,13 @@ public class StuyVision extends VisionModule {
     }
 
     public double[] processImage() {
-        return processImage(false);
+        return processImage(true);
     }
 
     /**
      * Tests time taken to process <code>iters</code> frames read from
      * <code>cs</code>
-     * 
+     *
      * @param cs
      * The CaptureSource from which to read frames
      * @param iters

@@ -86,10 +86,10 @@ public class OI {
         driverGamepad.getTopButton().whenPressed(new RunInLowGearCommand(new SetupForShotCommand()));
         GyroRotationalCommand singleRotationLeft = new RotateToAimCommand(false, 1.7);
         singleRotationLeft.setUseSignalLights(true);
-        GyroRotationalCommand singleRotationRight = new RotateToAimCommand(false, 1.7);
-        singleRotationRight.setUseSignalLights(true);
+        // GyroRotationalCommand singleRotationRight = new RotateToAimCommand(false, 1.7);
+        // singleRotationRight.setUseSignalLights(true);
         driverGamepad.getRightButton().whenPressed(new RunInLowGearCommand(singleRotationLeft));
-        driverGamepad.getLeftButton().whenPressed(new RunInLowGearCommand(singleRotationRight));
+        // driverGamepad.getLeftButton().whenPressed(new RunInLowGearCommand(singleRotationRight));
 
         // OPERATOR BINDINGS
         operatorGamepad.getLeftTrigger().whileHeld(new HopperRunCommand(true));
