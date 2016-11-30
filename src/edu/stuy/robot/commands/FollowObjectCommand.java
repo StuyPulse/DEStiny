@@ -12,11 +12,11 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class FollowObjectCommand extends AutoMovementCommand {
 
-    private int count = 0;
+    private int count;
     private double angle;
     private double distance;
 
-    private boolean done = false;
+    private boolean done;
     private double[] cvReading;
 
     // max speed is 0.8 motor value
@@ -34,6 +34,8 @@ public class FollowObjectCommand extends AutoMovementCommand {
         super.initialize();
         Robot.drivetrain.resetEncoders();
         Robot.drivetrain.resetGyro();
+        count = 0;
+        done = false;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -94,7 +96,6 @@ public class FollowObjectCommand extends AutoMovementCommand {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-        System.out.println("Interrupted");
         Robot.drivetrain.tankDrive(0.0, 0.0);
     }
 
