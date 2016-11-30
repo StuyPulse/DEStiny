@@ -66,7 +66,7 @@ public class FollowObjectCommand extends AutoMovementCommand {
                 distance = StuyVision.findBotDistanceToGoal(cvReading[1]);
                 if (Math.abs(distance) <= 80) {
                     // We're in range
-                    System.out.println("Done");
+                    System.out.println("In range");
                     return;
                 }
                 System.out.println("Adjusting distance");
@@ -82,7 +82,7 @@ public class FollowObjectCommand extends AutoMovementCommand {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return getForceStopped() || done;
     }
 
     // Called once after isFinished returns true
