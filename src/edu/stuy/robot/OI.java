@@ -7,6 +7,7 @@ import edu.stuy.robot.commands.AcquirerAcquireCommand;
 import edu.stuy.robot.commands.AcquirerDeacquireCommand;
 import edu.stuy.robot.commands.DisableAutoGearShiftCommand;
 import edu.stuy.robot.commands.EnableAutoGearShiftCommand;
+import edu.stuy.robot.commands.FollowObjectCommand;
 import edu.stuy.robot.commands.FlashlightOffCommand;
 import edu.stuy.robot.commands.FlashlightOnCommand;
 import edu.stuy.robot.commands.GyroRotationalCommand;
@@ -90,6 +91,7 @@ public class OI {
         // singleRotationRight.setUseSignalLights(true);
         driverGamepad.getRightButton().whenPressed(new RunInLowGearCommand(singleRotationLeft));
         // driverGamepad.getLeftButton().whenPressed(new RunInLowGearCommand(singleRotationRight));
+        driverGamepad.getLeftButton().whenPressed(new RunInLowGearCommand(new FollowObjectCommand()));
 
         // OPERATOR BINDINGS
         operatorGamepad.getLeftTrigger().whileHeld(new HopperRunCommand(true));
