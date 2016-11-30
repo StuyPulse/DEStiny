@@ -111,7 +111,7 @@ public class FollowObjectCommand extends AutoMovementCommand {
     }
 
     protected void adjustDistance() {
-        double speed = 0.7 + 0.3 * Math.min(1.0, Math.pow(distance / distForMaxSpeed, 2)); // test
+        double speed = 0.7 + 0.3 * Math.min(1.0, Math.pow(inchesToMove() / distForMaxSpeed, 2)); // test
         System.out.println("Distance: " + distance);
         speed *= Math.signum(distance);
         Robot.drivetrain.tankDrive(speed, speed);
