@@ -16,6 +16,7 @@ public class FollowObjectCommand extends AutoMovementCommand {
     private double angle;
     private double distance;
 
+    private boolean onTarget;
     private boolean done;
     private double[] cvReading;
     private Thread cvThread;
@@ -46,6 +47,7 @@ public class FollowObjectCommand extends AutoMovementCommand {
     protected void execute() {
         super.execute();
         if (!getForceStopped()) {
+            onTarget = false;
 
             if (cvReading == null) {
                 // Couldn't find the object
@@ -65,6 +67,7 @@ public class FollowObjectCommand extends AutoMovementCommand {
                 // distance = StuyVision.findBotDistanceToGoal(cvReading[1]);
                 if (Math.abs(distance) <= 80) {
                     // We're in range
+                    onTarget = true;
                     System.out.println("In range");
                     return;
                 }
@@ -74,6 +77,12 @@ public class FollowObjectCommand extends AutoMovementCommand {
                 Robot.drivetrain.resetEncoders();
                 adjustDistance();
 
+            }
+
+            if (onTarget) {
+                Robot.cvSignalLight.stayOn();
+            } else {
+                Robot.cvSignalLight.stayOff();
             }
         }
     }
