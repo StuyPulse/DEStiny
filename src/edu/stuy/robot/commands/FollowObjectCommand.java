@@ -38,7 +38,7 @@ public class FollowObjectCommand extends AutoMovementCommand {
         Robot.drivetrain.resetGyro();
         count = 0;
         done = false;
-        cvThread = new Thread(new CVThread());
+        cvThread = new CVThread();
         cvThread.setDaemon(true);
         cvThread.start();
     }
@@ -146,7 +146,7 @@ public class FollowObjectCommand extends AutoMovementCommand {
         return gyro;
     }
 
-    private class CVThread implements Runnable {
+    private class CVThread extends Thread {
 
         public void run() {
             while (!Thread.currentThread().isInterrupted()) {
