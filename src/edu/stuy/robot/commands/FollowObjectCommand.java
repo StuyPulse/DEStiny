@@ -60,9 +60,9 @@ public class FollowObjectCommand extends AutoMovementCommand {
             // angle = StuyVision.frameXPxToDegrees(cvReading[0]);
             if (Math.abs(angle) > 5.0) {
                 System.out.println("Rotating");
+                Robot.drivetrain.resetGyro();
                 rotate();
 
-                Robot.drivetrain.resetEncoders();
             } else {
                 // distance = StuyVision.findBotDistanceToGoal(cvReading[1]);
                 if (Math.abs(distance) <= 80) {
@@ -73,8 +73,10 @@ public class FollowObjectCommand extends AutoMovementCommand {
                 }
                 System.out.println("Adjusting distance");
 
+                // We need to adjust our distance
+                Robot.drivetrain.resetEncoders();
                 adjustDistance();
-                Robot.drivetrain.resetGyro();
+
             }
 
             if (onTarget) {
