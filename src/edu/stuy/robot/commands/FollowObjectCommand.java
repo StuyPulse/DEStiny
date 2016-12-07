@@ -1,11 +1,9 @@
 package edu.stuy.robot.commands;
 
-import static edu.stuy.robot.RobotMap.MAX_DEGREES_OFF_AUTO_AIMING;
-import static edu.stuy.robot.RobotMap.CAMERA_VIEWING_ANGLE_X;
-
 import edu.stuy.robot.Robot;
 import edu.stuy.robot.cv.StuyVision;
 import edu.wpi.first.wpilibj.command.Command;
+import static edu.stuy.robot.RobotMap.CAMERA_VIEWING_ANGLE_X;
 
 /**
  *
@@ -39,7 +37,6 @@ public class FollowObjectCommand extends AutoMovementCommand {
         count = 0;
         done = false;
         cvThread = new CVThread();
-        cvThread.setDaemon(true);
         cvThread.start();
     }
 
@@ -51,32 +48,26 @@ public class FollowObjectCommand extends AutoMovementCommand {
 
             if (cvReading == null) {
                 // Couldn't find the object
-                System.out.println("Couldn't find object");
                 done = true;
                 return;
             }
 
             // Adjust the angle first, then the distance
             // angle = StuyVision.frameXPxToDegrees(cvReading[0]);
-            if (Math.abs(angle) > 5.0) {
-                System.out.println("Rotating");
-                Robot.drivetrain.resetGyro();
+            if (Math.abs(angle) > 8.0) {
                 rotate();
 
             } else {
                 // distance = StuyVision.findBotDistanceToGoal(cvReading[1]);
-                if (Math.abs(distance) <= 80) {
+                if (Math.abs(distance) <= 120) {
                     // We're in range
                     onTarget = true;
-                    System.out.println("In range");
                     return;
                 }
-                System.out.println("Adjusting distance");
 
                 // We need to adjust our distance
                 Robot.drivetrain.resetEncoders();
                 adjustDistance();
-
             }
 
             if (onTarget) {
@@ -89,13 +80,11 @@ public class FollowObjectCommand extends AutoMovementCommand {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
-        // return getForceStopped() || done;
+        return getForceStopped();
     }
 
     // Called once after isFinished returns true
     protected void end() {
-        System.out.println("End");
         cvThread.interrupt();
         Robot.drivetrain.stop();
     }
@@ -108,7 +97,7 @@ public class FollowObjectCommand extends AutoMovementCommand {
     }
 
     protected void rotate() {
-        double speed = 0.53 + 0.1 * Math.pow(howMuchWeHaveToGo(), 2); // test
+        double speed = 0.53 + 0.08 * Math.pow(howMuchWeHaveToGo(), 2); // test
         System.out.println("Rotation speed: " + speed + "\nhowMuchWeHaveToGo(): " + howMuchWeHaveToGo());
         if (angle > 0) {
             System.out.println("Turning right. Angle:\t" + angle);
@@ -152,12 +141,11 @@ public class FollowObjectCommand extends AutoMovementCommand {
 
         public void run() {
             while (!Thread.currentThread().isInterrupted()) {
-                double time = System.currentTimeMillis();
                 cvReading = Robot.vision.processImage();
-                System.out.println("\nTime: " + (System.currentTimeMillis() - time) + "\n");
                 if (cvReading != null) {
                     angle = StuyVision.frameXPxToDegrees(cvReading[0]);
                     distance = StuyVision.findBotDistanceToGoal(cvReading[1]);
+                    Robot.drivetrain.resetGyro();
                 }
             }
         }
