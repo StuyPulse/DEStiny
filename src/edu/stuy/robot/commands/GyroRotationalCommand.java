@@ -11,15 +11,41 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Abstract command for rotating a certain number of degrees.
  * The angle to rotate is determined at runtime during initialize,
  * by the abstract method <code>getDesiredAngle</code>
- * @author Berkow
  *
  */
 public abstract class GyroRotationalCommand extends AutoMovementCommand {
 
-    protected double desiredAngle;
-    protected boolean canProceed; // E.g., whether goal is in frame
+    private enum State {
+    	/**
+    	 * Indicates command should not end.
+    	 */
+    	Continue,
+    	/**
+    	 * Used when setDesiredAngle returns NaN (usually
+    	 * intentional). Indicates to cancel the rotation
+    	 */
+    	QuitNevermind,
+    	/**
+    	 * Indicates the command should end because there
+    	 * was an Exception thrown while running {@code initialize},
+    	 * {@code execute}, or {@code isFinished}.
+    	 */
+    	QuitException;
+    	
+    	public boolean isQuit() {
+    		return this == State.QuitException || this == State.QuitNevermind;
+    	}
+    }
 
-    private boolean abort; // When there is an error in a method
+	/**
+	 * Number of degrees to turn. Set dynamically, by {@code setDesiredAngle}.
+	 */
+    private double desiredAngle;
+    
+    /**
+     * Whether to end execution, and why. See {@code State} enum.
+     */
+    private State state;
 
     private boolean priorGearShiftState;
 
@@ -66,7 +92,7 @@ public abstract class GyroRotationalCommand extends AutoMovementCommand {
         useSignalLights = use;
     }
 
-    protected abstract void setDesiredAngle();
+    protected abstract double setDesiredAngle();
 
     // Called just before this Command runs the first time
     @Override
@@ -78,24 +104,25 @@ public abstract class GyroRotationalCommand extends AutoMovementCommand {
                 return;
             }
             super.initialize();
-            abort = false;
+            state = State.Continue;
             priorGearShiftState = Robot.drivetrain.gearUp;
             Robot.drivetrain.resetGyro();
 
             // Set defaults for values accessible by setDesiredAngle
-            desiredAngle = 0.0;
-            canProceed = true; // Proceed by default
-            setDesiredAngle();
+            desiredAngle = setDesiredAngle();
+            if (!Double.isNaN(desiredAngle)) {
+            	state = State.QuitNevermind;
+            }
         } catch (Exception e) {
             System.out.println("Error in intialize in RotateToAimCommand:");
             e.printStackTrace();
-            abort = true;
+            state = State.QuitException;
         }
     }
 
     // INCREASE these if it is OVERshooting
     // DECREASE these if it is UNDERshooting
-    private double TUNE_FACTOR = 1;//.1;
+    private double TUNE_FACTOR = 1;
     private double TUNE_OFFSET = 0.0;
     private double angleMoved() {
         double gyro = Robot.drivetrain.getGyroAngle();
@@ -142,7 +169,7 @@ public abstract class GyroRotationalCommand extends AutoMovementCommand {
         } catch (Exception e) {
             System.out.println("\n\n\n\n\nError in execute in RotateToAimCommand:");
             e.printStackTrace();
-            abort = true; // abort command
+            state = State.QuitException;
         }
     }
 
@@ -153,11 +180,11 @@ public abstract class GyroRotationalCommand extends AutoMovementCommand {
                 return true;
             }
             // When no more can or should be done:
-            if (abort || !canProceed || Math.abs(desiredAngle) < 0.001) {
+            if (state.isQuit() || Math.abs(desiredAngle) < 0.001) {
                 // The last condition above is *not* the judgment of whether aiming has
                 // succeeded; it is a failsafe for cases in which desiredAngle is 0
                 Robot.cvSignalLight.stayOff();
-                System.out.println("\n\n\n\n\n\n\ngoalInFrame: " + canProceed + "\ndesiredAngle: " + desiredAngle);
+                System.out.println("\n\n\n\n\n\n\nstate: " + state + "\ndesiredAngle: " + desiredAngle);
                 return true;
             }
 
@@ -167,6 +194,8 @@ public abstract class GyroRotationalCommand extends AutoMovementCommand {
 
             boolean onTarget = Math.abs(degsOff) < tolerance;
             System.out.println("degsOff: " + degsOff + "\nonTarget: " + onTarget);
+
+            // Set CV LED lights to indicate to drivers whether we are aligned yet.
             if (useSignalLights) {
                 if (onTarget) {
                     Robot.cvSignalLight.stayOn();
@@ -180,8 +209,8 @@ public abstract class GyroRotationalCommand extends AutoMovementCommand {
         } catch (Exception e) {
             System.out.println("Error in isFinished in RotateToAimCommand:");
             e.printStackTrace();
-            abort = true;
-            return true; // abort
+            state = State.QuitException;
+            return true; // abort right now
         }
     }
 

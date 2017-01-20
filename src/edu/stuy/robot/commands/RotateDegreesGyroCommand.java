@@ -3,27 +3,38 @@ package edu.stuy.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
+ * Rotate a given number of degrees. The angle to rotate is either
+ * set in the constructor parameters, or otherwise read from SmartDashboard. 
  */
 public class RotateDegreesGyroCommand extends GyroRotationalCommand {
 
-    private double _angle;
-    private boolean notSet;
+	/**
+	 * Angle (in degrees) through which to rotate. Ignored if {@code useSmartDashboard}
+	 * is {@code true}.
+	 */
+    private double angle;
+    private boolean useSmartDashboard;
 
     public RotateDegreesGyroCommand() {
         super();
-        notSet = true;
+        useSmartDashboard = true;
     }
 
     public RotateDegreesGyroCommand(double angle) {
         super();
-        _angle = angle;
-        notSet = false;
+        this.angle = angle;
+        useSmartDashboard = false;
     }
 
-    protected void setDesiredAngle() {
-        desiredAngle = notSet ? SmartDashboard.getNumber("gyro-rotate-degs") : _angle;
+    @Override
+    protected double setDesiredAngle() {
+        if (useSmartDashboard) {
+        	return SmartDashboard.getNumber("gyro-rotate-degs");
+        } else {
+        	return angle;
+        }
     }
 
+    @Override
     protected void onEnd() {}
 }

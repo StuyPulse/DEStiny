@@ -31,19 +31,31 @@ public class RotateToAimCommand extends GyroRotationalCommand {
 
     private double[] cvReading;
 
-    protected void setDesiredAngle() {
-        cvReading = Robot.vision.processImage();
-        canProceed = cvReading != null;
+    @Override
+    protected double setDesiredAngle() {
+    	// Process and image and save result to cvReading
+    	cvReading = Robot.vision.processImage();
+
+    	// Robot.cvFoundGoal is used in autonomous
+        Robot.cvFoundGoal = cvReading != null;
+
+        // Update SmartDashboard
         SmartDashboard.putString("cv-reading", Arrays.toString(cvReading));
-        if (canProceed) {
-            desiredAngle = StuyVision.frameXPxToDegrees(cvReading[0]);
-            SmartDashboard.putNumber("cv-angle", desiredAngle);
+        SmartDashboard.putBoolean("cv-visible", Robot.cvFoundGoal);
+
+        // Return the number of degrees to rotate if we found the goal, otherwise NaN
+        double angleToRotate;
+    	if (Robot.cvFoundGoal) {
+            angleToRotate = StuyVision.frameXPxToDegrees(cvReading[0]);
+            SmartDashboard.putNumber("cv-angle", angleToRotate);
+        } else {
+        	// NaN indicates to GyroRotationalCommand that we should cancel the rotation
+        	angleToRotate = Double.NaN;
         }
-        SmartDashboard.putBoolean("cv-visible", canProceed);
-        // For auton:
-        Robot.cvFoundGoal = canProceed;
+    	return angleToRotate;
     }
 
+    @Override
     protected void onEnd() {
         System.out.println(new StuyVision.Report(cvReading));
     }
