@@ -2,7 +2,9 @@ package edu.stuy.robot.subsystems;
 
 import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_MAXSPEED;
 import static edu.stuy.robot.RobotMap.SHOOTER_MOTOR_CHANNEL;
-import edu.wpi.first.wpilibj.CANTalon;
+
+import com.ctre.CANTalon;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -60,7 +62,7 @@ public class Shooter extends Subsystem {
     // Use the encoders to verify the speed
     /**
      * Sets the speed higher or lower (by 50.0) depending on the RPM
-     * 
+     *
      * @param RPM
      *            - The speed of the shooter from the RPM
      */
@@ -75,7 +77,7 @@ public class Shooter extends Subsystem {
 
     /**
      * Sets the speed higher or lower (by 0.05) depending on V Bus.
-     * 
+     *
      * @param speed
      *            - The speed of the shooter from the V Bus.
      */
