@@ -66,8 +66,6 @@ public class StuyVision extends VisionModule {
 
     public StuyVision() {
         try {
-            // Ensure native libraries are loaded
-            loadOpenCV();
             // Assume the camera is plugged into port `outerUSBPort`
             cameraPort = outerUSBPort;
             initializeCamera();
@@ -79,18 +77,6 @@ public class StuyVision extends VisionModule {
         try {
             logWriter = new PrintWriter("logs.txt");
         } catch (Exception e) {
-        }
-    }
-
-    public static void loadOpenCV() {
-        // Load opencv native library
-        String dir = StuyVision.class.getClassLoader().getResource("").getPath();
-        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            System.load(dir.substring(1).replaceAll("\\%20", " ")
-                    + "..\\lib\\opencv-3.0.0\\build\\java\\x64\\opencv_java300.dll");
-        } else {
-            // This is the .so's location on the roboRio
-            System.load("/usr/local/share/OpenCV/java/libopencv_java310.so");
         }
     }
 
@@ -110,7 +96,7 @@ public class StuyVision extends VisionModule {
     /**
      * Given the dimensions of a rectangle, return whether the ratio of these
      * rectangle's dimensions suggests it may be a valid goal.
-     * 
+     *
      * @param height
      * @param width
      * @return
@@ -190,14 +176,14 @@ public class StuyVision extends VisionModule {
      * Process an image to look for a goal, and, if a <code>app</code> is
      * passed, post two intermediate states of the image from during processing
      * to the gui
-     * 
+     *
      * @param frame
      * The image to process
-     * 
+     *
      * @param app
      * (Optional: pass <code>null</code> to ignore) The <code>Main</code> to
      * post intermediate states of the processed image to.
-     * 
+     *
      * @return Three doubles, in a <code>double[3]</code>, ordered as such: <p>
      * <code>index 0</code>: The x-offset, in pixels, of the center of the
      * bounding rectangle of the found goal from the center of the image </p>
@@ -295,7 +281,7 @@ public class StuyVision extends VisionModule {
     /**
      * Tests time taken to process <code>iters</code> frames read from
      * <code>cs</code>
-     * 
+     *
      * @param cs
      * The CaptureSource from which to read frames
      * @param iters
