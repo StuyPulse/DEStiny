@@ -4,10 +4,11 @@ import static edu.stuy.robot.RobotMap.HOPPER_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.HOPPER_SENSOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.HOPPER_SENSOR_THRESHOLD;
 
+import com.ctre.CANTalon;
+
 import edu.stuy.robot.Robot;
 import edu.stuy.robot.commands.HopperStopCommand;
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**

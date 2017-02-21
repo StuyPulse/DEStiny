@@ -12,10 +12,11 @@ import static edu.stuy.robot.RobotMap.REAR_RIGHT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_A;
 import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_B;
 
+import com.ctre.CANTalon;
+
 import edu.stuy.robot.commands.DrivetrainTankDriveCommand;
 import edu.stuy.util.TankDriveOutput;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
@@ -165,7 +166,7 @@ public class Drivetrain extends Subsystem {
             gearCounter++;
         }
     }
-    
+
     /**
      * Forces a gear shift, regardless of automatic gear shifting.
      * @param on - True if low gear is desired. False if high gear is desired.
