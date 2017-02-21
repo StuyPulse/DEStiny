@@ -2,7 +2,9 @@ package edu.stuy.robot.subsystems;
 
 import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_MAXSPEED;
 import static edu.stuy.robot.RobotMap.SHOOTER_MOTOR_CHANNEL;
-import edu.wpi.first.wpilibj.CANTalon;
+
+import com.ctre.CANTalon;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
