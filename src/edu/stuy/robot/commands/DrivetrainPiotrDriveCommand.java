@@ -1,10 +1,10 @@
 package edu.stuy.robot.commands;
 
-import com.stuypulse.frc2017.robot.Robot;
+import edu.stuy.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import com.stuypulse.frc2017.robot.RobotMap;
+import edu.stuy.robot.RobotMap;
 
 /**
  *
@@ -23,28 +23,28 @@ public class DrivetrainPiotrDriveCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        double leftJoystick = Robot.oi.driverPad.getLeftY();
-        double rightJoystick = Robot.oi.driverPad.getRightY();
+        double leftJoystick = Robot.oi.driverGamepad.getLeftY();
+        double rightJoystick = Robot.oi.driverGamepad.getRightY();
 
         //if robot is moving forward
         if (leftJoystick + rightJoystick >= RobotMap.PIOTR_DRIVE_MARGIN_OF_ERROR) {
-            if (Robot.oi.driverPad.getRawLeftBumper()) {
+            if (Robot.oi.driverGamepad.getRawLeftBumper()) {
                 rightJoystick += RobotMap.PIOTR_DRIVE_TURN_ADJUSTMENT;
                 leftJoystick -= RobotMap.PIOTR_DRIVE_TURN_ADJUSTMENT;
             }
 
-            if (Robot.oi.driverPad.getRawRightBumper()) {
+            if (Robot.oi.driverGamepad.getRawRightBumper()) {
                 rightJoystick -= RobotMap.PIOTR_DRIVE_TURN_ADJUSTMENT;
                 leftJoystick += RobotMap.PIOTR_DRIVE_TURN_ADJUSTMENT;
             }
         } else {
             //if robot is moving backwards
-            if (Robot.oi.driverPad.getRawLeftBumper()) {
+            if (Robot.oi.driverGamepad.getRawLeftBumper()) {
                 rightJoystick -= RobotMap.PIOTR_DRIVE_TURN_ADJUSTMENT;
                 leftJoystick += RobotMap.PIOTR_DRIVE_TURN_ADJUSTMENT;
             }
 
-            if (Robot.oi.driverPad.getRawRightBumper()) {
+            if (Robot.oi.driverGamepad.getRawRightBumper()) {
                 rightJoystick += RobotMap.PIOTR_DRIVE_TURN_ADJUSTMENT;
                 leftJoystick -= RobotMap.PIOTR_DRIVE_TURN_ADJUSTMENT;
             }
