@@ -12,11 +12,10 @@ import static edu.stuy.robot.RobotMap.REAR_RIGHT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_A;
 import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_B;
 
-import com.ctre.CANTalon;
-
 import edu.stuy.robot.commands.DrivetrainTankDriveCommand;
 import edu.stuy.util.TankDriveOutput;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
@@ -54,9 +53,9 @@ public class Drivetrain extends Subsystem {
     public Drivetrain() {
         gearShift = new Solenoid(GEAR_SHIFT_CHANNEL);
         currents = new double[10];
-        leftFrontMotor = new com.ctre.CANTalon(FRONT_LEFT_MOTOR_CHANNEL);
+        leftFrontMotor = new CANTalon(FRONT_LEFT_MOTOR_CHANNEL);
         rightFrontMotor = new CANTalon(FRONT_RIGHT_MOTOR_CHANNEL);
-        leftRearMotor = new com.ctre.CANTalon(REAR_LEFT_MOTOR_CHANNEL);
+        leftRearMotor = new CANTalon(REAR_LEFT_MOTOR_CHANNEL);
         rightRearMotor = new CANTalon(REAR_RIGHT_MOTOR_CHANNEL);
         leftFrontMotor.setInverted(true);
         rightFrontMotor.setInverted(true);
