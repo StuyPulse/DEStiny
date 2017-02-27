@@ -27,13 +27,13 @@ import edu.stuy.robot.subsystems.Shooter;
 import edu.stuy.robot.subsystems.Sonar;
 import edu.stuy.util.BoolBox;
 import edu.stuy.util.SignalLight;
+import edu.stuy.util.OrderedSendableChooser;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -60,11 +60,11 @@ public class Robot extends IterativeRobot {
     Command selectedAutonomousCommand;
     Command autonomousCommand;
 
-    public static SendableChooser debugChooser;
-    public static SendableChooser autonChooser;
-    public static SendableChooser operatorChooser;
-    public static SendableChooser autonPositionChooser;
-    public static SendableChooser autonShootChooser;
+    public static OrderedSendableChooser debugChooser;
+    public static OrderedSendableChooser autonChooser;
+    public static OrderedSendableChooser operatorChooser;
+    public static OrderedSendableChooser autonPositionChooser;
+    public static OrderedSendableChooser autonShootChooser;
 
     private double autonStartTime;
     private static boolean debugMode;
@@ -153,7 +153,7 @@ public class Robot extends IterativeRobot {
      * Maps the relative locations of the obstacles
      */
     private void setupAutonPositionChooser() {
-        autonPositionChooser = new SendableChooser();
+        autonPositionChooser = new OrderedSendableChooser();
         SmartDashboard.putString("1", "The low bar is in position 1, not a valid autonomous choice");
         autonPositionChooser.addObject("2", 2);
         autonPositionChooser.addDefault("3", 3);
@@ -163,14 +163,14 @@ public class Robot extends IterativeRobot {
     }
 
     private void chooseOperator() {
-        operatorChooser = new SendableChooser();
+        operatorChooser = new OrderedSendableChooser();
         operatorChooser.addDefault("Jonah", JONAH_ID);
         operatorChooser.addObject("Yubin", YUBIN_ID);
         SmartDashboard.putData("Choose thy Operator Knight!", operatorChooser);
     }
 
     private void setupAutonChooser() {
-        autonChooser = new SendableChooser();
+        autonChooser = new OrderedSendableChooser();
         autonChooser.addDefault("0. Reach edge of obstacle but refrain from going over", new ReachObstacleCommand());
         autonChooser.addObject("1. Do nothing", new CommandGroup());
         autonChooser.addObject("2. Rock Wall", new GoOverRockWallCommand());
@@ -184,14 +184,14 @@ public class Robot extends IterativeRobot {
     }
 
     private void setupDebugChooser() {
-        debugChooser = new SendableChooser();
+        debugChooser = new OrderedSendableChooser();
         debugChooser.addDefault("Competition Mode", false);
         debugChooser.addObject("Debug Mode", true);
         SmartDashboard.putData("SmartDashboard Mode", debugChooser);
     }
 
     private void setupShootChooser() {
-        autonShootChooser = new SendableChooser();
+        autonShootChooser = new OrderedSendableChooser();
         autonShootChooser.addDefault("Do not shoot in auton", false);
         autonShootChooser.addObject("Do shoot in auton", true);
         SmartDashboard.putData("Auton Shooting", autonShootChooser);
