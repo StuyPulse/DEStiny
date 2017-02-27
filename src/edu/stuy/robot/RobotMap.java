@@ -99,8 +99,8 @@ public interface RobotMap {
     double CAMERA_TILT_ANGLE = 34;
     double CAMERA_DIST_TO_BOT_FRONT = 28.0; // from camera to low omniwheel on arm when arm lowered
 
-    double CAMERA_VIEWING_ANGLE_X = 61; // angular height of frame
-    double CAMERA_VIEWING_ANGLE_Y = 34.3; // angular width of frame
+    double CAMERA_VIEWING_ANGLE_X = 61; // angular width of frame
+    double CAMERA_VIEWING_ANGLE_Y = 34.3; // angular height of frame
     double LAYUP_SHOOTING_DISTANCE = 3.8 * 12.0; // front omniwheel (on arm) 4 ft from tower
     double COURTYARD_SHOOTING_DISTANCE = 103.1; // front omniwheel (on arm) 8 ft from tower
 
