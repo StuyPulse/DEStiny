@@ -66,8 +66,6 @@ public class StuyVision extends VisionModule {
 
     public StuyVision() {
         try {
-            // Ensure native libraries are loaded
-            loadOpenCV();
             // Assume the camera is plugged into port `outerUSBPort`
             cameraPort = outerUSBPort;
             initializeCamera();
@@ -79,18 +77,6 @@ public class StuyVision extends VisionModule {
         try {
             logWriter = new PrintWriter("/tmp/logs.txt");
         } catch (Exception e) {
-        }
-    }
-
-    public static void loadOpenCV() {
-        // Load opencv native library
-        String dir = StuyVision.class.getClassLoader().getResource("").getPath();
-        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            System.load(dir.substring(1).replaceAll("\\%20", " ")
-                    + "..\\lib\\opencv-3.0.0\\build\\java\\x64\\opencv_java300.dll");
-        } else {
-            // This is the .so's location on the roboRio
-            System.load("/usr/local/share/OpenCV/java/libopencv_java310.so");
         }
     }
 

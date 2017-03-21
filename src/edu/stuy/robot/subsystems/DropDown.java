@@ -3,9 +3,11 @@ package edu.stuy.robot.subsystems;
 import static edu.stuy.robot.RobotMap.ACQUIRER_POTENTIOMETER_CHANNEL;
 import static edu.stuy.robot.RobotMap.DROPDOWN_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.DROP_DOWN_DEADBAND;
+
+import com.ctre.CANTalon;
+
 import edu.stuy.robot.commands.DropDownDefaultCommand;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -73,7 +75,7 @@ public class DropDown extends Subsystem {
 
     /**
      * Returns any number and its absolute value less than 0.1, to zero.
-     * 
+     *
      * @param speed
      * - The speed of the dropdown
      * @return Any number and its absolute value less than 0.1, to zero.

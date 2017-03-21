@@ -1,8 +1,10 @@
 package edu.stuy.robot.subsystems;
 
 import static edu.stuy.robot.RobotMap.ACQUIRER_MOTOR_CHANNEL;
+
+import com.ctre.CANTalon;
+
 import edu.stuy.robot.commands.AcquirerStopCommand;
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
