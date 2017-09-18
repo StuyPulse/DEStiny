@@ -31,11 +31,11 @@ public class Hopper extends Subsystem {
     }
 
     public void feed() {
-        hopperMotor.set(1.0);
+        hopperMotor.set(-1.0);
     }
 
     public void vomit() {
-        hopperMotor.set(-1.0);
+        hopperMotor.set(1.0);
     }
 
     public void stop() {
