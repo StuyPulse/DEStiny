@@ -22,7 +22,7 @@ public class RotateDegreesGyroCommand extends GyroRotationalCommand {
     }
 
     protected void setDesiredAngle() {
-        desiredAngle = notSet ? SmartDashboard.getNumber("gyro-rotate-degs") : _angle;
+        desiredAngle = notSet ? SmartDashboard.getNumber("gyro-rotate-degs", 0) : _angle;
     }
 
     protected void onEnd() {}

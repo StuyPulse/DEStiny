@@ -9,7 +9,7 @@ public class DriveOverRampartsCommand extends DriveForwardCommand {
     private static final double SPEED = 1.0;
 
     public DriveOverRampartsCommand() {
-        super(SmartDashboard.getNumber("Ramparts"), MAX_TIME_IN_SECONDS, SPEED);
+        super(SmartDashboard.getNumber("Ramparts", 0), MAX_TIME_IN_SECONDS, SPEED);
     }
 
     @Override

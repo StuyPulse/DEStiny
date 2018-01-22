@@ -4,10 +4,13 @@ import static edu.stuy.robot.RobotMap.HOPPER_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.HOPPER_SENSOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.HOPPER_SENSOR_THRESHOLD;
 
+import com.ctre.CANTalon;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.stuy.robot.Robot;
 import edu.stuy.robot.commands.HopperStopCommand;
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -16,11 +19,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Hopper extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    private CANTalon hopperMotor;
+    private WPI_TalonSRX hopperMotor;
     private AnalogInput distanceSensor;
 
     public Hopper() {
-        hopperMotor = new CANTalon(HOPPER_MOTOR_CHANNEL);
+        hopperMotor = new WPI_TalonSRX(HOPPER_MOTOR_CHANNEL);
         hopperMotor.setInverted(true);
         distanceSensor = new AnalogInput(HOPPER_SENSOR_CHANNEL);
     }
@@ -43,7 +46,7 @@ public class Hopper extends Subsystem {
     }
 
     public void setHopperBrakeMode(boolean on) {
-        hopperMotor.enableBrakeMode(on);
+        hopperMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     public double getDistance() {

@@ -9,7 +9,7 @@ public class DriveOverRoughTerrainCommand extends DriveForwardCommand {
     private static final double SPEED = 1.0;
 
     public DriveOverRoughTerrainCommand() {
-        super(SmartDashboard.getNumber("Rough"), MAX_TIME_IN_SECONDS, SPEED);
+        super(SmartDashboard.getNumber("Rough", 0), MAX_TIME_IN_SECONDS, SPEED);
     }
 
     @Override

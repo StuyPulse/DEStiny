@@ -2,7 +2,10 @@ package edu.stuy.robot.subsystems;
 
 import static edu.stuy.robot.RobotMap.SHOOTER_ENCODER_MAXSPEED;
 import static edu.stuy.robot.RobotMap.SHOOTER_MOTOR_CHANNEL;
-import edu.wpi.first.wpilibj.CANTalon;
+
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -15,12 +18,12 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Shooter extends Subsystem {
 
-    private CANTalon shooterMotor;
+    private WPI_TalonSRX shooterMotor;
 
     public double currentSpeed;
 
     public Shooter() {
-        shooterMotor = new CANTalon(SHOOTER_MOTOR_CHANNEL);
+        shooterMotor = new WPI_TalonSRX(SHOOTER_MOTOR_CHANNEL);
         currentSpeed = 1.0;
         /*
          * shooterMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative
@@ -54,7 +57,7 @@ public class Shooter extends Subsystem {
      * public void setSpeedHigh() { setRPM(SHOOTER_ENCODER_MAXSPEED - 400.0); }
      */
     public double getCurrentMotorSpeedInRPM() {
-        return shooterMotor.getSpeed();
+        return shooterMotor.getSelectedSensorVelocity(0);
     }
 
     // Use the encoders to verify the speed
@@ -97,7 +100,7 @@ public class Shooter extends Subsystem {
     }
 
     public void setShooterBrakeMode(boolean on) {
-        shooterMotor.enableBrakeMode(on);
+        shooterMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     public void initDefaultCommand() {

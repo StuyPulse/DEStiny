@@ -12,16 +12,19 @@ import static edu.stuy.robot.RobotMap.REAR_RIGHT_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_A;
 import static edu.stuy.robot.RobotMap.RIGHT_ENCODER_CHANNEL_B;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.stuy.robot.commands.DrivetrainTankDriveCommand;
 import edu.stuy.util.TankDriveOutput;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -30,16 +33,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Drivetrain extends Subsystem {
     private Encoder rightEncoder;
     private Encoder leftEncoder;
-    private CANTalon leftFrontMotor;
-    private CANTalon rightFrontMotor;
-    private CANTalon leftRearMotor;
-    private CANTalon rightRearMotor;
-    private RobotDrive robotDrive;
+    private WPI_TalonSRX leftFrontMotor;
+    private WPI_TalonSRX rightFrontMotor;
+    private WPI_TalonSRX leftRearMotor;
+    private WPI_TalonSRX rightRearMotor;
+    private DifferentialDrive differentialDrive;
     private ADXRS450_Gyro gyro;
     private TankDriveOutput out;
     private Solenoid gearShift;
     private double[] currents;
-
+    private SpeedControllerGroup leftSpeedController;
+    private SpeedControllerGroup rightSpeedController;
     public final PIDController pid;
 
     public boolean gearUp; // Stores the state of the gear shift
@@ -53,16 +57,15 @@ public class Drivetrain extends Subsystem {
     public Drivetrain() {
         gearShift = new Solenoid(GEAR_SHIFT_CHANNEL);
         currents = new double[10];
-        leftFrontMotor = new CANTalon(FRONT_LEFT_MOTOR_CHANNEL);
-        rightFrontMotor = new CANTalon(FRONT_RIGHT_MOTOR_CHANNEL);
-        leftRearMotor = new CANTalon(REAR_LEFT_MOTOR_CHANNEL);
-        rightRearMotor = new CANTalon(REAR_RIGHT_MOTOR_CHANNEL);
+        leftFrontMotor = new WPI_TalonSRX(FRONT_LEFT_MOTOR_CHANNEL);
+        rightFrontMotor = new WPI_TalonSRX(FRONT_RIGHT_MOTOR_CHANNEL);
+        leftRearMotor = new WPI_TalonSRX(REAR_LEFT_MOTOR_CHANNEL);
+        rightRearMotor = new WPI_TalonSRX(REAR_RIGHT_MOTOR_CHANNEL);
         leftFrontMotor.setInverted(true);
         rightFrontMotor.setInverted(true);
         leftRearMotor.setInverted(true);
         rightRearMotor.setInverted(true);
-        robotDrive = new RobotDrive(leftFrontMotor, leftRearMotor,
-                rightFrontMotor, rightRearMotor);
+        differentialDrive = new DifferentialDrive(leftSpeedController, rightSpeedController);
 
         rightEncoder = new Encoder(RIGHT_ENCODER_CHANNEL_A,
                 RIGHT_ENCODER_CHANNEL_B);
@@ -74,11 +77,11 @@ public class Drivetrain extends Subsystem {
         autoGearShiftingState = true;
 
         // Setup PIDController for auto-rotation and aiming
-        out = new TankDriveOutput(robotDrive);
+        out = new TankDriveOutput(differentialDrive);
         gyro = new ADXRS450_Gyro();
-        pid = new PIDController(SmartDashboard.getNumber("Gyro P"),
-                SmartDashboard.getNumber("Gyro I"),
-                SmartDashboard.getNumber("Gyro D"), gyro, out);
+        pid = new PIDController(SmartDashboard.getNumber("Gyro P", 0),
+                SmartDashboard.getNumber("Gyro I", 0),
+                SmartDashboard.getNumber("Gyro D", 0), gyro, out);
         pid.setInputRange(0, 360);
         pid.setContinuous(); // Tell `pid' that 0deg = 360deg
         pid.setAbsoluteTolerance(MAX_DEGREES_OFF_AUTO_AIMING);
@@ -97,7 +100,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public void tankDrive(double left, double right) {
-        robotDrive.tankDrive(left, right);
+        differentialDrive.tankDrive(left, right);
     }
 
      public double getGyroAngle() {
@@ -138,7 +141,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public void stop() {
-        robotDrive.tankDrive(0.0, 0.0);
+        differentialDrive.tankDrive(0.0, 0.0);
     }
 
     /**
@@ -157,7 +160,7 @@ public class Drivetrain extends Subsystem {
                 sum += currents[i];
             }
             gearUp = sum / currents.length > SmartDashboard
-                    .getNumber("Gear Shifting Threshold");
+                    .getNumber("Gear Shifting Threshold", 0);
             gearShift.set(gearUp);
             gearCounter = 0;
         } else {
@@ -199,10 +202,10 @@ public class Drivetrain extends Subsystem {
     }
 
     public void setDrivetrainBrakeMode(boolean on) {
-        leftFrontMotor.enableBrakeMode(on);
-        leftRearMotor.enableBrakeMode(on);
-        rightFrontMotor.enableBrakeMode(on);
-        rightRearMotor.enableBrakeMode(on);
+        leftFrontMotor.setNeutralMode(NeutralMode.Brake);
+        leftRearMotor.setNeutralMode(NeutralMode.Brake);
+        rightFrontMotor.setNeutralMode(NeutralMode.Brake);
+        rightRearMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     public void resetGyro() {

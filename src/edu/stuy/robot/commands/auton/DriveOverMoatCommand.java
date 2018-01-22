@@ -9,7 +9,7 @@ public class DriveOverMoatCommand extends DriveForwardCommand {
     private static final double SPEED = 0.9;
 
     public DriveOverMoatCommand() {
-        super(SmartDashboard.getNumber("Moat"), MAX_TIME_IN_SECONDS, SPEED);
+        super(SmartDashboard.getNumber("Moat", 0), MAX_TIME_IN_SECONDS, SPEED);
     }
 
     @Override

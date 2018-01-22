@@ -3,9 +3,12 @@ package edu.stuy.robot.subsystems;
 import static edu.stuy.robot.RobotMap.ACQUIRER_POTENTIOMETER_CHANNEL;
 import static edu.stuy.robot.RobotMap.DROPDOWN_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.DROP_DOWN_DEADBAND;
+
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.stuy.robot.commands.DropDownDefaultCommand;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class DropDown extends Subsystem {
 
-    private CANTalon dropDownMotor;
+    private WPI_TalonSRX dropDownMotor;
     private Potentiometer potentiometer;
     public double currentAngle;
 
@@ -23,7 +26,7 @@ public class DropDown extends Subsystem {
     // here. Call these from Commands.
 
     public DropDown() {
-        dropDownMotor = new CANTalon(DROPDOWN_MOTOR_CHANNEL);
+        dropDownMotor = new WPI_TalonSRX(DROPDOWN_MOTOR_CHANNEL);
         dropDownMotor.setInverted(true);
         potentiometer = new AnalogPotentiometer(ACQUIRER_POTENTIOMETER_CHANNEL, 300, 0);
         currentAngle = getAngle();
@@ -54,8 +57,8 @@ public class DropDown extends Subsystem {
 
     public double getAngle() {
         double x = getVoltage();
-        double initialVoltage = SmartDashboard.getNumber("Initial Voltage");
-        double finalVoltage = SmartDashboard.getNumber("Final Voltage");
+        double initialVoltage = SmartDashboard.getNumber("Initial Voltage", 0);
+        double finalVoltage = SmartDashboard.getNumber("Final Voltage", 0);
         double conversionFactor = 90.0 / (finalVoltage - initialVoltage);
         return (x - initialVoltage) * conversionFactor;
     }
@@ -68,7 +71,7 @@ public class DropDown extends Subsystem {
     }
 
     public void setDropDownBreakMode(boolean breakMode) {
-        dropDownMotor.enableBrakeMode(breakMode);
+        dropDownMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     /**

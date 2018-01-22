@@ -1,15 +1,16 @@
 package edu.stuy.util;
 
 import static edu.stuy.robot.RobotMap.PID_MAX_ROBOT_SPEED;
+
 import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class TankDriveOutput implements PIDOutput {
 
-	private RobotDrive pidDrive;
+	private DifferentialDrive pidDrive;
 	private double maxValue;
 
-	public TankDriveOutput(RobotDrive drive) {
+	public TankDriveOutput(DifferentialDrive drive) {
 		pidDrive = drive;
 		maxValue = PID_MAX_ROBOT_SPEED;
 	}
