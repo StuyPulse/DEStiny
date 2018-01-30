@@ -87,10 +87,10 @@ public class StuyVision extends VisionModule {
         String dir = StuyVision.class.getClassLoader().getResource("").getPath();
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
             System.load(dir.substring(1).replaceAll("\\%20", " ")
-                    + "..\\lib\\opencv-3.0.0\\build\\java\\x64\\opencv_java300.dll");
+                    + "..\\lib\\opencv-3.1.0\\build\\java\\x64\\opencv_java310.dll");
         } else {
             // This is the .so's location on the roboRio
-            System.load("/usr/local/share/OpenCV/java/libopencv_java310.so");
+            System.load("/usr/local/frc/lib/libopencv_java320.so");
         }
     }
 

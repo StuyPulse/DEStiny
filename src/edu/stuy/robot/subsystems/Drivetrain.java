@@ -65,6 +65,8 @@ public class Drivetrain extends Subsystem {
         rightFrontMotor.setInverted(true);
         leftRearMotor.setInverted(true);
         rightRearMotor.setInverted(true);
+        leftSpeedController = new SpeedControllerGroup(leftFrontMotor, leftRearMotor);
+        rightSpeedController = new SpeedControllerGroup(rightFrontMotor, rightRearMotor);
         differentialDrive = new DifferentialDrive(leftSpeedController, rightSpeedController);
 
         rightEncoder = new Encoder(RIGHT_ENCODER_CHANNEL_A,
