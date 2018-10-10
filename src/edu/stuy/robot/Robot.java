@@ -7,7 +7,7 @@ import static edu.stuy.robot.RobotMap.SIGNAL_LIGHT_BLUE_PORT;
 import static edu.stuy.robot.RobotMap.SIGNAL_LIGHT_YELLOW_PORT;
 import static edu.stuy.robot.RobotMap.YUBIN_ID;
 
-import edu.stuy.robot.commands.auton.CrossObstacleThenShootCommand;
+//import edu.stuy.robot.commands.auton.CrossObstacleThenShootCommand;
 import edu.stuy.robot.commands.auton.GoOverMoatCommand;
 import edu.stuy.robot.commands.auton.GoOverRampartsCommand;
 import edu.stuy.robot.commands.auton.GoOverRockWallBackwardsCommand;
@@ -16,7 +16,7 @@ import edu.stuy.robot.commands.auton.GoOverRoughTerrainCommand;
 import edu.stuy.robot.commands.auton.PassChevalCommand;
 import edu.stuy.robot.commands.auton.PassPortcullisCommand;
 import edu.stuy.robot.commands.auton.ReachObstacleCommand;
-import edu.stuy.robot.cv.StuyVision;
+//import edu.stuy.robot.cv.StuyVision;
 import edu.stuy.robot.subsystems.Acquirer;
 import edu.stuy.robot.subsystems.Drivetrain;
 import edu.stuy.robot.subsystems.DropDown;
@@ -69,7 +69,7 @@ public class Robot extends IterativeRobot {
     private double autonStartTime;
     private static boolean debugMode;
 
-    public static StuyVision vision;
+//    public static StuyVision vision;
     public static BoolBox stopAutoMovement = new BoolBox(false);
 
     // Used to not waste a ball in a shooting auton if CV doesn't
@@ -120,7 +120,7 @@ public class Robot extends IterativeRobot {
         flashlight = new Flashlight();
 
         oi = new OI();
-        vision = new StuyVision();
+//        vision = new StuyVision();
 
         drivetrain.setDrivetrainBrakeMode(true);
         shooter.setShooterBrakeMode(false);
@@ -211,7 +211,7 @@ public class Robot extends IterativeRobot {
                 boolean shoot = (Boolean) autonShootChooser.getSelected();
                 selectedAutonomousCommand = selected;
                 if (shoot) {
-                    autonomousCommand = new CrossObstacleThenShootCommand(selectedAutonomousCommand, autonPosition);
+//                    autonomousCommand = new CrossObstacleThenShootCommand(selectedAutonomousCommand, autonPosition);
                 } else {
                     autonomousCommand = selectedAutonomousCommand;
                 }

@@ -5,6 +5,7 @@ import static edu.stuy.robot.RobotMap.SHOOTER_MOTOR_CHANNEL;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -18,12 +19,12 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Shooter extends Subsystem {
 
-    private WPI_TalonSRX shooterMotor;
+    private WPI_VictorSPX shooterMotor;
 
     public double currentSpeed;
 
     public Shooter() {
-        shooterMotor = new WPI_TalonSRX(SHOOTER_MOTOR_CHANNEL);
+        shooterMotor = new WPI_VictorSPX(SHOOTER_MOTOR_CHANNEL);
         currentSpeed = 1.0;
         /*
          * shooterMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative
