@@ -4,7 +4,6 @@ import static edu.stuy.robot.RobotMap.HOPPER_MOTOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.HOPPER_SENSOR_CHANNEL;
 import static edu.stuy.robot.RobotMap.HOPPER_SENSOR_THRESHOLD;
 
-import com.ctre.CANTalon;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 

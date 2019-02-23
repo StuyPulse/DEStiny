@@ -2,7 +2,6 @@ package edu.stuy.robot.subsystems;
 
 import static edu.stuy.robot.RobotMap.ACQUIRER_MOTOR_CHANNEL;
 
-import com.ctre.CANTalon;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.stuy.robot.commands.AcquirerStopCommand;

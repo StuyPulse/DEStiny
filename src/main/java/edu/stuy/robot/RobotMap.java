@@ -13,10 +13,10 @@ public interface RobotMap {
     int OPERATOR_GAMEPAD = 1;
 
     // Drivetrain TalonSRX channels
-    int FRONT_RIGHT_MOTOR_CHANNEL = 1;
+    int FRONT_RIGHT_MOTOR_CHANNEL = 3;
     int REAR_RIGHT_MOTOR_CHANNEL = 2;
-    int REAR_LEFT_MOTOR_CHANNEL = 3;
-    int FRONT_LEFT_MOTOR_CHANNEL = 4;
+    int REAR_LEFT_MOTOR_CHANNEL = 4;
+    int FRONT_LEFT_MOTOR_CHANNEL = 1;
 
     // TalonSRX channels for other subsystems
     int HOPPER_MOTOR_CHANNEL = 5;
