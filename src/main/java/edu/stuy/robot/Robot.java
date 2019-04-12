@@ -199,9 +199,13 @@ public class Robot extends IterativeRobot {
 
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
+        oi.driverGamepad.resetGamepadType();
+        oi.operatorGamepad.resetGamepadType();
     }
 
     public void autonomousInit() {
+        oi.driverGamepad.resetGamepadType();
+        oi.operatorGamepad.resetGamepadType();
         try {
             Robot.cvSignalLight.stayOff();
             debugMode = (Boolean) debugChooser.getSelected();
@@ -252,6 +256,8 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
+        oi.operatorGamepad.resetGamepadType();
+        oi.driverGamepad.resetGamepadType();
         try {
             // This makes sure that the autonomous stops running when
             // teleop starts running. If you want the autonomous to

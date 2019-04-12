@@ -1,294 +1,605 @@
 package edu.stuy.util;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * Class for both the Logitech Dual Action 2 Gamepad and the Logitech Gamepad
- * F310. The Logitech Gamepad F310 must have the switch on the back set to "D"
- * for this class to work. This class probably also works with the Logitech
- * Wireless Gamepad F710 (untested, but it has the exact same layout as the
- * F310).
- * 
+ * F310. This class also works with the Logitech Wireless Gamepad F710, and on
+ * the PS4 Wireless controller (the PS4 also comes with an extra button and 2
+ * extra axis for the bumpers)
+ *
  * @author wangmeister
  */
+
 public class Gamepad extends Joystick {
+    // Threshold for whether we're "pressing" the trigger
+    private static final double RAW_TRIGGER_PRESS_AXIS_THRESHOLD = 0.1;
 
-	public Gamepad(int port) {
-		super(port);
-	}
+    // On the back of the logitech controller there is a switch.
+    // "X" gives you access to the axis inputs
+    public enum GamepadSwitchMode {
+        SWITCH_X, SWITCH_D, PS4, // PS4 Controller Enum.
+        AUTO_DETECT
+    }
 
-	/**
-	 * The left analog stick x-axis.
-	 * 
-	 * @return value of left analog x-axis
-	 */
-	public double getLeftX() {
-		return getRawAxis(0);
-	}
+    private GamepadSwitchMode switchMode;
+    private int port;
+    private int controllerType;
+    private boolean isAutoDetect;
 
-	/**
-	 * The left analog stick y-axis.
-	 * 
-	 * @return value of left analog y-axis
-	 */
-	public double getLeftY() {
-		return getRawAxis(1);
-	}
+    public Gamepad(int port, GamepadSwitchMode switchMode) {
+        super(port);
+        this.port = port;
+        this.isAutoDetect = false;
+        if (switchMode == GamepadSwitchMode.AUTO_DETECT) {
+            this.isAutoDetect = true;
+            resetGamepadType();
+        } else {
+            this.switchMode = switchMode;
+        }
+    }
 
-	/**
-	 * The right analog stick x-axis.
-	 * 
-	 * @return value of right analog x-axis
-	 */
-	public double getRightX() {
-		return getRawAxis(2);
-	}
+    // Defaults to D mode (for backwards compatibility)
+    public Gamepad(int port) {
+        this(port, GamepadSwitchMode.SWITCH_D);
+    }
 
-	/**
-	 * The right analog stick y-axis.
-	 * 
-	 * @return value of right analog y-axis
-	 */
-	public double getRightY() {
-		return getRawAxis(3);
-	}
+    // Debugging
+    public String getGamepadType() {
+        return switchMode.name();
+    }
+    /**
+     * Resets the type of the gamepad (Not expensive)
+     */
+    public void resetGamepadType() {
+        if (isAutoDetect) {
+            controllerType = DriverStation.getInstance().getJoystickType(port);
+            switch (controllerType) {
+            case 20:
+                switchMode = GamepadSwitchMode.SWITCH_D;
+                break;
+            case 21:
+                switchMode = GamepadSwitchMode.PS4;
+                break;
+            default:
+                // Make sure the code doesn't break when this gamepad is called
+                // SWITCH_X has a controller type of 21
+                switchMode = GamepadSwitchMode.SWITCH_X;
+            }
+        }
+    }
 
-	/**
-	 * The upper d-pad button.
-	 * 
-	 * @return if upper d-pad button is pressed
-	 */
-	public boolean getRawDPadUp() {
-		return getPOV() == 0;
-	}
+    /**
+     * The left analog stick x-axis.
+     *
+     * @return value of left analog x-axis
+     */
+    public double getLeftX() {
+        return getRawAxis(0);
+    }
 
-	public DPadButton getDPadUp() {
-		return new DPadButton(this, DPadButton.Direction.UP);
-	}
+    /**
+     * The left analog stick y-axis.
+     *
+     * @return value of left analog y-axis (pushing stick up is positive)
+     */
+    public double getLeftY() {
+        return -getRawAxis(1);
+    }
 
-	/**
-	 * The lower d-pad button.
-	 * 
-	 * @return if the lower d-pad button is pressed
-	 */
-	public boolean getRawDPadDown() {
-		return getPOV() == 180;
-	}
+    /**
+     * The right analog stick x-axis.
+     *
+     * @return value of right analog x-axis
+     */
+    public double getRightX() {
+        switch (switchMode) {
+        case SWITCH_D:
+            return getRawAxis(4);
+        case SWITCH_X:
+            return getRawAxis(4);
+        case PS4:
+            return getRawAxis(2);
+        default:
+            return 0;
+        }
+    }
 
-	public DPadButton getDPadDown() {
-		return new DPadButton(this, DPadButton.Direction.DOWN);
-	}
+    /**
+     * The right analog stick y-axis.
+     *
+     * @return value of right analog y-axis (pushing stick up is positive)
+     */
+    public double getRightY() {
+        switch (switchMode) {
+        case SWITCH_D:
+            return -getRawAxis(3);
+        case SWITCH_X:
+        case PS4:
+            return -getRawAxis(5);
+        default:
+            return 0;
+        }
+    }
 
-	/**
-	 * The left d-pad button.
-	 * 
-	 * @return if the left d-pad button is pressed
-	 */
-	public boolean getRawDPadLeft() {
-		return getPOV() == 270;
-	}
+    /**
+     * The upper d-pad button.
+     *
+     * @return if upper d-pad button is pressed
+     */
+    public boolean getRawDPadUp() {
+        return getPOV() == 0;
+    }
 
-	public DPadButton getDPadLeft() {
-		return new DPadButton(this, DPadButton.Direction.LEFT);
-	}
+    public DPadButton getDPadUp() {
+        return new DPadButton(this, DPadButton.Direction.UP);
+    }
 
-	/**
-	 * The right d-pad button.
-	 * 
-	 * @return if the right d-pad button is pressed
-	 */
-	public boolean getRawDPadRight() {
-		return getPOV() == 90;
-	}
+    /**
+     * The lower d-pad button.
+     *
+     * @return if the lower d-pad button is pressed
+     */
+    public boolean getRawDPadDown() {
+        return getPOV() == 180;
+    }
 
-	public DPadButton getDPadRight() {
-		return new DPadButton(this, DPadButton.Direction.RIGHT);
-	}
+    public DPadButton getDPadDown() {
+        return new DPadButton(this, DPadButton.Direction.DOWN);
+    }
 
-	/**
-	 * The left bumper.
-	 * 
-	 * @return if the left bumper is pressed
-	 */
-	public boolean getRawLeftBumper() {
-		return getRawButton(5);
-	}
+    /**
+     * The left d-pad button.
+     *
+     * @return if the left d-pad button is pressed
+     */
+    public boolean getRawDPadLeft() {
+        return getPOV() == 270;
+    }
 
-	public JoystickButton getLeftBumper() {
-		return new JoystickButton(this, 5);
-	}
+    public DPadButton getDPadLeft() {
+        return new DPadButton(this, DPadButton.Direction.LEFT);
+    }
 
-	/**
-	 * The right bumper.
-	 * 
-	 * @return if the right bumper is pressed
-	 */
-	public boolean getRawRightBumper() {
-		return getRawButton(6);
-	}
+    /**
+     * The right d-pad button.
+     *
+     * @return if the right d-pad button is pressed
+     */
+    public boolean getRawDPadRight() {
+        return getPOV() == 90;
+    }
 
-	public JoystickButton getRightBumper() {
-		return new JoystickButton(this, 6);
-	}
+    public DPadButton getDPadRight() {
+        return new DPadButton(this, DPadButton.Direction.RIGHT);
+    }
 
-	/**
-	 * The left trigger.
-	 * 
-	 * @return if the left trigger is pressed
-	 */
-	public boolean getRawLeftTrigger() {
-		return getRawButton(7);
-	}
+    /**
+     * The left bumper.
+     *
+     * @return if the left bumper is pressed
+     */
+    public boolean getRawLeftBumper() {
+        return getRawButton(5);
+    }
 
-	public JoystickButton getLeftTrigger() {
-		return new JoystickButton(this, 7);
-	}
+    public JoystickButton getLeftBumper() {
+        return new JoystickButton(this, 5);
+    }
 
-	/**
-	 * The right trigger.
-	 * 
-	 * @return if the right trigger is pressed
-	 */
-	public boolean getRawRightTrigger() {
-		return getRawButton(8);
-	}
+    /**
+     * The right bumper.
+     *
+     * @return if the right bumper is pressed
+     */
+    public boolean getRawRightBumper() {
+        return getRawButton(6);
+    }
 
-	public JoystickButton getRightTrigger() {
-		return new JoystickButton(this, 8);
-	}
+    public JoystickButton getRightBumper() {
+        return new JoystickButton(this, 6);
+    }
 
-	/**
-	 * The left button of the button group. On some gamepads this is X.
-	 * 
-	 * @return if the left button is pressed
-	 */
-	public boolean getRawLeftButton() {
-		return getRawButton(1);
-	}
+    /**
+     * The left trigger: analog
+     * 
+     * @return how far we've pushed the trigger down (0: none, 1: all the way)
+     */
+    public double getRawLeftTriggerAxis() {
+        switch (switchMode) {
+        case SWITCH_D:
+            // Turn digital input into on/off analog
+            return getRawLeftTrigger() ? 1 : 0;
+        case SWITCH_X:
+            return getRawAxis(2);
+        case PS4:
+            return (getRawAxis(3) + 1) / 2;
+        default:
+            return 0;
+        }
+    }
 
-	public JoystickButton getLeftButton() {
-		return new JoystickButton(this, 1);
-	}
+    /**
+     * The left trigger: digital
+     *
+     * @return if the left trigger is pressed
+     */
+    public boolean getRawLeftTrigger() {
+        switch (switchMode) {
+        case SWITCH_D:
+            return getRawButton(7);
+        case SWITCH_X:
+        case PS4:
+            return getRawLeftTriggerAxis() > RAW_TRIGGER_PRESS_AXIS_THRESHOLD;
+        default:
+            return false;
+        }
+    }
 
-	/**
-	 * The bottom button of the button group. On some gamepads this is A.
-	 * 
-	 * @return if the bottom button is pressed
-	 */
-	public boolean getRawBottomButton() {
-		return getRawButton(2);
-	}
+    public Button getLeftTrigger() {
+        switch (switchMode) {
+        case SWITCH_D:
+        case PS4:
+            return new JoystickButton(this, 7);
+        case SWITCH_X:
+            return new LeftTriggerButton(this);
+        default:
+            return null;
+        }
+    }
 
-	public JoystickButton getBottomButton() {
-		return new JoystickButton(this, 2);
-	}
+    /**
+     * The right trigger: analog
+     * 
+     * @return how far we've pushed the trigger down (0: none, 1: all the way)
+     */
+    public double getRawRightTriggerAxis() {
+        switch (switchMode) {
+        case SWITCH_D:
+            // Turn digital input into on/off analog
+            return getRawLeftTrigger() ? 1 : 0;
+        case SWITCH_X:
+            return getRawAxis(3);
+        case PS4:
+            return (getRawAxis(4) + 1) / 2;
+        default:
+            return 0;
+        }
+    }
 
-	/**
-	 * The right button of the button group. On some gamepads this is B.
-	 * 
-	 * @return if the right button is pressed
-	 */
-	public boolean getRawRightButton() {
-		return getRawButton(3);
-	}
+    /**
+     * The left trigger: digital
+     *
+     * @return if the left trigger is pressed
+     */
+    public boolean getRawRightTrigger() {
+        switch (switchMode) {
+        case SWITCH_D:
+            return getRawButton(8);
+        case SWITCH_X:
+        case PS4:
+            return getRawRightTriggerAxis() > RAW_TRIGGER_PRESS_AXIS_THRESHOLD;
+        default:
+            return false;
+        }
+    }
 
-	public JoystickButton getRightButton() {
-		return new JoystickButton(this, 3);
-	}
+    public Button getRightTrigger() {
+        switch (switchMode) {
+        case SWITCH_D:
+        case PS4:
+            return new JoystickButton(this, 8);
+        case SWITCH_X:
+            return new RightTriggerButton(this);
+        default:
+            return null;
+        }
+    }
 
-	/**
-	 * The top button of the button group. On some gamepads this is Y.
-	 * 
-	 * @return if the top button is pressed
-	 */
-	public boolean getRawTopButton() {
-		return getRawButton(4);
-	}
+    /**
+     * The left button of the button group. On some gamepads this is X.
+     *
+     * @return if the left button is pressed
+     */
+    public boolean getRawLeftButton() {
+        switch (switchMode) {
+        case SWITCH_D:
+        case PS4:
+            return getRawButton(1);
+        case SWITCH_X:
+            return getRawButton(3);
+        default:
+            return false;
+        }
+    }
 
-	public JoystickButton getTopButton() {
-		return new JoystickButton(this, 4);
-	}
+    public JoystickButton getLeftButton() {
+        switch (switchMode) {
+        case SWITCH_D:
+        case PS4:
+            return new JoystickButton(this, 1);
+        case SWITCH_X:
+            return new JoystickButton(this, 3);
+        default:
+            return null;
+        }
+    }
 
-	/**
-	 * The central left button. On some gamepads this is the select button.
-	 * 
-	 * @return if the back button is pressed
-	 */
-	public boolean getRawSelectButton() {
-		return getRawButton(9);
-	}
+    /**
+     * The bottom button of the button group. On some gamepads this is A.
+     *
+     * @return if the bottom button is pressed
+     */
+    public boolean getRawBottomButton() {
+        switch (switchMode) {
+        case SWITCH_D:
+        case PS4:
+            return getRawButton(2);
+        case SWITCH_X:
+            return getRawButton(1);
+        default:
+            return false;
+        }
+    }
 
-	public JoystickButton getSelectButton() {
-		return new JoystickButton(this, 9);
-	}
+    public JoystickButton getBottomButton() {
+        switch (switchMode) {
+        case SWITCH_D:
+        case PS4:
+            return new JoystickButton(this, 2);
+        case SWITCH_X:
+            return new JoystickButton(this, 1);
+        default:
+            return null;
+        }
+    }
 
-	/**
-	 * The central right button. On some gamepads this is the start button.
-	 * 
-	 * @return if the start button is pressed
-	 */
-	public boolean getRawStartButton() {
-		return getRawButton(10);
-	}
+    /**
+     * The right button of the button group. On some gamepads this is B.
+     *
+     * @return if the right button is pressed
+     */
+    public boolean getRawRightButton() {
+        switch (switchMode) {
+        case SWITCH_D:
+        case PS4:
+            return getRawButton(3);
+        case SWITCH_X:
+            return getRawButton(2);
+        default:
+            return false;
+        }
+    }
 
-	public JoystickButton getStartButton() {
-		return new JoystickButton(this, 10);
-	}
+    public JoystickButton getRightButton() {
+        switch (switchMode) {
+        case SWITCH_D:
+        case PS4:
+            return new JoystickButton(this, 3);
+        case SWITCH_X:
+            return new JoystickButton(this, 2);
+        default:
+            return null;
+        }
+    }
 
-	/**
-	 * The click-function of the left analog stick.
-	 * 
-	 * @return if the left analog stick is being clicked down
-	 */
-	public boolean getRawLeftAnalogButton() {
-		return getRawButton(11);
-	}
+    /**
+     * The top button of the button group. On some gamepads this is Y.
+     *
+     * @return if the top button is pressed
+     */
+    public boolean getRawTopButton() {
+        return getRawButton(4);
+    }
 
-	public JoystickButton getLeftAnalogButton() {
-		return new JoystickButton(this, 11);
-	}
+    public JoystickButton getTopButton() {
+        return new JoystickButton(this, 4);
+    }
 
-	/**
-	 * The click-function of the right analog stick.
-	 * 
-	 * @return if the right analog stick is being clicked down
-	 */
-	public boolean getRawRightAnalogButton() {
-		return getRawButton(12);
-	}
+    /**
+     * The central left button. On some gamepads this is the select button.
+     *
+     * @return if the back button is pressed
+     */
+    public boolean getRawSelectButton() {
+        switch (switchMode) {
+        case SWITCH_D:
+        case PS4:
+            return getRawButton(9);
+        case SWITCH_X:
+            return getRawButton(7);
+        default:
+            return false;
+        }
+    }
 
-	public JoystickButton getRightAnalogButton() {
-		return new JoystickButton(this, 12);
-	}
+    public JoystickButton getSelectButton() {
+        switch (switchMode) {
+        case SWITCH_D:
+        case PS4:
+            return new JoystickButton(this, 9);
+        case SWITCH_X:
+            return new JoystickButton(this, 7);
+        default:
+            return null;
+        }
+    }
 
-	public static class DPadButton extends Button {
-		public static enum Direction {
-			UP, DOWN, LEFT, RIGHT
-		}
+    /**
+     * The central right button. On some gamepads this is the start button.
+     *
+     * @return if the start button is pressed
+     */
+    public boolean getRawStartButton() {
+        switch (switchMode) {
+        case SWITCH_D:
+        case PS4:
+            return getRawButton(10);
+        case SWITCH_X:
+            return getRawButton(8);
+        default:
+            return false;
+        }
+    }
 
-		private Gamepad gamepad;
-		private Direction direction;
+    public JoystickButton getStartButton() {
+        switch (switchMode) {
+        case SWITCH_D:
+        case PS4:
+            return new JoystickButton(this, 10);
+        case SWITCH_X:
+            return new JoystickButton(this, 8);
+        default:
+            return null;
+        }
+    }
 
-		public DPadButton(Gamepad gamepad, Direction direction) {
-			this.gamepad = gamepad;
-			this.direction = direction;
-		}
+    /**
+     * The click-function of the left analog stick.
+     *
+     * @return if the left analog stick is being clicked down
+     */
+    public boolean getRawLeftAnalogButton() {
+        switch (switchMode) {
+        case SWITCH_D:
+        case PS4:
+            return getRawButton(11);
+        case SWITCH_X:
+            return getRawButton(9);
+        default:
+            return false;
+        }
+    }
 
-		public boolean get() {
-			switch (direction) {
-			case UP:
-				return gamepad.getRawDPadUp();
-			case DOWN:
-				return gamepad.getRawDPadDown();
-			case LEFT:
-				return gamepad.getRawDPadLeft();
-			case RIGHT:
-				return gamepad.getRawDPadRight();
-			default: // Never reached
-				return false;
-			}
-		}
-	}
+    public JoystickButton getLeftAnalogButton() {
+        switch (switchMode) {
+        case SWITCH_D:
+        case PS4:
+            return new JoystickButton(this, 11);
+        case SWITCH_X:
+            return new JoystickButton(this, 9);
+        default:
+            return null;
+        }
+    }
+
+    /**
+     * The click-function of the right analog stick.
+     *
+     * @return if the right analog stick is being clicked down
+     */
+    public boolean getRawRightAnalogButton() {
+        switch (switchMode) {
+        case SWITCH_D:
+        case PS4:
+            return getRawButton(12);
+        case SWITCH_X:
+            return getRawButton(10);
+        default:
+            return false;
+        }
+    }
+
+    public JoystickButton getRightAnalogButton() {
+        switch (switchMode) {
+        case SWITCH_D:
+        case PS4:
+            return new JoystickButton(this, 12);
+        case SWITCH_X:
+            return new JoystickButton(this, 10);
+        default:
+            return null;
+        }
+    }
+
+    public boolean getRawOptionButton() {
+        switch (switchMode) {
+        case PS4:
+            return getRawButton(10);
+        case SWITCH_D:
+        case SWITCH_X:
+        default:
+            return false;
+        }
+    }
+
+    /**
+     * DPadButton Class
+     * 
+     * Lets us treat the D-Pad axis as individual buttons
+     */
+    public static class DPadButton extends Button {
+        public static enum Direction {
+            UP, DOWN, LEFT, RIGHT
+        }
+
+        private Gamepad gamepad;
+        private Direction direction;
+
+        public DPadButton(Gamepad gamepad, Direction direction) {
+            this.gamepad = gamepad;
+            this.direction = direction;
+        }
+
+        @Override
+        public boolean get() {
+            switch (direction) {
+            case UP:
+                return gamepad.getRawDPadUp();
+            case DOWN:
+                return gamepad.getRawDPadDown();
+            case LEFT:
+                return gamepad.getRawDPadLeft();
+            case RIGHT:
+                return gamepad.getRawDPadRight();
+            default: // Never reached
+                return false;
+            }
+        }
+    }
+
+    /**
+     * LeftTriggerButton Class
+     * 
+     * Lets us treat the Left trigger as an individual button in SWITCH_X mode
+     */
+    public static class LeftTriggerButton extends Button {
+        private Gamepad gamepad;
+
+        public LeftTriggerButton(Gamepad gamepad) {
+            this.gamepad = gamepad;
+        }
+
+        @Override
+        public boolean get() {
+            return gamepad.getRawLeftTrigger();
+        }
+    }
+
+    /**
+     * RightTriggerButton Class
+     * 
+     * Lets us treat the right trigger as an individual button in SWITCH_X mode
+     */
+    public static class RightTriggerButton extends Button {
+        private Gamepad gamepad;
+
+        public RightTriggerButton(Gamepad gamepad) {
+            this.gamepad = gamepad;
+        }
+
+        @Override
+        public boolean get() {
+            return gamepad.getRawRightTrigger();
+        }
+    }
+
+    public void rumble(double intensity) {
+        setRumble(GenericHID.RumbleType.kLeftRumble, intensity);
+        setRumble(GenericHID.RumbleType.kRightRumble, intensity);
+    }
 }
