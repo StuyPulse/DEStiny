@@ -31,6 +31,8 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+
+    driverGamepad = new Gamepad(0);
     
     leftFrontMotor = new WPI_TalonSRX(1);
     rightFrontMotor = new WPI_TalonSRX(3);
