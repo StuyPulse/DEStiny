@@ -48,7 +48,7 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
+# *.jar stuylib
 *.war
 *.nar
 *.ear
