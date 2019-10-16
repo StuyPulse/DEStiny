@@ -5,7 +5,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Gamepad.GamepadSwitchMode;
+import stuylib.input.Gamepad;
+import stuylib.input.gamepads.Logitech.XMode;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -34,7 +35,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    driverGamepad = new Gamepad(0, GamepadSwitchMode.SWITCH_X);
+    driverGamepad = new XMode(0);
     
     leftFrontMotor = new WPI_TalonSRX(1);
     rightFrontMotor = new WPI_TalonSRX(3);
