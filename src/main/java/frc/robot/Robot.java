@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import stuylib.input.Gamepad;
 import stuylib.input.gamepads.Logitech.XMode;
+import stuylib.math.NumberDrag;
+import stuylib.math.InputScaler;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -28,6 +30,7 @@ public class Robot extends TimedRobot {
   private WPI_VictorSPX shooterMotor;
 
   public Gamepad driverGamepad;
+  public NumberDrag shooterDrag = new NumberDrag(32);
   
   @Override
   public void robotInit() {
@@ -36,7 +39,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     driverGamepad = new XMode(0);
-    
+
     leftFrontMotor = new WPI_TalonSRX(1);
     rightFrontMotor = new WPI_TalonSRX(3);
     leftRearMotor = new WPI_TalonSRX(4);
@@ -76,8 +79,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    differentialDrive.tankDrive(driverGamepad.getLeftY(), driverGamepad.getRightY());
-    shooterMotor.set(driverGamepad.getRawRightTriggerAxis());
+    // differentialDrive.tankDrive(driverGamepad.getLeftY(), driverGamepad.getRightY());
+    double newv = shooterDrag.drag(InputScaler.square(driverGamepad.getLeftY()));
+    shooterMotor.set(0.08*Math.signum(newv) + 0.92*newv);
   }
 
   @Override
